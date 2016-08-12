@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "System.Collections.NonGeneric": "4.0.1",
+    "System.Reflection": "4.1.0",
+    "System.Runtime": "4.2.0-beta-devapi-24407-01",
+    "System.Runtime.Serialization.Formatters": "4.0.1-beta-devapi-24407-01",
+    "System.Runtime.Serialization.Primitives": "4.1.1",
+    "System.Security.Cryptography.Algorithms": "4.2.0",
+    "System.Security.Cryptography.Primitives": "4.0.0",
+    "System.Security.Cryptography.X509Certificates": "4.1.0",
+  },
+  "frameworks": {
+    "netstandard1.7": { }
+  }
+}

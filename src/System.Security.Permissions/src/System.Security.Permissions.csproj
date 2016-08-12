@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <ProjectGuid>{F9E9894E-2513-4085-9046-311AD49D8AE6}</ProjectGuid>
+    <AssemblyName>System.Security.Permissions</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)' == ''">netstandard1.7</PackageTargetFramework>
+    <GeneratePlatformNotSupportedAssembly>true</GeneratePlatformNotSupportedAssembly>
+    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.7</NuGetTargetMoniker>
+  </PropertyGroup>
+  <!-- Default configurations to help VS understand the options -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>

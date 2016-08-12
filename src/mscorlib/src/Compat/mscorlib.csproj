@@ -9,6 +9,7 @@
     <GenFacadesArgs>$(GenFacadesArgs) -ignoreMissingTypes</GenFacadesArgs>
     <BaselineAllAPICompatError>true</BaselineAllAPICompatError>
     <ContractProject>..\..\ref\Compat\mscorlib.csproj</ContractProject>
+    <RunApiCompatForSrc>true</RunApiCompatForSrc>
   </PropertyGroup>
   <ItemGroup>
     <!-- We need to add this for now because these two types exist in System.Globalization and System.Runtime. This should be removed once we update corefx packages again. -->
@@ -18,6 +19,7 @@
     <SeedTypePreference Include="System.Globalization.CalendarWeekRule">
       <Assembly>System.Runtime</Assembly>
     </SeedTypePreference>
+    <ProjectReference Include="..\..\..\System.Security.Permissions\src\System.Security.Permissions.csproj" />
   </ItemGroup>
   <!-- Default configurations to help VS understand the configurations -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
