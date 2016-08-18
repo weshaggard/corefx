@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1-beta-devapi-24418-01",
+      }
+    },
+    "net461": {
+      "dependencies": {
+        "Microsoft.TargetingPack.NETFramework.v4.6.1": "1.0.1"
+      }
+    }
+  }
+}
