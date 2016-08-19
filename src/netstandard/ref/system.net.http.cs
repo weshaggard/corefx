@@ -5,18 +5,8 @@ namespace System.Net.Http
         public ByteArrayContent(byte[] content) { }
         public ByteArrayContent(byte[] content, int offset, int count) { }
         protected override System.Threading.Tasks.Task<System.IO.Stream> CreateContentReadStreamAsync() { throw null; }
-        protected internal override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
+        protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
         protected internal override bool TryComputeLength(out long length) { length = default(long); throw null; }
-    }
-    public partial class CFNetworkHandler : System.Net.Http.HttpMessageHandler
-    {
-        public CFNetworkHandler() { }
-        public bool AllowAutoRedirect { get { throw null; } set { } }
-        public System.Net.CookieContainer CookieContainer { get { throw null; } set { } }
-        public bool UseSystemProxy { get { throw null; } set { } }
-        protected override void Dispose(bool disposing) { }
-        [System.Diagnostics.DebuggerStepThroughAttribute]
-        protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) { throw null; }
     }
     public enum ClientCertificateOption
     {
@@ -129,7 +119,7 @@ namespace System.Net.Http
         public System.Threading.Tasks.Task<System.IO.Stream> ReadAsStreamAsync() { throw null; }
         [System.Diagnostics.DebuggerStepThroughAttribute]
         public System.Threading.Tasks.Task<string> ReadAsStringAsync() { throw null; }
-        protected internal abstract System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context);
+        protected abstract System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context);
         protected internal abstract bool TryComputeLength(out long length);
     }
     public abstract partial class HttpMessageHandler : System.IDisposable
@@ -220,7 +210,7 @@ namespace System.Net.Http
         protected override void Dispose(bool disposing) { }
         public System.Collections.Generic.IEnumerator<System.Net.Http.HttpContent> GetEnumerator() { throw null; }
         [System.Diagnostics.DebuggerStepThroughAttribute]
-        protected internal override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
+        protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { throw null; }
         protected internal override bool TryComputeLength(out long length) { length = default(long); throw null; }
     }
@@ -238,7 +228,7 @@ namespace System.Net.Http
         public StreamContent(System.IO.Stream content, int bufferSize) { }
         protected override System.Threading.Tasks.Task<System.IO.Stream> CreateContentReadStreamAsync() { throw null; }
         protected override void Dispose(bool disposing) { }
-        protected internal override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
+        protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context) { throw null; }
         protected internal override bool TryComputeLength(out long length) { length = default(long); throw null; }
     }
     public partial class StringContent : System.Net.Http.ByteArrayContent
@@ -472,7 +462,7 @@ namespace System.Net.Http.Headers
     }
     public partial class NameValueHeaderValue : System.ICloneable
     {
-        protected internal NameValueHeaderValue(System.Net.Http.Headers.NameValueHeaderValue source) { }
+        protected NameValueHeaderValue(System.Net.Http.Headers.NameValueHeaderValue source) { }
         public NameValueHeaderValue(string name) { }
         public NameValueHeaderValue(string name, string value) { }
         public string Name { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } }

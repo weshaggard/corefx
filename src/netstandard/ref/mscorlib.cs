@@ -43,7 +43,7 @@ namespace Microsoft.Win32.SafeHandles
     public abstract partial class SafeHandleMinusOneIsInvalid : System.Runtime.InteropServices.SafeHandle
     {
         [System.Runtime.ConstrainedExecution.ReliabilityContractAttribute((System.Runtime.ConstrainedExecution.Consistency)(3), (System.Runtime.ConstrainedExecution.Cer)(1))]
-        protected SafeHandleMinusOneIsInvalid(bool ownsHandle) { }
+        protected SafeHandleMinusOneIsInvalid(bool ownsHandle) : base(new System.IntPtr(-1), ownsHandle) { }
         public override bool IsInvalid { [System.Security.SecurityCriticalAttribute]get { throw null; } }
     }
     [System.Security.SecurityCriticalAttribute]
@@ -51,7 +51,7 @@ namespace Microsoft.Win32.SafeHandles
     public abstract partial class SafeHandleZeroOrMinusOneIsInvalid : System.Runtime.InteropServices.SafeHandle
     {
         [System.Runtime.ConstrainedExecution.ReliabilityContractAttribute((System.Runtime.ConstrainedExecution.Consistency)(3), (System.Runtime.ConstrainedExecution.Cer)(1))]
-        protected SafeHandleZeroOrMinusOneIsInvalid(bool ownsHandle) { }
+        protected SafeHandleZeroOrMinusOneIsInvalid(bool ownsHandle) : base(System.IntPtr.Zero, ownsHandle) { }
         public override bool IsInvalid { [System.Security.SecurityCriticalAttribute]get { throw null; } }
     }
     [System.Security.SecurityCriticalAttribute]
@@ -69,14 +69,6 @@ namespace Microsoft.Win32.SafeHandles
         public SafeWaitHandle(System.IntPtr existingHandle, bool ownsHandle) : base (default(bool)) { }
         [System.Security.SecurityCriticalAttribute]
         protected override bool ReleaseHandle() { throw null; }
-    }
-}
-namespace Mono
-{
-    public static partial class Runtime
-    {
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.InternalCall)]public static string GetDisplayName() { throw null; }
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.InternalCall)]public static bool SetGCAllowSynchronousMajor(bool flag) { throw null; }
     }
 }
 namespace System
@@ -4817,7 +4809,6 @@ namespace System
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public partial class WeakReference : System.Runtime.Serialization.ISerializable
     {
-        protected WeakReference() { }
         public WeakReference(object target) { }
         public WeakReference(object target, bool trackResurrection) { }
         protected WeakReference(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
@@ -8798,7 +8789,7 @@ namespace System.Reflection
         public AmbiguousMatchException(string message, System.Exception inner) { }
     }
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-    public partial class Assembly : System.Reflection.ICustomAttributeProvider
+    public abstract partial class Assembly : System.Reflection.ICustomAttributeProvider
     {
         protected Assembly() { }
         public virtual string CodeBase { get { throw null; } }
@@ -9097,7 +9088,6 @@ namespace System.Reflection
         protected Binder() { }
         public abstract System.Reflection.FieldInfo BindToField(System.Reflection.BindingFlags bindingAttr, System.Reflection.FieldInfo[] match, object value, System.Globalization.CultureInfo culture);
         public abstract System.Reflection.MethodBase BindToMethod(System.Reflection.BindingFlags bindingAttr, System.Reflection.MethodBase[] match, ref object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] names, out object state);
-        public virtual bool CanChangeType(object value, System.Type type, System.Globalization.CultureInfo culture) { throw null; }
         public abstract object ChangeType(object value, System.Type type, System.Globalization.CultureInfo culture);
         public abstract void ReorderArgumentArray(ref object[] args, object state);
         public abstract System.Reflection.MethodBase SelectMethod(System.Reflection.BindingFlags bindingAttr, System.Reflection.MethodBase[] match, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
@@ -11225,7 +11215,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum FUNCFLAGS
+    public enum FUNCFLAGS : short
     {
         FUNCFLAG_FBINDABLE = 4,
         FUNCFLAG_FDEFAULTBIND = 32,
@@ -11339,7 +11329,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum IDLFLAG
+    public enum IDLFLAG : short
     {
         IDLFLAG_FIN = 1,
         IDLFLAG_FLCID = 4,
@@ -11443,7 +11433,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum LIBFLAGS
+    public enum LIBFLAGS : short
     {
         LIBFLAG_FCONTROL = 2,
         LIBFLAG_FHASDISKIMAGE = 8,
@@ -11647,7 +11637,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum PARAMFLAG
+    public enum PARAMFLAG : short
     {
         PARAMFLAG_FHASCUSTDATA = 64,
         PARAMFLAG_FHASDEFAULT = 32,
@@ -11770,7 +11760,6 @@ namespace System.Runtime.InteropServices
     public abstract partial class SafeHandle : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.IDisposable
     {
         protected System.IntPtr handle;
-        protected SafeHandle() { }
         [System.Runtime.ConstrainedExecution.ReliabilityContractAttribute((System.Runtime.ConstrainedExecution.Consistency)(3), (System.Runtime.ConstrainedExecution.Cer)(1))]
         protected SafeHandle(System.IntPtr invalidHandleValue, bool ownsHandle) { }
         public bool IsClosed { [System.Runtime.ConstrainedExecution.ReliabilityContractAttribute((System.Runtime.ConstrainedExecution.Consistency)(3), (System.Runtime.ConstrainedExecution.Cer)(2)), System.Runtime.TargetedPatchingOptOutAttribute("Performance critical to inline across NGen image boundaries")]get { throw null; } }
@@ -11883,7 +11872,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum TYPEFLAGS
+    public enum TYPEFLAGS : short
     {
         TYPEFLAG_FAGGREGATABLE = 1024,
         TYPEFLAG_FAPPOBJECT = 1,
@@ -12073,7 +12062,7 @@ namespace System.Runtime.InteropServices
     }
     [System.FlagsAttribute]
     [System.ObsoleteAttribute]
-    public enum VARFLAGS
+    public enum VARFLAGS : short
     {
         VARFLAG_FBINDABLE = 4,
         VARFLAG_FDEFAULTBIND = 32,
@@ -13502,7 +13491,7 @@ namespace System.Runtime.Remoting.Messaging
         public object[] CallSiteActivationAttributes { get { throw null; } }
         public System.Collections.IList ContextProperties { get { throw null; } }
         public override System.Collections.IDictionary Properties { get { throw null; } }
-        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        public new void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     [System.CLSCompliantAttribute(false)]
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
@@ -13633,7 +13622,7 @@ namespace System.Runtime.Remoting.Messaging
         public string GetArgName(int index) { throw null; }
         public object GetInArg(int argNum) { throw null; }
         public string GetInArgName(int index) { throw null; }
-        public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public virtual object HeaderHandler(System.Runtime.Remoting.Messaging.Header[] h) { throw null; }
         public virtual void Init() { }
         public void ResolveMethod() { }
@@ -14733,11 +14722,6 @@ namespace System.Runtime.Serialization.Formatters.Binary
 }
 namespace System.Runtime.Versioning
 {
-    public static partial class CompatibilitySwitch
-    {
-        public static string GetValue(string compatibilitySwitchName) { throw null; }
-        public static bool IsEnabled(string compatibilitySwitchName) { throw null; }
-    }
     [System.AttributeUsageAttribute((System.AttributeTargets)(5887), AllowMultiple=false, Inherited=false)]
     public sealed partial class ComponentGuaranteesAttribute : System.Attribute
     {
@@ -15265,7 +15249,7 @@ namespace System.Security.AccessControl
         SystemAlarm = 3,
         SystemAudit = 2,
     }
-    public enum AceType
+    public enum AceType : byte
     {
         AccessAllowed = 0,
         AccessAllowedCallback = 9,
@@ -16786,7 +16770,7 @@ namespace System.Security.Cryptography
         protected override byte[] HashFinal() { throw null; }
         public override void Initialize() { }
     }
-    public partial class RNGCryptoServiceProvider : System.Security.Cryptography.RandomNumberGenerator
+    public sealed partial class RNGCryptoServiceProvider : System.Security.Cryptography.RandomNumberGenerator
     {
         public RNGCryptoServiceProvider() { }
         ~RNGCryptoServiceProvider() { }
@@ -19830,8 +19814,6 @@ namespace System.Threading
         [System.Runtime.TargetedPatchingOptOutAttribute("Performance critical to inline across NGen image boundaries")]
         [System.Security.SecurityCriticalAttribute]
         public static void SetSynchronizationContext(System.Threading.SynchronizationContext syncContext) { }
-        [System.Security.SecurityCriticalAttribute]
-        public static void SetThreadStaticContext(System.Threading.SynchronizationContext syncContext) { }
         [System.Security.SecuritySafeCriticalAttribute]
         protected void SetWaitNotificationRequired() { }
         [System.CLSCompliantAttribute(false)]

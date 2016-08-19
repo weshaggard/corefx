@@ -3636,15 +3636,3 @@ namespace System.Xml.Xsl
         public static System.Xml.Xsl.XsltSettings TrustedXslt { get { throw null; } }
     }
 }
-namespace System.Xml.Xsl.Runtime
-{
-    [System.ComponentModel.EditorBrowsableAttribute((System.ComponentModel.EditorBrowsableState)(1))]
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public partial struct StringConcat
-    {
-        public string Delimiter { get { throw null; } set { } }
-        public void Clear() { }
-        public void Concat(string value) { }
-        public string GetResult() { throw null; }
-    }
-}

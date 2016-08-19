@@ -212,16 +212,16 @@ namespace System
     public abstract partial class UriParser
     {
         protected UriParser() { }
-        protected internal virtual string GetComponents(System.Uri uri, System.UriComponents components, System.UriFormat format) { throw null; }
-        protected internal virtual void InitializeAndValidate(System.Uri uri, out System.UriFormatException parsingError) { parsingError = default(System.UriFormatException); }
-        protected internal virtual bool IsBaseOf(System.Uri baseUri, System.Uri relativeUri) { throw null; }
+        protected virtual string GetComponents(System.Uri uri, System.UriComponents components, System.UriFormat format) { throw null; }
+        protected virtual void InitializeAndValidate(System.Uri uri, out System.UriFormatException parsingError) { parsingError = default(System.UriFormatException); }
+        protected virtual bool IsBaseOf(System.Uri baseUri, System.Uri relativeUri) { throw null; }
         public static bool IsKnownScheme(string schemeName) { throw null; }
-        protected internal virtual bool IsWellFormedOriginalString(System.Uri uri) { throw null; }
-        protected internal virtual System.UriParser OnNewUri() { throw null; }
+        protected virtual bool IsWellFormedOriginalString(System.Uri uri) { throw null; }
+        protected virtual System.UriParser OnNewUri() { throw null; }
         protected virtual void OnRegister(string schemeName, int defaultPort) { }
         [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.Demand, Infrastructure=true)]
         public static void Register(System.UriParser uriParser, string schemeName, int defaultPort) { }
-        protected internal virtual string Resolve(System.Uri baseUri, System.Uri relativeUri, out System.UriFormatException parsingError) { parsingError = default(System.UriFormatException); throw null; }
+        protected virtual string Resolve(System.Uri baseUri, System.Uri relativeUri, out System.UriFormatException parsingError) { parsingError = default(System.UriFormatException); throw null; }
     }
     public enum UriPartial
     {
@@ -4313,15 +4313,15 @@ namespace System.Diagnostics
         public string ModuleName { get { throw null; } }
         public override string ToString() { throw null; }
     }
-    public partial class ProcessModuleCollection : System.Diagnostics.ProcessModuleCollectionBase
+    public partial class ProcessModuleCollection : System.Collections.ICollection
     {
         protected ProcessModuleCollection() { }
         public ProcessModuleCollection(System.Diagnostics.ProcessModule[] processModules) { }
-    }
-    public partial class ProcessModuleCollectionBase : System.Collections.Generic.List<System.Diagnostics.ProcessModule>
-    {
-        public ProcessModuleCollectionBase() { }
-        protected System.Diagnostics.ProcessModuleCollectionBase InnerList { get { throw null; } }
+        public int Count { get { return default(int); } }
+        bool System.Collections.ICollection.IsSynchronized { get { return default(bool); } }
+        object System.Collections.ICollection.SyncRoot { get { return default(object); } }
+        void System.Collections.ICollection.CopyTo(System.Array array, int index) { }
+        public System.Collections.IEnumerator GetEnumerator() { return default(System.Collections.IEnumerator); }
     }
     public enum ProcessPriorityClass
     {
@@ -4448,16 +4448,15 @@ namespace System.Diagnostics
         public System.Diagnostics.ThreadWaitReason WaitReason { get { throw null; } }
         public void ResetIdealProcessor() { }
     }
-    public partial class ProcessThreadCollection : System.Diagnostics.ProcessThreadCollectionBase
+    public partial class ProcessThreadCollection : System.Collections.ICollection
     {
         protected ProcessThreadCollection() { }
         public ProcessThreadCollection(System.Diagnostics.ProcessThread[] processThreads) { }
-    }
-    public partial class ProcessThreadCollectionBase : System.Collections.Generic.List<System.Diagnostics.ProcessThread>
-    {
-        public ProcessThreadCollectionBase() { }
-        protected System.Diagnostics.ProcessThreadCollectionBase InnerList { get { throw null; } }
-        public new int Add(System.Diagnostics.ProcessThread thread) { throw null; }
+        public int Count { get { return default(int); } }
+        bool System.Collections.ICollection.IsSynchronized { get { return default(bool); } }
+        object System.Collections.ICollection.SyncRoot { get { return default(object); } }
+        void System.Collections.ICollection.CopyTo(System.Array array, int index) { }
+        public System.Collections.IEnumerator GetEnumerator() { return default(System.Collections.IEnumerator); }
     }
     public enum ProcessWindowStyle
     {
@@ -4926,7 +4925,6 @@ namespace System.Net
         public string[] ProtectionRealm { get { throw null; } set { } }
     }
     public delegate System.Net.IPEndPoint BindIPEndPoint(System.Net.ServicePoint servicePoint, System.Net.IPEndPoint remoteEndPoint, int retryCount);
-    public delegate System.Collections.Generic.IEnumerable<string> CipherSuitesCallback(System.Net.SecurityProtocolType protocol, System.Collections.Generic.IEnumerable<string> allCiphers);
     public sealed partial class Cookie
     {
         public Cookie() { }
@@ -5487,7 +5485,6 @@ namespace System.Net
     {
         [System.ObsoleteAttribute("Serialization is obsoleted for this type", false)]
         protected HttpWebRequest(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) { }
-        public HttpWebRequest(System.Uri uri) { }
         public string Accept { get { throw null; } set { } }
         public System.Uri Address { get { throw null; } }
         public bool AllowAutoRedirect { get { throw null; } set { } }
@@ -5746,7 +5743,6 @@ namespace System.Net
         [System.ObsoleteAttribute("Use ServerCertificateValidationCallback instead", false)]
         public static System.Net.ICertificatePolicy CertificatePolicy { get { throw null; } set { } }
         public static bool CheckCertificateRevocationList { get { throw null; } set { } }
-        public static System.Net.CipherSuitesCallback ClientCipherSuitesCallback { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } [System.Runtime.CompilerServices.CompilerGeneratedAttribute]set { } }
         public static int DefaultConnectionLimit { get { throw null; } set { } }
         public static int DnsRefreshTimeout { get { throw null; } set { } }
         public static bool EnableDnsRoundRobin { get { throw null; } set { } }
@@ -5755,7 +5751,6 @@ namespace System.Net
         public static int MaxServicePoints { get { throw null; } set { } }
         public static System.Net.SecurityProtocolType SecurityProtocol { get { throw null; } set { } }
         public static System.Net.Security.RemoteCertificateValidationCallback ServerCertificateValidationCallback { get { throw null; } set { } }
-        public static System.Net.CipherSuitesCallback ServerCipherSuitesCallback { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } [System.Runtime.CompilerServices.CompilerGeneratedAttribute]set { } }
         public static bool UseNagleAlgorithm { get { throw null; } set { } }
         public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) { throw null; }
         public static System.Net.ServicePoint FindServicePoint(System.Uri address) { throw null; }
@@ -7021,7 +7016,6 @@ namespace System.Net.NetworkInformation
         public abstract System.Net.NetworkInformation.IPInterfaceProperties GetIPProperties();
         public abstract System.Net.NetworkInformation.IPv4InterfaceStatistics GetIPv4Statistics();
         public static bool GetIsNetworkAvailable() { throw null; }
-        public static System.Net.IPAddress GetNetMask(System.Net.IPAddress address) { throw null; }
         public abstract System.Net.NetworkInformation.PhysicalAddress GetPhysicalAddress();
         public abstract bool Supports(System.Net.NetworkInformation.NetworkInterfaceComponent networkInterfaceComponent);
     }
@@ -8053,7 +8047,7 @@ namespace System.Net.Sockets
 }
 namespace System.Net.WebSockets
 {
-    public partial class ClientWebSocket : System.Net.WebSockets.WebSocket, System.IDisposable
+    public sealed partial class ClientWebSocket : System.Net.WebSockets.WebSocket, System.IDisposable
     {
         public ClientWebSocket() { }
         public override System.Nullable<System.Net.WebSockets.WebSocketCloseStatus> CloseStatus { get { throw null; } }
@@ -8074,7 +8068,7 @@ namespace System.Net.WebSockets
     }
     public sealed partial class ClientWebSocketOptions
     {
-        public ClientWebSocketOptions() { }
+        internal ClientWebSocketOptions() { }
         public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } [System.Runtime.CompilerServices.CompilerGeneratedAttribute]set { } }
         public System.Net.CookieContainer Cookies { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } [System.Runtime.CompilerServices.CompilerGeneratedAttribute]set { } }
         public System.Net.ICredentials Credentials { [System.Runtime.CompilerServices.CompilerGeneratedAttribute]get { throw null; } [System.Runtime.CompilerServices.CompilerGeneratedAttribute]set { } }
@@ -8088,7 +8082,7 @@ namespace System.Net.WebSockets
     }
     public partial class HttpListenerWebSocketContext : System.Net.WebSockets.WebSocketContext
     {
-        public HttpListenerWebSocketContext() { }
+        internal HttpListenerWebSocketContext() { }
         public override System.Net.CookieCollection CookieCollection { get { throw null; } }
         public override System.Collections.Specialized.NameValueCollection Headers { get { throw null; } }
         public override bool IsAuthenticated { get { throw null; } }
@@ -8127,13 +8121,13 @@ namespace System.Net.WebSockets
     }
     public enum WebSocketCloseStatus
     {
-        Empty = 1004,
+        Empty = 1005,
         EndpointUnavailable = 1001,
         InternalServerError = 1011,
         InvalidMessageType = 1003,
         InvalidPayloadData = 1007,
         MandatoryExtension = 1010,
-        MessageTooBig = 1004,
+        MessageTooBig = 1009,
         NormalClosure = 1000,
         PolicyViolation = 1008,
         ProtocolError = 1002,
@@ -8346,8 +8340,8 @@ namespace System.Security.Authentication.ExtendedProtection
     }
     public enum ChannelBindingKind
     {
-        Endpoint = 2,
-        Unique = 1,
+        Endpoint = 26,
+        Unique = 25,
         Unknown = 0,
     }
     [System.ComponentModel.TypeConverterAttribute(typeof(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicyTypeConverter))]
