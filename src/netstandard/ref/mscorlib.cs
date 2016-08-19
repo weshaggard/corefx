@@ -410,21 +410,6 @@ namespace System
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public override string ToString() { throw null; }
     }
-    public partial struct ArgIterator
-    {
-        public ArgIterator(System.RuntimeArgumentHandle arglist) { throw null;}
-        [System.CLSCompliantAttribute(false)]
-        public unsafe ArgIterator(System.RuntimeArgumentHandle arglist, void* ptr) { throw null;}
-        public void End() { }
-        public override bool Equals(object o) { throw null; }
-        public override int GetHashCode() { throw null; }
-        [System.CLSCompliantAttribute(false)]
-        public System.TypedReference GetNextArg() { throw null; }
-        [System.CLSCompliantAttribute(false)]
-        public System.TypedReference GetNextArg(System.RuntimeTypeHandle rth) { throw null; }
-        public System.RuntimeTypeHandle GetNextArgType() { throw null; }
-        public int GetRemainingCount() { throw null; }
-    }
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public partial class ArgumentException : System.SystemException, System.Runtime.Serialization.ISerializable
     {
@@ -4511,24 +4496,6 @@ namespace System
         UInt16 = 8,
         UInt32 = 10,
         UInt64 = 12,
-    }
-    [System.CLSCompliantAttribute(false)]
-    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public partial struct TypedReference
-    {
-        public override bool Equals(object o) { throw null; }
-        public override int GetHashCode() { throw null; }
-        public static System.Type GetTargetType(System.TypedReference value) { throw null; }
-        [System.CLSCompliantAttribute(false)]
-        [System.Security.SecurityCriticalAttribute]
-        public static System.TypedReference MakeTypedReference(object target, System.Reflection.FieldInfo[] flds) { throw null; }
-        [System.CLSCompliantAttribute(false)]
-        [System.Security.SecuritySafeCriticalAttribute]
-        public static void SetTypedReference(System.TypedReference target, object value) { }
-        public static System.RuntimeTypeHandle TargetTypeToken(System.TypedReference value) { throw null; }
-        [System.Security.SecuritySafeCriticalAttribute]
-        public static object ToObject(System.TypedReference value) { throw null; }
     }
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public sealed partial class TypeInitializationException : System.SystemException
@@ -9368,15 +9335,12 @@ namespace System.Reflection
         public virtual System.Type[] GetRequiredCustomModifiers() { throw null; }
         public abstract object GetValue(object obj);
         [System.CLSCompliantAttribute(false)]
-        public virtual object GetValueDirect(System.TypedReference obj) { throw null; }
         public static bool operator ==(System.Reflection.FieldInfo left, System.Reflection.FieldInfo right) { throw null; }
         public static bool operator !=(System.Reflection.FieldInfo left, System.Reflection.FieldInfo right) { throw null; }
         [System.Diagnostics.DebuggerHiddenAttribute]
         [System.Diagnostics.DebuggerStepThroughAttribute]
         public void SetValue(object obj, object value) { }
         public abstract void SetValue(object obj, object value, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Globalization.CultureInfo culture);
-        [System.CLSCompliantAttribute(false)]
-        public virtual void SetValueDirect(System.TypedReference obj, object value) { }
     }
     [System.FlagsAttribute]
     public enum GenericParameterAttributes
