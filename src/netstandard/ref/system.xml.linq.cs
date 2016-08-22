@@ -318,7 +318,6 @@ namespace System.Xml.Linq
         public static implicit operator System.Xml.Linq.XName (string expandedName) { throw null; }
         public static bool operator !=(System.Xml.Linq.XName left, System.Xml.Linq.XName right) { throw null; }
         bool System.IEquatable<System.Xml.Linq.XName>.Equals(System.Xml.Linq.XName other) { throw null; }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, Flags=(System.Security.Permissions.SecurityPermissionFlag)(128))]
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public override string ToString() { throw null; }
     }

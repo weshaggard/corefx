@@ -317,7 +317,6 @@ namespace System.Xml
         public virtual System.Xml.XmlComment CreateComment(string data) { throw null; }
         protected internal virtual System.Xml.XmlAttribute CreateDefaultAttribute(string prefix, string localName, string namespaceURI) { throw null; }
         public virtual System.Xml.XmlDocumentFragment CreateDocumentFragment() { throw null; }
-        [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
         public virtual System.Xml.XmlDocumentType CreateDocumentType(string name, string publicId, string systemId, string internalSubset) { throw null; }
         public System.Xml.XmlElement CreateElement(string name) { throw null; }
         public System.Xml.XmlElement CreateElement(string qualifiedName, string namespaceURI) { throw null; }
@@ -342,7 +341,6 @@ namespace System.Xml
         public virtual void Load(string filename) { }
         public virtual void Load(System.Xml.XmlReader reader) { }
         public virtual void LoadXml(string xml) { }
-        [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
         public virtual System.Xml.XmlNode ReadNode(System.Xml.XmlReader reader) { throw null; }
         public virtual void Save(System.IO.Stream outStream) { }
         public virtual void Save(System.IO.TextWriter writer) { }
@@ -464,7 +462,6 @@ namespace System.Xml
         public int LinePosition { get { throw null; } }
         public override string Message { get { throw null; } }
         public string SourceUri { get { throw null; } }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class XmlImplementation
@@ -935,7 +932,6 @@ namespace System.Xml
         public virtual System.Uri ResolveUri(System.Uri baseUri, string relativeUri) { throw null; }
         public virtual bool SupportsType(System.Uri absoluteUri, System.Type type) { throw null; }
     }
-    [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
     public partial class XmlSecureResolver : System.Xml.XmlResolver
     {
         public XmlSecureResolver(System.Xml.XmlResolver resolver, System.Security.PermissionSet permissionSet) { }
@@ -979,7 +975,6 @@ namespace System.Xml
         public override void WriteTo(System.Xml.XmlWriter w) { }
     }
     [System.ComponentModel.EditorBrowsableAttribute((System.ComponentModel.EditorBrowsableState)(1))]
-    [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
     public partial class XmlTextReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver
     {
         protected XmlTextReader() { }
@@ -1128,11 +1123,9 @@ namespace System.Xml
         public override object GetEntity(System.Uri absoluteUri, string role, System.Type ofObjectToReturn) { throw null; }
         [System.Diagnostics.DebuggerStepThroughAttribute]
         public override System.Threading.Tasks.Task<object> GetEntityAsync(System.Uri absoluteUri, string role, System.Type ofObjectToReturn) { throw null; }
-        [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
         public override System.Uri ResolveUri(System.Uri baseUri, string relativeUri) { throw null; }
     }
     [System.ObsoleteAttribute("Use XmlReader created by XmlReader.Create() method using appropriate XmlReaderSettings instead. http://go.microsoft.com/fwlink/?linkid=14202")]
-    [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
     public partial class XmlValidatingReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver
     {
         public XmlValidatingReader(System.IO.Stream xmlFragment, System.Xml.XmlNodeType fragType, System.Xml.XmlParserContext context) { }
@@ -1314,7 +1307,6 @@ namespace System.Xml
         public abstract void WriteWhitespace(string ws);
         public virtual System.Threading.Tasks.Task WriteWhitespaceAsync(string ws) { throw null; }
     }
-    [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
     public sealed partial class XmlWriterSettings
     {
         public XmlWriterSettings() { }
@@ -1862,7 +1854,6 @@ namespace System.Xml.Schema
         public override string Message { get { throw null; } }
         public System.Xml.Schema.XmlSchemaObject SourceSchemaObject { get { throw null; } }
         public string SourceUri { get { throw null; } }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public abstract partial class XmlSchemaExternal : System.Xml.Schema.XmlSchemaObject
@@ -1971,7 +1962,6 @@ namespace System.Xml.Schema
         public XmlSchemaInferenceException(string message) { }
         public XmlSchemaInferenceException(string message, System.Exception innerException) { }
         public XmlSchemaInferenceException(string message, System.Exception innerException, int lineNumber, int linePosition) { }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class XmlSchemaInfo : System.Xml.Schema.IXmlSchemaInfo
@@ -2038,7 +2028,6 @@ namespace System.Xml.Schema
     {
         protected XmlSchemaNumericFacet() { }
     }
-    [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name="FullTrust")]
     public abstract partial class XmlSchemaObject
     {
         protected XmlSchemaObject() { }
@@ -2314,7 +2303,6 @@ namespace System.Xml.Schema
         public XmlSchemaValidationException(string message, System.Exception innerException) { }
         public XmlSchemaValidationException(string message, System.Exception innerException, int lineNumber, int linePosition) { }
         public object SourceObject { get { throw null; } }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected internal void SetSourceObject(object sourceObject) { }
     }
@@ -3303,7 +3291,6 @@ namespace System.Xml.XPath
         public XPathException(string message) { }
         public XPathException(string message, System.Exception innerException) { }
         public override string Message { get { throw null; } }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public abstract partial class XPathExpression
@@ -3559,7 +3546,6 @@ namespace System.Xml.Xsl
         protected XsltCompileException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public XsltCompileException(string message) { }
         public XsltCompileException(string message, System.Exception innerException) { }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public abstract partial class XsltContext : System.Xml.XmlNamespaceManager
@@ -3582,7 +3568,6 @@ namespace System.Xml.Xsl
         public virtual int LinePosition { get { throw null; } }
         public override string Message { get { throw null; } }
         public virtual string SourceUri { get { throw null; } }
-        [System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.LinkDemand, SerializationFormatter=true)]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public abstract partial class XsltMessageEncounteredEventArgs : System.EventArgs
