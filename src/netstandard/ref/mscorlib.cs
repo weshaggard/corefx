@@ -17326,3 +17326,147 @@ namespace System.Threading.Tasks
         public void SetObserved() { }
     }
 }
+// Support SecurityPermissionAttribute and HostProtectionAttribute
+namespace System.Security
+{
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public partial interface IPermission : System.Security.ISecurityEncodable
+    {
+        System.Security.IPermission Copy();
+        void Demand();
+        System.Security.IPermission Intersect(System.Security.IPermission target);
+        bool IsSubsetOf(System.Security.IPermission target);
+        System.Security.IPermission Union(System.Security.IPermission target);
+    }
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public partial interface ISecurityEncodable
+    {
+        void FromXml(System.Security.SecurityElement e);
+        System.Security.SecurityElement ToXml();
+    }
+}
+namespace System.Security.Permissions
+{
+    [System.AttributeUsageAttribute((System.AttributeTargets)(109), AllowMultiple=true, Inherited=false)]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public abstract partial class CodeAccessSecurityAttribute : System.Security.Permissions.SecurityAttribute
+    {
+        protected CodeAccessSecurityAttribute(System.Security.Permissions.SecurityAction action) : base (default(System.Security.Permissions.SecurityAction)) { }
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(4205), AllowMultiple=true, Inherited=false)]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public sealed partial class HostProtectionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
+    {
+        public HostProtectionAttribute() : base (default(System.Security.Permissions.SecurityAction)) { }
+        public HostProtectionAttribute(System.Security.Permissions.SecurityAction action) : base (default(System.Security.Permissions.SecurityAction)) { }
+        public bool ExternalProcessMgmt { get { throw null; } set { } }
+        public bool ExternalThreading { get { throw null; } set { } }
+        public bool MayLeakOnAbort { get { throw null; } set { } }
+        public System.Security.Permissions.HostProtectionResource Resources { get { throw null; } set { } }
+        [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+        public bool SecurityInfrastructure { get { throw null; } set { } }
+        public bool SelfAffectingProcessMgmt { get { throw null; } set { } }
+        public bool SelfAffectingThreading { get { throw null; } set { } }
+        public bool SharedState { get { throw null; } set { } }
+        public bool Synchronization { get { throw null; } set { } }
+        public bool UI { get { throw null; } set { } }
+        public override System.Security.IPermission CreatePermission() { throw null; }
+    }
+    [System.FlagsAttribute]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public enum HostProtectionResource
+    {
+        All = 511,
+        ExternalProcessMgmt = 4,
+        ExternalThreading = 16,
+        MayLeakOnAbort = 256,
+        None = 0,
+        SecurityInfrastructure = 64,
+        SelfAffectingProcessMgmt = 8,
+        SelfAffectingThreading = 32,
+        SharedState = 2,
+        Synchronization = 1,
+        UI = 128,
+    }
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public partial interface IUnrestrictedPermission
+    {
+        bool IsUnrestricted();
+    }
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public enum PermissionState
+    {
+        None = 0,
+        Unrestricted = 1,
+    }
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public enum SecurityAction
+    {
+        Assert = 3,
+        Demand = 2,
+        [System.ObsoleteAttribute("This requests should not be used")]
+        Deny = 4,
+        InheritanceDemand = 7,
+        LinkDemand = 6,
+        PermitOnly = 5,
+        [System.ObsoleteAttribute("This requests should not be used")]
+        RequestMinimum = 8,
+        [System.ObsoleteAttribute("This requests should not be used")]
+        RequestOptional = 9,
+        [System.ObsoleteAttribute("This requests should not be used")]
+        RequestRefuse = 10,
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(109), AllowMultiple=true, Inherited=false)]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public abstract partial class SecurityAttribute : System.Attribute
+    {
+        protected SecurityAttribute(System.Security.Permissions.SecurityAction action) { }
+        public System.Security.Permissions.SecurityAction Action { get { throw null; } set { } }
+        public bool Unrestricted { get { throw null; } set { } }
+        public abstract System.Security.IPermission CreatePermission();
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(109), AllowMultiple=true, Inherited=false)]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public sealed partial class SecurityPermissionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
+    {
+        public SecurityPermissionAttribute(System.Security.Permissions.SecurityAction action) : base (default(System.Security.Permissions.SecurityAction)) { }
+        public bool Assertion { get { throw null; } set { } }
+        public bool BindingRedirects { get { throw null; } set { } }
+        public bool ControlAppDomain { get { throw null; } set { } }
+        public bool ControlDomainPolicy { get { throw null; } set { } }
+        public bool ControlEvidence { get { throw null; } set { } }
+        public bool ControlPolicy { get { throw null; } set { } }
+        public bool ControlPrincipal { get { throw null; } set { } }
+        public bool ControlThread { get { throw null; } set { } }
+        public bool Execution { get { throw null; } set { } }
+        public System.Security.Permissions.SecurityPermissionFlag Flags { get { throw null; } set { } }
+        [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+        public bool Infrastructure { get { throw null; } set { } }
+        public bool RemotingConfiguration { get { throw null; } set { } }
+        public bool SerializationFormatter { get { throw null; } set { } }
+        public bool SkipVerification { get { throw null; } set { } }
+        public bool UnmanagedCode { get { throw null; } set { } }
+        public override System.Security.IPermission CreatePermission() { throw null; }
+    }
+    [System.FlagsAttribute]
+    [System.Runtime.InteropServices.ComVisibleAttribute(true)]
+    public enum SecurityPermissionFlag
+    {
+        AllFlags = 16383,
+        Assertion = 1,
+        BindingRedirects = 8192,
+        ControlAppDomain = 1024,
+        ControlDomainPolicy = 256,
+        ControlEvidence = 32,
+        ControlPolicy = 64,
+        ControlPrincipal = 512,
+        ControlThread = 16,
+        Execution = 8,
+        Infrastructure = 4096,
+        NoFlags = 0,
+        RemotingConfiguration = 2048,
+        SerializationFormatter = 128,
+        SkipVerification = 4,
+        UnmanagedCode = 2,
+    }
+}
