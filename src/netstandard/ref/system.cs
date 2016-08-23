@@ -5568,32 +5568,7 @@ namespace System.Net
         public override int GetHashCode() { throw null; }
         public override string ToString() { throw null; }
     }
-    public sealed partial class SocketPermission : System.Security.CodeAccessPermission, System.Security.Permissions.IUnrestrictedPermission
-    {
-        public const int AllPorts = -1;
-        public SocketPermission(System.Net.NetworkAccess access, System.Net.TransportType transport, string hostName, int portNumber) { }
-        public SocketPermission(System.Security.Permissions.PermissionState state) { }
-        public System.Collections.IEnumerator AcceptList { get { throw null; } }
-        public System.Collections.IEnumerator ConnectList { get { throw null; } }
-        public void AddPermission(System.Net.NetworkAccess access, System.Net.TransportType transport, string hostName, int portNumber) { }
-        public override System.Security.IPermission Copy() { throw null; }
-        public override void FromXml(System.Security.SecurityElement securityElement) { }
-        public override System.Security.IPermission Intersect(System.Security.IPermission target) { throw null; }
-        public override bool IsSubsetOf(System.Security.IPermission target) { throw null; }
-        public bool IsUnrestricted() { throw null; }
-        public override System.Security.SecurityElement ToXml() { throw null; }
-        public override System.Security.IPermission Union(System.Security.IPermission target) { throw null; }
-    }
-    [System.AttributeUsageAttribute((System.AttributeTargets)(109), AllowMultiple=true, Inherited=false)]
-    public sealed partial class SocketPermissionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
-    {
-        public SocketPermissionAttribute(System.Security.Permissions.SecurityAction action) : base (default(System.Security.Permissions.SecurityAction)) { }
-        public string Access { get { throw null; } set { } }
-        public string Host { get { throw null; } set { } }
-        public string Port { get { throw null; } set { } }
-        public string Transport { get { throw null; } set { } }
-        public override System.Security.IPermission CreatePermission() { throw null; }
-    }
+
     public abstract partial class TransportContext
     {
         protected TransportContext() { }
@@ -5872,34 +5847,6 @@ namespace System.Net
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) { }
         public byte[] ToByteArray() { throw null; }
         public override string ToString() { throw null; }
-    }
-    public sealed partial class WebPermission : System.Security.CodeAccessPermission, System.Security.Permissions.IUnrestrictedPermission
-    {
-        public WebPermission() { }
-        public WebPermission(System.Net.NetworkAccess access, string uriString) { }
-        public WebPermission(System.Net.NetworkAccess access, System.Text.RegularExpressions.Regex uriRegex) { }
-        public WebPermission(System.Security.Permissions.PermissionState state) { }
-        public System.Collections.IEnumerator AcceptList { get { throw null; } }
-        public System.Collections.IEnumerator ConnectList { get { throw null; } }
-        public void AddPermission(System.Net.NetworkAccess access, string uriString) { }
-        public void AddPermission(System.Net.NetworkAccess access, System.Text.RegularExpressions.Regex uriRegex) { }
-        public override System.Security.IPermission Copy() { throw null; }
-        public override void FromXml(System.Security.SecurityElement securityElement) { }
-        public override System.Security.IPermission Intersect(System.Security.IPermission target) { throw null; }
-        public override bool IsSubsetOf(System.Security.IPermission target) { throw null; }
-        public bool IsUnrestricted() { throw null; }
-        public override System.Security.SecurityElement ToXml() { throw null; }
-        public override System.Security.IPermission Union(System.Security.IPermission target) { throw null; }
-    }
-    [System.AttributeUsageAttribute((System.AttributeTargets)(109), AllowMultiple=true, Inherited=false)]
-    public sealed partial class WebPermissionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
-    {
-        public WebPermissionAttribute(System.Security.Permissions.SecurityAction action) : base (default(System.Security.Permissions.SecurityAction)) { }
-        public string Accept { get { throw null; } set { } }
-        public string AcceptPattern { get { throw null; } set { } }
-        public string Connect { get { throw null; } set { } }
-        public string ConnectPattern { get { throw null; } set { } }
-        public override System.Security.IPermission CreatePermission() { throw null; }
     }
     public partial class WebProxy : System.Net.IWebProxy, System.Runtime.Serialization.ISerializable
     {
@@ -8624,28 +8571,6 @@ namespace System.Security.Cryptography.X509Certificates
         IgnoreRootRevocationUnknown = 2048,
         IgnoreWrongUsage = 32,
         NoFlag = 0,
-    }
-}
-namespace System.Security.Permissions
-{
-    public sealed partial class TypeDescriptorPermission : System.Security.CodeAccessPermission, System.Security.Permissions.IUnrestrictedPermission
-    {
-        public TypeDescriptorPermission(System.Security.Permissions.PermissionState state) { }
-        public TypeDescriptorPermission(System.Security.Permissions.TypeDescriptorPermissionFlags flag) { }
-        public System.Security.Permissions.TypeDescriptorPermissionFlags Flags { get { throw null; } set { } }
-        public override System.Security.IPermission Copy() { throw null; }
-        public override void FromXml(System.Security.SecurityElement securityElement) { }
-        public override System.Security.IPermission Intersect(System.Security.IPermission target) { throw null; }
-        public override bool IsSubsetOf(System.Security.IPermission target) { throw null; }
-        public bool IsUnrestricted() { throw null; }
-        public override System.Security.SecurityElement ToXml() { throw null; }
-        public override System.Security.IPermission Union(System.Security.IPermission target) { throw null; }
-    }
-    [System.FlagsAttribute]
-    public enum TypeDescriptorPermissionFlags
-    {
-        NoFlags = 0,
-        RestrictedRegistrationAccess = 1,
     }
 }
 namespace System.Text.RegularExpressions
