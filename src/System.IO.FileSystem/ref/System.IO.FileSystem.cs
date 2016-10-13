@@ -5,17 +5,10 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Microsoft.Win32.SafeHandles.SafeFileHandle))]
+[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(System.IO.FileOptions))]
+[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(System.IO.FileStream))]
 
-namespace Microsoft.Win32.SafeHandles
-{
-    [System.Security.SecurityCriticalAttribute]
-    public sealed partial class SafeFileHandle : System.Runtime.InteropServices.SafeHandle
-    {
-        public SafeFileHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(System.IntPtr), default(bool)) { }
-        [System.Security.SecurityCriticalAttribute]
-        protected override bool ReleaseHandle() { return default(bool); }
-    }
-}
 namespace System.IO
 {
     public static partial class Directory
@@ -173,59 +166,6 @@ namespace System.IO
         public System.IO.StreamReader OpenText() { return default(System.IO.StreamReader); }
         public System.IO.FileStream OpenWrite() { return default(System.IO.FileStream); }
         public override string ToString() { return default(string); }
-    }
-    [System.FlagsAttribute]
-    public enum FileOptions
-    {
-        Asynchronous = 1073741824,
-        DeleteOnClose = 67108864,
-        Encrypted = 16384,
-        None = 0,
-        RandomAccess = 268435456,
-        SequentialScan = 134217728,
-        WriteThrough = -2147483648,
-    }
-    public partial class FileStream : System.IO.Stream
-    {
-        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access) { }
-        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize) { }
-        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize, bool isAsync) { }
-        public FileStream(string path, System.IO.FileMode mode) { }
-        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access) { }
-        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) { }
-        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize) { }
-        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, bool useAsync) { }
-        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, System.IO.FileOptions options) { }
-        public override bool CanRead { get { return default(bool); } }
-        public override bool CanSeek { get { return default(bool); } }
-        public override bool CanWrite { get { return default(bool); } }
-
-        [Obsolete("This property has been deprecated.  Please use FileStream's SafeFileHandle property instead.  http://go.microsoft.com/fwlink/?linkid=14202")]
-        public virtual System.IntPtr Handle { get { return default(System.IntPtr); } }
-        public virtual bool IsAsync { get { return default(bool); } }
-        public override long Length { get { return default(long); } }
-        public string Name { get { return default(string); } }
-        public override long Position { get { return default(long); } set { } }
-        public virtual Microsoft.Win32.SafeHandles.SafeFileHandle SafeFileHandle { get { return default(Microsoft.Win32.SafeHandles.SafeFileHandle); } }
-        protected override void Dispose(bool disposing) { }
-        ~FileStream() { }
-        public override void Flush() { }
-        public virtual void Flush(bool flushToDisk) { }
-        public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task); }
-        public override int Read(byte[] array, int offset, int count) { array = default(byte[]); return default(int); }
-        public override System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task<int>); }
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        public override int EndRead(IAsyncResult asyncResult) { return default(int); }
-        public virtual void Lock(long position, long length) { }
-        public override int ReadByte() { return default(int); }
-        public override long Seek(long offset, System.IO.SeekOrigin origin) { return default(long); }
-        public override void SetLength(long value) { }
-        public override void Write(byte[] array, int offset, int count) { }
-        public override System.Threading.Tasks.Task WriteAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task); }
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        public override void EndWrite(IAsyncResult asyncResult) { }
-        public override void WriteByte(byte value) { }
-        public virtual void Unlock(long position, long length) { }
     }
     public abstract partial class FileSystemInfo
     {

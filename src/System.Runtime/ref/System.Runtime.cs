@@ -20,6 +20,14 @@ namespace Microsoft.Win32.SafeHandles
         public override bool IsInvalid { [System.Security.SecurityCriticalAttribute]get { return default(bool); } }
     }
     [System.Security.SecurityCriticalAttribute]
+    public sealed partial class SafeFileHandle : System.Runtime.InteropServices.SafeHandle
+    {
+        public SafeFileHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(System.IntPtr), default(bool)) { }
+        [System.Security.SecurityCriticalAttribute]
+        protected override bool ReleaseHandle() { return default(bool); }
+        public override bool IsInvalid { get { throw null; } }
+    }
+    [System.Security.SecurityCriticalAttribute]
     public sealed partial class SafeWaitHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
     {
         public SafeWaitHandle(System.IntPtr existingHandle, bool ownsHandle) : base(ownsHandle) { }
@@ -63,7 +71,7 @@ namespace System
         public static string TargetFrameworkName { get { return default(string); } }
         public static object GetData(string name) { return default(object); }
     }
-    
+
     public partial class EntryPointNotFoundException : System.TypeLoadException
     {
         public EntryPointNotFoundException() { }
@@ -564,7 +572,7 @@ namespace System
         public static char ToUpperInvariant(char c) { return default(char); }
         public static bool TryParse(string s, out char result) { result = default(char); return default(bool); }
     }
-    public sealed partial class CharEnumerator : System.Collections.Generic.IEnumerator<char>, System.Collections.IEnumerator, System.ICloneable, System.IDisposable 
+    public sealed partial class CharEnumerator : System.Collections.Generic.IEnumerator<char>, System.Collections.IEnumerator, System.ICloneable, System.IDisposable
     {
         internal CharEnumerator() { }
         public char Current { get { return default(char); } }
@@ -1091,7 +1099,7 @@ namespace System
         public override string ToString() { return default(string); }
         public string ToString(string format) { return default(string); }
         [System.ObsoleteAttribute("The provider argument is not used. Please use ToString().")]
-        public string ToString(System.IFormatProvider provider) { return default(string); }        
+        public string ToString(System.IFormatProvider provider) { return default(string); }
         [System.ObsoleteAttribute("The provider argument is not used. Please use ToString(String).")]
         public string ToString(string format, System.IFormatProvider provider) { return default(string); }
 #if netcoreapp11
@@ -1122,7 +1130,7 @@ namespace System
         public virtual string Message { get { return default(string); } }
         public virtual string Source { get { return default(string); } set { } }
         public virtual string StackTrace { get { return default(string); } }
-        public System.Reflection.MethodBase TargetSite { get { return default(System.Reflection.MethodBase); } } 
+        public System.Reflection.MethodBase TargetSite { get { return default(System.Reflection.MethodBase); } }
         public virtual System.Exception GetBaseException() { return default(System.Exception); }
         public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public override string ToString() { return default(string); }
@@ -2719,7 +2727,7 @@ namespace System
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public partial struct UIntPtr
 #if netcoreapp11
-: IEquatable<UIntPtr>    
+: IEquatable<UIntPtr>
 #endif
     {
         public static readonly System.UIntPtr Zero;
@@ -3055,7 +3063,7 @@ namespace System.Runtime.ConstrainedExecution
         protected CriticalFinalizerObject() { }
         ~CriticalFinalizerObject() { }
     }
-    
+
     public enum Cer
     {
         MayFail = 1,
@@ -4340,6 +4348,13 @@ namespace System.IO
         public DirectoryNotFoundException(string message, System.Exception innerException) { }
         protected DirectoryNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+    [System.FlagsAttribute]
+    public enum FileAccess
+    {
+        Read = 1,
+        ReadWrite = 3,
+        Write = 2,
+    }
     public partial class FileLoadException : System.IO.IOException
     {
         public FileLoadException() { }
@@ -4353,6 +4368,15 @@ namespace System.IO
         public override string Message { get { return default(string); } }
         public override string ToString() { return default(string); }
     }
+    public enum FileMode
+    {
+        Append = 6,
+        Create = 2,
+        CreateNew = 1,
+        Open = 3,
+        OpenOrCreate = 4,
+        Truncate = 5,
+    }
     public partial class FileNotFoundException : System.IO.IOException
     {
         public FileNotFoundException() { }
@@ -4365,6 +4389,68 @@ namespace System.IO
         public string FusionLog { get { return default(string); } }
         public override string Message { get { return default(string); } }
         public override string ToString() { return default(string); }
+    }
+    [System.FlagsAttribute]
+    public enum FileOptions
+    {
+        Asynchronous = 1073741824,
+        DeleteOnClose = 67108864,
+        Encrypted = 16384,
+        None = 0,
+        RandomAccess = 268435456,
+        SequentialScan = 134217728,
+        WriteThrough = -2147483648,
+    }
+    [System.FlagsAttribute]
+    public enum FileShare
+    {
+        Delete = 4,
+        Inheritable = 16,
+        None = 0,
+        Read = 1,
+        ReadWrite = 3,
+        Write = 2,
+    }
+    public partial class FileStream : System.IO.Stream
+    {
+        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access) { }
+        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize) { }
+        public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize, bool isAsync) { }
+        public FileStream(string path, System.IO.FileMode mode) { }
+        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access) { }
+        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) { }
+        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize) { }
+        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, bool useAsync) { }
+        public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, System.IO.FileOptions options) { }
+        public override bool CanRead { get { return default(bool); } }
+        public override bool CanSeek { get { return default(bool); } }
+        public override bool CanWrite { get { return default(bool); } }
+        [Obsolete("This property has been deprecated.  Please use FileStream's SafeFileHandle property instead.  http://go.microsoft.com/fwlink/?linkid=14202")]
+        public virtual System.IntPtr Handle { get { return default(System.IntPtr); } }
+        public virtual bool IsAsync { get { return default(bool); } }
+        public override long Length { get { return default(long); } }
+        public string Name { get { return default(string); } }
+        public override long Position { get { return default(long); } set { } }
+        public virtual Microsoft.Win32.SafeHandles.SafeFileHandle SafeFileHandle { get { return default(Microsoft.Win32.SafeHandles.SafeFileHandle); } }
+        protected override void Dispose(bool disposing) { }
+        ~FileStream() { }
+        public override void Flush() { }
+        public virtual void Flush(bool flushToDisk) { }
+        public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task); }
+        public override int Read(byte[] array, int offset, int count) { array = default(byte[]); return default(int); }
+        public override System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task<int>); }
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) { return default(IAsyncResult); }
+        public override int EndRead(IAsyncResult asyncResult) { return default(int); }
+        public virtual void Lock(long position, long length) { }
+        public override int ReadByte() { return default(int); }
+        public override long Seek(long offset, System.IO.SeekOrigin origin) { return default(long); }
+        public override void SetLength(long value) { }
+        public override void Write(byte[] array, int offset, int count) { }
+        public override System.Threading.Tasks.Task WriteAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) { return default(System.Threading.Tasks.Task); }
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) { return default(IAsyncResult); }
+        public override void EndWrite(IAsyncResult asyncResult) { }
+        public override void WriteByte(byte value) { }
+        public virtual void Unlock(long position, long length) { }
     }
     public partial class IOException : System.Exception
     {
@@ -5289,7 +5375,7 @@ namespace System.Reflection
     [System.CLSCompliantAttribute(false)]
     public sealed class Pointer : System.Runtime.Serialization.ISerializable
     {
-        private Pointer() { }    
+        private Pointer() { }
         [System.Security.SecurityCriticalAttribute]
         public static unsafe object Box(void* ptr, System.Type type) { return default(object); }
         [System.Security.SecurityCriticalAttribute]
@@ -5349,7 +5435,7 @@ namespace System.Reflection
         public abstract object GetValue(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture);
         public void SetValue(object obj, object value) { }
         public virtual void SetValue(object obj, object value, object[] index) { }
-        public abstract void SetValue(object obj, object value, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture); 
+        public abstract void SetValue(object obj, object value, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture);
         public override MemberTypes MemberType { get { return default(MemberTypes); } }
         public MethodInfo[] GetAccessors() { return default(MethodInfo[]); }
         public abstract MethodInfo[] GetAccessors(bool nonPublic);
@@ -5798,13 +5884,13 @@ namespace System.Runtime.CompilerServices
     {
         public DiscardableAttribute() { }
     }
-    public enum LoadHint 
+    public enum LoadHint
     {
         Always = 1,
         Default = 0,
         Sometimes = 2,
     }
-    
+
     public sealed partial class RuntimeWrappedException : System.Exception
     {
         internal RuntimeWrappedException() { }
