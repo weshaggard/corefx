@@ -8,6 +8,7 @@ using Xunit;
 
 namespace System.Tests
 {
+#pragma warning disable 0618
     public static class ExecutionEngineExceptionTests
     {
         private const int COR_E_EXECUTIONENGINE = -2146233082;
@@ -42,4 +43,5 @@ namespace System.Tests
             Assert.Equal(innerException.HResult, exception.InnerException.HResult);
         }
     }
+#pragma warning restore 0618
 }

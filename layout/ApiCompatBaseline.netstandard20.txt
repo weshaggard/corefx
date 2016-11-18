@@ -140,6 +140,7 @@ CannotSealType : Type 'System.Runtime.ExceptionServices.FirstChanceExceptionEven
 MembersMustExist : Member 'System.Runtime.InteropServices.CriticalHandle.Close()' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Runtime.InteropServices.Marshal.BindToMoniker(System.String)' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Runtime.InteropServices.Marshal.ChangeWrapperHandleStrength(System.Object, System.Boolean)' does not exist in the implementation but it does exist in the contract.
+MembersMustExist : Member 'System.Runtime.InteropServices.Marshal.CleanupUnusedObjectsInCurrentContext()' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Runtime.InteropServices.Marshal.PtrToStringAuto(System.IntPtr)' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Runtime.InteropServices.Marshal.PtrToStringAuto(System.IntPtr, System.Int32)' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Security.Authentication.SslProtocols System.Security.Authentication.SslProtocols.Default' does not exist in the implementation but it does exist in the contract.
@@ -261,4 +262,4 @@ MembersMustExist : Member 'System.Threading.ThreadPool.UnsafeRegisterWaitForSing
 MembersMustExist : Member 'System.Threading.ThreadPool.UnsafeRegisterWaitForSingleObject(System.Threading.WaitHandle, System.Threading.WaitOrTimerCallback, System.Object, System.Int64, System.Boolean)' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Threading.ThreadPool.UnsafeRegisterWaitForSingleObject(System.Threading.WaitHandle, System.Threading.WaitOrTimerCallback, System.Object, System.TimeSpan, System.Boolean)' does not exist in the implementation but it does exist in the contract.
 MembersMustExist : Member 'System.Threading.ThreadPool.UnsafeRegisterWaitForSingleObject(System.Threading.WaitHandle, System.Threading.WaitOrTimerCallback, System.Object, System.UInt32, System.Boolean)' does not exist in the implementation but it does exist in the contract.
-Total Issues: 262
+Total Issues: 263

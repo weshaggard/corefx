@@ -9,8 +9,9 @@
 
   <Target Name="GetGenFacadesInputs">
     <ItemGroup>
-      <GenFacadesContracts Include="$(RestoredRefRootPath)net461/*.dll" />
-      <GenFacadesContracts Include="$(RestoredRefRootPath)netstandard20/*.dll" />
+      <GenFacadesInputs Include="$(RestoredRefRootPath)net461/*.dll" />
+      <GenFacadesInputs Include="$(RestoredRefRootPath)netstandard20/*.dll" />
+      <GenFacadesInputs Include="$(NetCoreAppRefPath)*.dll" />
       <GenFacadesSeeds Include="$(NetCoreAppRefPath)*.dll" />
     </ItemGroup>
   </Target>
@@ -25,11 +26,11 @@
   <Target Name="RunGenFacades"
           DependsOnTargets="GetGenFacadesInputs"
           AfterTargets="Build"
-          Inputs="@(GenFacadesContracts);@(GenFacadeSeeds)"
+          Inputs="@(GenFacadesInputs)"
           Outputs="$(GenFacadesSemaphoreFile)">
 
     <PropertyGroup>
-      <GenFacadesArgs>$(GenFacadesArgs) -contracts:"@(GenFacadesContracts, ',')"</GenFacadesArgs>
+      <!--<GenFacadesArgs>$(GenFacadesArgs) -contracts:"@(GenFacadesContracts, ',')"</GenFacadesArgs>-->
       <GenFacadesArgs>$(GenFacadesArgs) -seeds:"@(GenFacadesSeeds, ',')"</GenFacadesArgs>
       <GenFacadesArgs>$(GenFacadesArgs) -facadePath:"$(GenFacadesOutputPath)"</GenFacadesArgs>
       <GenFacadesArgs>$(GenFacadesArgs) -producePdb:false</GenFacadesArgs>
@@ -43,7 +44,9 @@
       <GenFacadesCmd>$(ToolHostCmd) "$(ToolsDir)GenFacades.exe"</GenFacadesCmd>
     </PropertyGroup>
 
-    <Exec Command="$(GenFacadesCmd) @&quot;$(GenFacadesResponseFile)&quot;" WorkingDirectory="$(ToolRuntimePath)" />
+    <Exec Command="$(GenFacadesCmd) &quot;-contracts:$(RestoredRefRootPath)net461&quot; @&quot;$(GenFacadesResponseFile)&quot;" WorkingDirectory="$(ToolRuntimePath)" />
+
+    <Exec Command="$(GenFacadesCmd) &quot;-contracts:$(RestoredRefRootPath)netstandard20&quot; @&quot;$(GenFacadesResponseFile)&quot;" WorkingDirectory="$(ToolRuntimePath)" />
 
     <Touch Files="$(GenFacadesSemaphoreFile)" AlwaysCreate="true" />
   </Target>
