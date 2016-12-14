@@ -11,8 +11,20 @@
       $(CleanDependsOn);
     </CleanDependsOn>
   </PropertyGroup>
-  
+
   <Target Name="ResolveMatchingContract">
+    <PropertyGroup>
+      <HasMatchingContract Condition="'$(HasMatchingContract)' == '' and Exists('$(SourceDir)/$(AssemblyName)/ref')">true</HasMatchingContract>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(HasMatchingContract)' == 'true'">
+      <ResolvedMatchingContract Include="$(ContractOutputPath)/$(MSBuildProjectName).dll" />
+    </ItemGroup>
+
+    <Error Condition="'$(HasMatchingContract)' == 'true' and !Exists('%(ResolvedMatchingContract.Identity)')" Text="ResolveMatchingContract could not find a matching contract '%(ResolvedMatchingContract.Identity)' not found." />
+  </Target>
+
+  <Target Name="ResolveMatchingContractViaProjectReference">
     <PropertyGroup Condition="'$(ContractProject)' == '' AND '@(ContractProject)' == ''">
       <ContractProject>$(SourceDir)/$(AssemblyName)/ref/$(APIVersion)/$(AssemblyName).csproj</ContractProject>
       <!-- fall back to 'current' version if specific version does not exist -->
