@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" InitialTargets="CheckForBuildTools" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <UsingTask TaskName="GetOutputPathsForConfiguration" AssemblyFile="$(CoreFxToolsTaskDir)CoreFx.Tools.dll" />
+
   <PropertyGroup>
     <IsRuntimeAssembly Condition="'$(IsRuntimeAssembly)'=='' AND '$(IsReferenceAssembly)' != 'true' AND '$(IsTestProject)' != 'true'">true</IsRuntimeAssembly>
     <!-- Try to determine if this is a simple library without a ref project.
@@ -11,6 +13,26 @@
     <BinPlaceStuffDependsOn Condition="'$(IsRuntimeAssembly)' == 'true' OR '$(IsRuntimeAndReferenceAssembly)' == 'true'">$(BinPlaceStuffDependsOn);BinPlaceRuntimeAssembly</BinPlaceStuffDependsOn>
   </PropertyGroup>
 
+  <Target Name="CopyFilestoConfiguredOutputDirectories" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <PropertiesToInclude Condition="'$(IsReferenceAssembly)' == 'true'">TargetGroup</PropertiesToInclude>
+    </PropertyGroup>
+
+    <GetOutputPathsForConfiguration
+          Properties="@(Property)"
+          PropertyValues="@(PropertyValue)"
+          BuildConfiguration="$(BuildConfiguration)"
+          ProjectBuildConfigurations="$(BuildConfigurations)"
+          ProjectConfigurationBuilding="$(Configuration)"
+          PropertiesToInclude="$(PropertiesToInclude)"
+      >
+      <Output TaskParameter="BuildConfigurationRelativePaths" ItemName="BuildConfigurationRelativePaths" />
+    </GetOutputPathsForConfiguration>
+
+    <Message Text="BCS: $(BuildConfigurations)" Importance="High" />
+    <Message Text="BINPLACE: @(BuildConfigurationRelativePaths)" Importance="High" />
+
+  </Target>
   <Target Name="BinPlaceStuff" DependsOnTargets="$(BinPlaceStuffDependsOn)" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="low" Text="IsRuntimeAssembly: $(IsRuntimeAssembly)" />
     <Message Importance="low" Text="IsReferenceAssembly: $(IsReferenceAssembly)" />
@@ -66,7 +88,7 @@
       <Output TaskParameter="InPath" ItemName="_CleanCurrentFileWrites" />
     </FindUnderPath>
   </Target>
-  
+
   <Target Name="IncrementalCleanAdditionalDirectories" BeforeTargets="IncrementalClean">
     <ItemGroup>
       <_CleanOrphanAdditionalFileWrites Include="@(_CleanPriorFileWrites)" Exclude="@(_CleanCurrentFileWrites)" />
@@ -74,7 +96,7 @@
     <FindUnderPath Path="%(AdditionalCleanDirectories.Identity)" Files="@(_CleanOrphanAdditionalFileWrites)">
       <Output TaskParameter="InPath" ItemName="_CleanOrphanFileWritesInAdditionalDirectories" />
     </FindUnderPath>
-    
+
     <!-- Delete the orphaned files.  IncrementalClean will remove these from the file list -->
     <Delete Files="@(_CleanOrphanFileWritesInAdditionalDirectories)" TreatErrorsAsWarnings="true">
       <Output TaskParameter="DeletedFiles" ItemName="_CleanOrphanFilesDeleted" />

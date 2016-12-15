@@ -41,7 +41,7 @@
   <!-- permit a wrapping build system to contribute targets to this build -->
   <Import Condition="Exists('$(MSBuildThisFileDirectory)..\open.targets')" Project="$(MSBuildThisFileDirectory)..\open.targets" />
 
-  <Import Project="$(MSBuildThisFileDirectory)binplace.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)binplace.targets" Condition="'$(IncludeBinPlacingTargets)'!='false'"/>
 
   <PropertyGroup>
     <!-- We don't use any of MSBuild's resolution logic for resolving the framework, so just set these two properties to any folder that exists to skip
@@ -84,5 +84,14 @@
       <PackageIds Include="$(Id)" />
     </ItemGroup>
   </Target>
+
+  <Target Name="ReportGroups" BeforeTargets="PrepareForBuild">
+    <Message Importance="High" Text="BuildConfiguration:$(BuildConfiguration)" />
+    <Message Importance="High" Text="Configuration:$(Configuration)" />
+    <Message Importance="High" Text="BuildConfigurations:$(BuildConfigurations)" />
+    <Message Importance="High" Text="_parse_BuildConfigurations:$(_parse_BuildConfigurations)" />
+
+     <Message Importance="High" Condition="'$(ConfigurationErrorMsg)' != ''" Text="ConfigurationErrorMessage: $(ConfigurationErrorMsg)" />
+   </Target>
 
 </Project>

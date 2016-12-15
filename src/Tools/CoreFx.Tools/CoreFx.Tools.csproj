@@ -17,6 +17,7 @@
     <Compile Include="Configuration\ConfigurationFactory.cs" />
     <Compile Include="Configuration\PropertyValue.cs" />
     <Compile Include="Configuration\PropertyInfo.cs" />
+    <Compile Include="GetOutputPathsForConfiguration.cs" />
     <Compile Include="GenerateConfigurationProps.cs" />
     <Compile Include="FindBestConfiguration.cs" />
   </ItemGroup>

@@ -124,6 +124,34 @@ namespace Microsoft.DotNet.Build.Tasks
             return GetConfigurationString(allowDefaults: true, includeInsignificant: true, encounteredDefault: out unused);
         }
 
+        public string GetConfigurationStringsForProperties(params string[] properties)
+        {
+            if (properties == null || properties.Length == 0)
+                return this.ToString();
+
+            var propertyTable = GetProperties();
+            var configurationBuilder = new StringBuilder();
+
+            foreach (var property in properties)
+            {
+                string propValue = null;
+                if (propertyTable.TryGetValue(property, out propValue))
+                {
+                    configurationBuilder.Append(propValue);
+                }
+                else
+                {
+                    configurationBuilder.Append($"<UnknownProperty {property}>");
+                }
+
+                if (configurationBuilder.Length > 0)
+                {
+                    configurationBuilder.Append(ConfigurationFactory.PropertySeperator);
+                }
+            }
+            return configurationBuilder.ToString();
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))

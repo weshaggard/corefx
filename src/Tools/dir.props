@@ -1,6 +1,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup> 
-    <IsRuntimeAssembly>false</IsRuntimeAssembly> 
+    <IncludeBinPlacingTargets>false</IncludeBinPlacingTargets>
   </PropertyGroup> 
 
   <Import Project="..\dir.props" />
