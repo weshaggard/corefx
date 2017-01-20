@@ -16,6 +16,39 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Release|AnyCPU'" />
   <ItemGroup>
     <Compile Include="Properties\SecurityTransparent.cs" />
+    <Compile Include="System\Data\Odbc\DbDataRecord.cs" />
+    <Compile Include="System\Data\Odbc\Odbc32.cs" />
+    <Compile Include="System\Data\Odbc\OdbcCommand.cs" />
+    <Compile Include="System\Data\Odbc\OdbcCommandBuilder.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnection.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionFactory.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionHandle.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionOpen.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionPoolProviderInfo.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionString.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionStringbuilder.cs" />
+    <Compile Include="System\Data\Odbc\OdbcDataAdapter.cs" />
+    <Compile Include="System\Data\Odbc\OdbcDataReader.cs" />
+    <Compile Include="System\Data\Odbc\OdbcEnvironment.cs" />
+    <Compile Include="System\Data\Odbc\OdbcEnvironmentHandle.cs" />
+    <Compile Include="System\Data\Odbc\OdbcError.cs" />
+    <Compile Include="System\Data\Odbc\OdbcErrorCollection.cs" />
+    <Compile Include="System\Data\Odbc\OdbcException.cs" />
+    <Compile Include="System\Data\Odbc\OdbcFactory.cs" />
+    <Compile Include="System\Data\Odbc\OdbcHandle.cs" />
+    <Compile Include="System\Data\Odbc\OdbcInfoMessageEvent.cs" />
+    <Compile Include="System\Data\Odbc\odbcmetadatacollectionnames.cs" />
+    <Compile Include="System\Data\Odbc\odbcmetadatacolumnnames.cs" />
+    <Compile Include="System\Data\Odbc\odbcmetadatafactory.cs" />
+    <Compile Include="System\Data\Odbc\OdbcParameter.cs" />
+    <Compile Include="System\Data\Odbc\OdbcParameterCollection.cs" />
+    <Compile Include="System\Data\Odbc\OdbcPermission.cs" />
+    <Compile Include="System\Data\Odbc\OdbcReferenceCollection.cs" />
+    <Compile Include="System\Data\Odbc\OdbcRowUpdatingEvent.cs" />
+    <Compile Include="System\Data\Odbc\OdbcStatementHandle.cs" />
+    <Compile Include="System\Data\Odbc\OdbcTransaction.cs" />
+    <Compile Include="System\Data\Odbc\OdbcType.cs" />
+    <Compile Include="System\Data\Odbc\OdbcUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Collections" />
@@ -29,8 +62,6 @@
     <Reference Include="System.Runtime.Extensions" />
     <Reference Include="System.Threading" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="System\Data\Odbc\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
