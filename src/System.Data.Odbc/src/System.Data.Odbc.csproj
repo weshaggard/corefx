@@ -15,6 +15,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Release|AnyCPU'" />
   <ItemGroup>
+    <Compile Include="Common\System\Data\Bid.cs" />
+    <Compile Include="Common\System\Data\bidPrivateBase.cs" />
+    <Compile Include="Common\System\Data\Common\AdapterUtil.cs" />
+    <Compile Include="Common\System\Data\Common\DbConnectionOptions.cs" />
+    <Compile Include="Common\System\Data\Common\DBConnectionString.cs" />
+    <Compile Include="Common\System\Data\Common\DbConnectionStringCommon.cs" />
+    <Compile Include="Common\System\Data\Common\DBDataPermission.cs" />
+    <Compile Include="Common\System\Data\Common\DBDataPermissionAttribute.cs" />
+    <Compile Include="Common\System\Data\Common\NameValuePair.cs" />
+    <Compile Include="Common\System\Data\Common\NameValuePermission.cs" />
+    <Compile Include="Common\System\Data\DataStorage.cs" />
+    <Compile Include="Common\System\Data\InOutOfProcHelper.cs" />
+    <Compile Include="Common\System\Data\MobileStubs.cs" />
+    <Compile Include="Common\System\Data\OleDb\OLEDB_Util.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbMetaDataFactory.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbReferenceCollection.cs" />
+    <Compile Include="Common\System\Data\Res.missing.cs" />
+    <Compile Include="Common\System\Data\Res.cs" />
+    <Compile Include="Common\System\Data\ResDescriptionAttribute.cs" />
+    <Compile Include="Common\System\Data\ResCategoryAttribute.cs" />
+    <Compile Include="Common\System\Data\SafeNativeMethods.cs" />
     <Compile Include="Properties\SecurityTransparent.cs" />
     <Compile Include="System\Data\Odbc\DbDataRecord.cs" />
     <Compile Include="System\Data\Odbc\Odbc32.cs" />
@@ -51,21 +72,32 @@
     <Compile Include="System\Data\Odbc\OdbcUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Win32.Registry" />
     <Reference Include="System.Collections" />
     <Reference Include="System.ComponentModel.Primitives" />
     <Reference Include="System.ComponentModel.TypeConverter" />
     <Reference Include="System.Data.Common" />
     <Reference Include="System.Diagnostics.Contracts" />
     <Reference Include="System.Diagnostics.Debug" />
+    <Reference Include="System.Diagnostics.FileVersionInfo" />
     <Reference Include="System.Diagnostics.Tools" />
+    <Reference Include="System.Diagnostics.TraceSource" />
     <Reference Include="System.Globalization" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Resources.ResourceManager" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Extensions" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Security.Permissions" />
+    <Reference Include="System.Text.Encoding.Extensions" />
+    <Reference Include="System.Text.RegularExpressions" />
     <Reference Include="System.Threading" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Threading.Thread" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.ReaderWriter" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Import Project=".\GenerateThisAssemblyCs.targets" Condition="'$(IsPartialFacadeAssembly)' != 'true'" />
 </Project>

@@ -320,7 +320,7 @@ namespace System.Data.Odbc
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Validate(offset, length);
 
-            IntPtr ptr = ADP.IntPtrOffset(DangerousGetHandle(), offset);
+            IntPtr ptr =    ADP.IntPtrOffset(DangerousGetHandle(), offset);
             return new HandleRef(this, ptr);
         }
         

@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Res = System.SR;
 
 // todo:
 // There may be two ways to improve performance:
