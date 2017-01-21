@@ -19,6 +19,7 @@
     <Compile Include="Common\System\Data\bidPrivateBase.cs" />
     <Compile Include="Common\System\Data\Common\AdapterUtil.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionOptions.cs" />
+    <Compile Include="Common\System\Data\Common\DbConnectionPoolKey.cs" />
     <Compile Include="Common\System\Data\Common\DBConnectionString.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionStringCommon.cs" />
     <Compile Include="Common\System\Data\Common\DBDataPermission.cs" />
@@ -29,6 +30,20 @@
     <Compile Include="Common\System\Data\InOutOfProcHelper.cs" />
     <Compile Include="Common\System\Data\MobileStubs.cs" />
     <Compile Include="Common\System\Data\OleDb\OLEDB_Util.cs" />
+    <Compile Include="Common\System\Data\SqlClient\PoolBlockingPeriod.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbBuffer.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionClosed.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionFactory.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionInternal.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPool.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolAuthenticationContext.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolAuthenticationContextKey.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolCounters.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolGroup.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolGroupProviderInfo.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolOptions.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolProviderInfo.cs" />
     <Compile Include="Common\System\Data\ProviderBase\DbMetaDataFactory.cs" />
     <Compile Include="Common\System\Data\ProviderBase\DbReferenceCollection.cs" />
     <Compile Include="Common\System\Data\Res.missing.cs" />
@@ -44,6 +59,7 @@
     <Compile Include="System\Data\Odbc\OdbcConnection.cs" />
     <Compile Include="System\Data\Odbc\OdbcConnectionFactory.cs" />
     <Compile Include="System\Data\Odbc\OdbcConnectionHandle.cs" />
+    <Compile Include="System\Data\Odbc\OdbcConnectionHelper.cs" />
     <Compile Include="System\Data\Odbc\OdbcConnectionOpen.cs" />
     <Compile Include="System\Data\Odbc\OdbcConnectionPoolProviderInfo.cs" />
     <Compile Include="System\Data\Odbc\OdbcConnectionString.cs" />
@@ -74,6 +90,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Registry" />
     <Reference Include="System.Collections" />
+    <Reference Include="System.Collections.Concurrent" />
     <Reference Include="System.ComponentModel.Primitives" />
     <Reference Include="System.ComponentModel.TypeConverter" />
     <Reference Include="System.Data.Common" />
@@ -94,6 +111,8 @@
     <Reference Include="System.Threading" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Threading.Thread" />
+    <Reference Include="System.Threading.ThreadPool" />
+    <Reference Include="System.Threading.Timer" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.ReaderWriter" />
   </ItemGroup>
