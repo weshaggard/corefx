@@ -32,9 +32,6 @@ namespace System.Data.Odbc {
             DataAdapter = adapter;
         }
 
-        [
-        DefaultValue(null),
-        ]
         new public OdbcDataAdapter DataAdapter {
             get {
                 return (base.DataAdapter as OdbcDataAdapter);

@@ -144,21 +144,17 @@ namespace System.Data.Odbc {
             }
         }
 
-        [
-        DefaultValue(""),
-        ]
-        override public string CommandText {
-            get {
+        override public string CommandText
+        {
+            get
+            {
                 string value = _commandText;
                 return ((null != value) ? value : ADP.StrEmpty);
             }
-            set {
-                if (Bid.TraceOn) {
-                    Bid.Trace("<odbc.OdbcCommand.set_CommandText|API> %d#, '", ObjectID);
-                    Bid.PutStr(value); // Use PutStr to write out entire string
-                    Bid.Trace("'\n");
-                }
-                if (0 != ADP.SrcCompare(_commandText, value)) {
+            set
+            {
+                if (_commandText != value)
+                {
                     PropertyChanging();
                     _commandText = value;
                 }
@@ -215,10 +211,6 @@ namespace System.Data.Odbc {
             }
         }
 
-        // This will establish a relationship between the command and the connection
-        [
-        DefaultValue(null),
-        ]
         new public OdbcConnection Connection {
             get {
                 return _connection;

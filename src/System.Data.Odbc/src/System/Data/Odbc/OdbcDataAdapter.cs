@@ -42,9 +42,6 @@ namespace System.Data.Odbc {
             GC.SuppressFinalize(this);
         }
 
-        [
-        DefaultValue(null),
-        ]
         new public OdbcCommand DeleteCommand {
             get { return _deleteCommand; }
             set { _deleteCommand = value; }
@@ -55,9 +52,6 @@ namespace System.Data.Odbc {
             set { _deleteCommand = (OdbcCommand)value; }
         }
 
-        [
-        DefaultValue(null),
-        ]
         new public OdbcCommand InsertCommand {
             get { return _insertCommand; }
             set { _insertCommand = value; }
@@ -68,9 +62,6 @@ namespace System.Data.Odbc {
             set { _insertCommand = (OdbcCommand)value; }
         }
 
-        [
-        DefaultValue(null),
-        ]
         new public OdbcCommand SelectCommand {
             get { return _selectCommand; }
             set { _selectCommand = value; }
@@ -81,9 +72,6 @@ namespace System.Data.Odbc {
             set { _selectCommand = (OdbcCommand)value; }
         }
 
-        [
-        DefaultValue(null),
-        ]
         new public OdbcCommand UpdateCommand {
             get { return _updateCommand; }
             set { _updateCommand = value; }

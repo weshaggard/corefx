@@ -54,9 +54,6 @@ namespace System.Data.Odbc {
             }
         }
 
-        [
-        DefaultValue(""),
-        ]
         override public string ConnectionString {
             get {
                 return ConnectionString_Get();

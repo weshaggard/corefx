@@ -104,10 +104,8 @@ namespace System.Data.Common
             }
         }
 
-        [BidMethod] // this method accepts BID format as an argument, this attribute allows FXCopBid rule to validate calls to it
-        static private void TraceException(
-                string trace,
-                [BidArgumentType(typeof(String))] Exception e)
+        // this method accepts BID format as an argument, this attribute allows FXCopBid rule to validate calls to it
+        static private void TraceException(string trace, Exception e)
         {
             Debug.Assert(null != e, "TraceException: null Exception");
             if (null != e)

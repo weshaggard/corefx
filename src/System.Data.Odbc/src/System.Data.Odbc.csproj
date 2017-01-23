@@ -16,7 +16,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Release|AnyCPU'" />
   <ItemGroup>
     <Compile Include="Common\System\Data\Bid.cs" />
-    <Compile Include="Common\System\Data\bidPrivateBase.cs" />
     <Compile Include="Common\System\Data\Common\AdapterUtil.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionOptions.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionPoolKey.cs" />
