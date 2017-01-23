@@ -28,11 +28,6 @@ using Res = System.SR;
 
 namespace System.Data.Odbc {
 
-    [
-    DefaultEvent("RecordsAffected"),
-    ToolboxItem(true),
-    Designer("Microsoft.VSDesigner.Data.VS.OdbcCommandDesigner, " + AssemblyRef.MicrosoftVSDesigner)
-    ]
     public sealed class OdbcCommand : DbCommand, ICloneable {
         private static int          _objectTypeCount; // Bid counter
         internal readonly int       ObjectID = System.Threading.Interlocked.Increment(ref _objectTypeCount);
@@ -150,11 +145,7 @@ namespace System.Data.Odbc {
         }
 
         [
-        ResCategoryAttribute(Res.DataCategory_Data),
         DefaultValue(""),
-        RefreshProperties(RefreshProperties.All), // MDAC 67707
-        ResDescriptionAttribute(Res.DbCommand_CommandText),
-        Editor("Microsoft.VSDesigner.Data.Odbc.Design.OdbcCommandTextEditor, " + AssemblyRef.MicrosoftVSDesigner, "System.Drawing.Design.UITypeEditor, " + AssemblyRef.SystemDrawing)
         ]
         override public string CommandText {
             get {
@@ -174,10 +165,6 @@ namespace System.Data.Odbc {
             }
         }
 
-        [
-        ResCategoryAttribute(Res.DataCategory_Data),
-        ResDescriptionAttribute(Res.DbCommand_CommandTimeout),
-        ]
         override public int CommandTimeout { // V1.2.3300, XXXCommand V1.0.5000
             get {
                 return _commandTimeout;
@@ -207,9 +194,6 @@ namespace System.Data.Odbc {
 
         [
         DefaultValue(System.Data.CommandType.Text),
-        RefreshProperties(RefreshProperties.All),
-        ResCategoryAttribute(Res.DataCategory_Data),
-        ResDescriptionAttribute(Res.DbCommand_CommandType),
         ]
         override public CommandType CommandType {
             get {
@@ -234,9 +218,6 @@ namespace System.Data.Odbc {
         // This will establish a relationship between the command and the connection
         [
         DefaultValue(null),
-        ResCategoryAttribute(Res.DataCategory_Behavior),
-        ResDescriptionAttribute(Res.DbCommand_Connection),
-        Editor("Microsoft.VSDesigner.Data.Design.DbConnectionEditor, " + AssemblyRef.MicrosoftVSDesigner, "System.Drawing.Design.UITypeEditor, " + AssemblyRef.SystemDrawing),
         ]
         new public OdbcConnection Connection {
             get {
@@ -305,8 +286,6 @@ namespace System.Data.Odbc {
 
         [
         DesignerSerializationVisibility(DesignerSerializationVisibility.Content),
-        ResCategoryAttribute(Res.DataCategory_Data),
-        ResDescriptionAttribute(Res.DbCommand_Parameters),
         ]
         new public OdbcParameterCollection Parameters {
             get {
@@ -320,7 +299,6 @@ namespace System.Data.Odbc {
         [
         Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.DbCommand_Transaction),
         ]
         new public OdbcTransaction Transaction {
             get {
@@ -339,8 +317,6 @@ namespace System.Data.Odbc {
 
         [
         DefaultValue(System.Data.UpdateRowSource.Both),
-        ResCategoryAttribute(Res.DataCategory_Update),
-        ResDescriptionAttribute(Res.DbCommand_UpdatedRowSource),
         ]
         override public UpdateRowSource UpdatedRowSource { // V1.2.3300, XXXCommand V1.0.5000
             get {

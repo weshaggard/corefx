@@ -26,7 +26,6 @@ using SysTx = System.Transactions;
 
 namespace System.Data.Odbc {
 
-    [DefaultEvent("InfoMessage")]
     public sealed partial class OdbcConnection : DbConnection, ICloneable {
         private int connectionTimeout = ADP.DefaultConnectionTimeout;
 
@@ -57,14 +56,6 @@ namespace System.Data.Odbc {
 
         [
         DefaultValue(""),
-        Editor("Microsoft.VSDesigner.Data.Odbc.Design.OdbcConnectionStringEditor, " + AssemblyRef.MicrosoftVSDesigner, "System.Drawing.Design.UITypeEditor, " + AssemblyRef.SystemDrawing),
-#pragma warning disable 618 // ignore obsolete warning about RecommendedAsConfigurable to use SettingsBindableAttribute
-        RecommendedAsConfigurable(true),
-#pragma warning restore 618
-        SettingsBindableAttribute(true),
-        RefreshProperties(RefreshProperties.All),
-        ResCategoryAttribute(Res.DataCategory_Data),
-        ResDescriptionAttribute(Res.OdbcConnection_ConnectionString),
         ]
         override public string ConnectionString {
             get {
@@ -78,8 +69,6 @@ namespace System.Data.Odbc {
         [
         DefaultValue(ADP.DefaultConnectionTimeout),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResCategoryAttribute(Res.DataCategory_Data),
-        ResDescriptionAttribute(Res.OdbcConnection_ConnectionTimeout),
         ]
         new public int ConnectionTimeout {
             get {
@@ -96,7 +85,6 @@ namespace System.Data.Odbc {
 
         [
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.OdbcConnection_Database),
         ]
         override public string Database {
             get {
@@ -115,7 +103,6 @@ namespace System.Data.Odbc {
         [
         Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.OdbcConnection_DataSource),
         ]
         override public string DataSource {
             get {
@@ -132,7 +119,6 @@ namespace System.Data.Odbc {
         [
         Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.OdbcConnection_ServerVersion),
         ]
         override public string ServerVersion {
             get {
@@ -143,7 +129,6 @@ namespace System.Data.Odbc {
         [
         Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.DbConnection_State),
         ]
         override public ConnectionState State {
             get {
@@ -192,7 +177,6 @@ namespace System.Data.Odbc {
         [
         Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-        ResDescriptionAttribute(Res.OdbcConnection_Driver),
         ]
         public string Driver {
             get {
@@ -228,10 +212,6 @@ namespace System.Data.Odbc {
             }
         }
 
-        [
-        ResCategoryAttribute(Res.DataCategory_InfoMessage),
-        ResDescriptionAttribute(Res.DbConnection_InfoMessage),
-        ]
         public event OdbcInfoMessageEventHandler InfoMessage {
             add {
                 infoMessageEventHandler += value;

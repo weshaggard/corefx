@@ -17,10 +17,6 @@ namespace System.Data.Odbc {
     using System.Diagnostics;
     using System.Runtime.InteropServices;
 
-    [
-    Editor("Microsoft.VSDesigner.Data.Design.DBParametersEditor, " + AssemblyRef.MicrosoftVSDesigner, "System.Drawing.Design.UITypeEditor, " + AssemblyRef.SystemDrawing),
-    ListBindable(false)
-    ]
     public sealed partial class OdbcParameterCollection : DbParameterCollection {
         private bool _rebindCollection;   // The collection needs to be (re)bound
 

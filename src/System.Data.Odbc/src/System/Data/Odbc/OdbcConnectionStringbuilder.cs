@@ -1,3 +1,5 @@
+// TODO[tinchou]: check OdbcConnectionStringBuilderConverter
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnectionStringBuilder.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -6,22 +8,20 @@
 // <owner current="true" primary="false">[....]</owner>
 //------------------------------------------------------------------------------
 
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Data.Common;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Runtime.Serialization;
-    using System.Security.Permissions;
-    using System.Text;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.Text;
 
 namespace System.Data.Odbc {
 
-    [DefaultProperty("Driver")]
-    [System.ComponentModel.TypeConverterAttribute(typeof(OdbcConnectionStringBuilder.OdbcConnectionStringBuilderConverter))]
     public sealed class OdbcConnectionStringBuilder : DbConnectionStringBuilder {
 
         private enum Keywords { // must maintain same ordering as _validKeywords array
@@ -103,9 +103,6 @@ namespace System.Data.Odbc {
         }
 
         [DisplayName(DbConnectionStringKeywords.Driver)]
-        [ResCategoryAttribute(Res.DataCategory_Source)]
-        [ResDescriptionAttribute(Res.DbConnectionString_Driver)]
-        [RefreshPropertiesAttribute(RefreshProperties.All)]
         public string Driver {
             get { return _driver; }
             set {
@@ -115,9 +112,6 @@ namespace System.Data.Odbc {
         }
 
         [DisplayName(DbConnectionStringKeywords.Dsn)]
-        [ResCategoryAttribute(Res.DataCategory_NamedConnectionString)]
-        [ResDescriptionAttribute(Res.DbConnectionString_DSN)]
-        [RefreshPropertiesAttribute(RefreshProperties.All)]
         public string Dsn {
             get { return _dsn; }
             set {
@@ -297,38 +291,38 @@ namespace System.Data.Odbc {
             return base.TryGetValue(keyword, out value);
         }
 
-        sealed internal class OdbcConnectionStringBuilderConverter : ExpandableObjectConverter {
+        //sealed internal class OdbcConnectionStringBuilderConverter : ExpandableObjectConverter {
 
-            // converter classes should have public ctor
-            public OdbcConnectionStringBuilderConverter() {
-            }
+        //    // converter classes should have public ctor
+        //    public OdbcConnectionStringBuilderConverter() {
+        //    }
 
-            override public bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
-                if (typeof(System.ComponentModel.Design.Serialization.InstanceDescriptor) == destinationType) {
-                    return true;
-                }
-                return base.CanConvertTo(context, destinationType);
-            }
+        //    override public bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+        //        if (typeof(System.ComponentModel.Design.Serialization.InstanceDescriptor) == destinationType) {
+        //            return true;
+        //        }
+        //        return base.CanConvertTo(context, destinationType);
+        //    }
 
-            override public object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if (destinationType == null) {
-                    throw ADP.ArgumentNull("destinationType");
-                }
-                if (typeof(System.ComponentModel.Design.Serialization.InstanceDescriptor) == destinationType) {
-                    OdbcConnectionStringBuilder obj = (value as OdbcConnectionStringBuilder);
-                    if (null != obj) {
-                        return ConvertToInstanceDescriptor(obj);
-                    }
-                }
-                return base.ConvertTo(context, culture, value, destinationType);
-            }
+        //    override public object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+        //        if (destinationType == null) {
+        //            throw ADP.ArgumentNull("destinationType");
+        //        }
+        //        if (typeof(System.ComponentModel.Design.Serialization.InstanceDescriptor) == destinationType) {
+        //            OdbcConnectionStringBuilder obj = (value as OdbcConnectionStringBuilder);
+        //            if (null != obj) {
+        //                return ConvertToInstanceDescriptor(obj);
+        //            }
+        //        }
+        //        return base.ConvertTo(context, culture, value, destinationType);
+        //    }
 
-            private System.ComponentModel.Design.Serialization.InstanceDescriptor ConvertToInstanceDescriptor(OdbcConnectionStringBuilder options) {
-                Type[] ctorParams = new Type[] { typeof(string) };
-                object[] ctorValues = new object[] { options.ConnectionString };
-                System.Reflection.ConstructorInfo ctor = typeof(OdbcConnectionStringBuilder).GetConstructor(ctorParams);
-                return new System.ComponentModel.Design.Serialization.InstanceDescriptor(ctor, ctorValues);
-            }
-        }
+        //    private System.ComponentModel.Design.Serialization.InstanceDescriptor ConvertToInstanceDescriptor(OdbcConnectionStringBuilder options) {
+        //        Type[] ctorParams = new Type[] { typeof(string) };
+        //        object[] ctorValues = new object[] { options.ConnectionString };
+        //        System.Reflection.ConstructorInfo ctor = typeof(OdbcConnectionStringBuilder).GetConstructor(ctorParams);
+        //        return new System.ComponentModel.Design.Serialization.InstanceDescriptor(ctor, ctorValues);
+        //    }
+        //}
     }
 }

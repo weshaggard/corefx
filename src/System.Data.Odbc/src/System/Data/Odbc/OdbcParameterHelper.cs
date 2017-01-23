@@ -60,11 +60,6 @@ namespace System.Data.Odbc
             }
         }
 
-        [
-        RefreshProperties(RefreshProperties.All),
-        System.Data.ResCategoryAttribute(Res.DataCategory_Data),
-        System.Data.ResDescriptionAttribute(Res.DbParameter_Direction),
-        ]
         override public ParameterDirection Direction
         { // V1.2.3300, XXXParameter V1.0.3300
             get
@@ -132,10 +127,6 @@ namespace System.Data.Odbc
         }
 #endif
 
-        [
-        System.Data.ResCategoryAttribute(Res.DataCategory_Data),
-        System.Data.ResDescriptionAttribute(Res.DbParameter_Size),
-        ]
         override public int Size
         { // V1.2.3300, XXXParameter V1.0.3300
             get
@@ -175,10 +166,6 @@ namespace System.Data.Odbc
             return (0 != _size);
         }
 
-        [
-        System.Data.ResCategoryAttribute(Res.DataCategory_Update),
-        System.Data.ResDescriptionAttribute(Res.DbParameter_SourceColumn),
-        ]
         override public string SourceColumn
         { // V1.2.3300, XXXParameter V1.0.3300
             get
@@ -204,10 +191,6 @@ namespace System.Data.Odbc
             }
         }
 
-        [
-        System.Data.ResCategoryAttribute(Res.DataCategory_Update),
-        System.Data.ResDescriptionAttribute(Res.DbParameter_SourceVersion),
-        ]
         override public DataRowVersion SourceVersion
         { // V1.2.3300, XXXParameter V1.0.3300
             get

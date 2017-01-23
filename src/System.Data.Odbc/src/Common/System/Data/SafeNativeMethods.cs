@@ -1,4 +1,6 @@
-﻿//------------------------------------------------------------------------------
+﻿// TODO[tinchou]: check unsafe methods
+
+//------------------------------------------------------------------------------
 // <copyright file="SafeNativeMethods.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -52,23 +54,23 @@ namespace System.Data.Common
         // The following casting operations require these three methods to be unsafe.  This is
         // a workaround for this issue to meet the M1 exit criteria.  We need to revisit this in M2.
 
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-        static internal unsafe IntPtr InterlockedExchangePointer(
-                IntPtr lpAddress,
-                IntPtr lpValue)
-        {
-            IntPtr previousPtr;
-            IntPtr actualPtr = *(IntPtr*)lpAddress.ToPointer();
+        //[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+        //static internal unsafe IntPtr InterlockedExchangePointer(
+        //        IntPtr lpAddress,
+        //        IntPtr lpValue)
+        //{
+        //    IntPtr previousPtr;
+        //    IntPtr actualPtr = *(IntPtr*)lpAddress.ToPointer();
 
-            do
-            {
-                previousPtr = actualPtr;
-                actualPtr = Interlocked.CompareExchange(ref *(IntPtr*)lpAddress.ToPointer(), lpValue, previousPtr);
-            }
-            while (actualPtr != previousPtr);
+        //    do
+        //    {
+        //        previousPtr = actualPtr;
+        //        actualPtr = Interlocked.CompareExchange(ref *(IntPtr*)lpAddress.ToPointer(), lpValue, previousPtr);
+        //    }
+        //    while (actualPtr != previousPtr);
 
-            return actualPtr;
-        }
+        //    return actualPtr;
+        //}
 
         // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/getcomputernameex.asp
         [DllImport(ExternDll.Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetComputerNameExW", SetLastError = true)]

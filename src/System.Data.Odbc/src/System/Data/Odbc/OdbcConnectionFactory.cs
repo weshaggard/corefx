@@ -1,3 +1,5 @@
+// TODO[tinchou]: check override methods
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnectionFactory.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -58,66 +60,66 @@ namespace System.Data.Odbc
         // SxS (VSDD 545786): metadata files are opened from <.NetRuntimeFolder>\CONFIG\<metadatafilename.xml>
         // this operation is safe in SxS because the file is opened in read-only mode and each NDP runtime accesses its own copy of the metadata
         // under the runtime folder.
-        [ResourceExposure(ResourceScope.None)]
-        [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-        override protected DbMetaDataFactory CreateMetaDataFactory(DbConnectionInternal internalConnection, out bool cacheMetaDataFactory){
+        //[ResourceExposure(ResourceScope.None)]
+        //[ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
+        //override protected DbMetaDataFactory CreateMetaDataFactory(DbConnectionInternal internalConnection, out bool cacheMetaDataFactory){
 
-            Debug.Assert (internalConnection != null,"internalConnection may not be null.");
-            cacheMetaDataFactory = false;
+        //    Debug.Assert (internalConnection != null,"internalConnection may not be null.");
+        //    cacheMetaDataFactory = false;
 
-            OdbcConnection odbcOuterConnection = ((OdbcConnectionOpen)internalConnection).OuterConnection;
-            Debug.Assert(odbcOuterConnection != null,"outer connection may not be null.");
+        //    OdbcConnection odbcOuterConnection = ((OdbcConnectionOpen)internalConnection).OuterConnection;
+        //    Debug.Assert(odbcOuterConnection != null,"outer connection may not be null.");
 
-            NameValueCollection settings = (NameValueCollection)PrivilegedConfigurationManager.GetSection("system.data.odbc");
-            Stream XMLStream =null;
+        //    NameValueCollection settings = (NameValueCollection)PrivilegedConfigurationManager.GetSection("system.data.odbc");
+        //    Stream XMLStream =null;
 
-            // get the DBMS Name
-            object driverName = null;
-            string stringValue = odbcOuterConnection.GetInfoStringUnhandled(ODBC32.SQL_INFO.DRIVER_NAME);
-            if (stringValue != null) {
-                driverName = stringValue;
-            }
+        //    // get the DBMS Name
+        //    object driverName = null;
+        //    string stringValue = odbcOuterConnection.GetInfoStringUnhandled(ODBC32.SQL_INFO.DRIVER_NAME);
+        //    if (stringValue != null) {
+        //        driverName = stringValue;
+        //    }
 
-            if (settings != null){
+        //    if (settings != null){
 
-                string [] values = null;
-                string metaDataXML = null;
-                // first try to get the provider specific xml
+        //        string [] values = null;
+        //        string metaDataXML = null;
+        //        // first try to get the provider specific xml
 
-                // if driver name is not supported we can't build the settings key needed to
-                // get the provider specific XML path
-                if (driverName != null){
-                    metaDataXML =  ((string)driverName) + _MetaData;
-                    values = settings.GetValues(metaDataXML);
-                }
+        //        // if driver name is not supported we can't build the settings key needed to
+        //        // get the provider specific XML path
+        //        if (driverName != null){
+        //            metaDataXML =  ((string)driverName) + _MetaData;
+        //            values = settings.GetValues(metaDataXML);
+        //        }
 
-                // if we did not find provider specific xml see if there is new default xml
-                if (values == null) {
-                    metaDataXML = _defaultMetaDataXml;
-                    values = settings.GetValues(metaDataXML);
-                }
+        //        // if we did not find provider specific xml see if there is new default xml
+        //        if (values == null) {
+        //            metaDataXML = _defaultMetaDataXml;
+        //            values = settings.GetValues(metaDataXML);
+        //        }
 
-                // If there is an XML file get it
-                if (values != null) {
-                    XMLStream = ADP.GetXmlStreamFromValues(values,metaDataXML);
-                }
-            }
+        //        // If there is an XML file get it
+        //        if (values != null) {
+        //            XMLStream = ADP.GetXmlStreamFromValues(values,metaDataXML);
+        //        }
+        //    }
 
-            // use the embedded xml if the user did not over ride it
-            if (XMLStream == null){
-                XMLStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("System.Data.Odbc.OdbcMetaData.xml");
-                cacheMetaDataFactory = true;
-            }
+        //    // use the embedded xml if the user did not over ride it
+        //    if (XMLStream == null){
+        //        XMLStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("System.Data.Odbc.OdbcMetaData.xml");
+        //        cacheMetaDataFactory = true;
+        //    }
            
-            Debug.Assert (XMLStream != null,"XMLstream may not be null.");
+        //    Debug.Assert (XMLStream != null,"XMLstream may not be null.");
 
-            String versionString = odbcOuterConnection.GetInfoStringUnhandled(ODBC32.SQL_INFO.DBMS_VER);
+        //    String versionString = odbcOuterConnection.GetInfoStringUnhandled(ODBC32.SQL_INFO.DBMS_VER);
 
-            return new OdbcMetaDataFactory (XMLStream,
-                                            versionString,
-                                            versionString,
-                                            odbcOuterConnection);
-        }
+        //    return new OdbcMetaDataFactory (XMLStream,
+        //                                    versionString,
+        //                                    versionString,
+        //                                    odbcOuterConnection);
+        //}
 
         override internal DbConnectionPoolGroup GetConnectionPoolGroup(DbConnection connection) {
             OdbcConnection c = (connection as OdbcConnection);
@@ -135,13 +137,13 @@ namespace System.Data.Odbc
             return null;
         }
 
-        override protected int GetObjectId(DbConnection connection) {
-            OdbcConnection c = (connection as OdbcConnection);
-            if (null != c) {
-                return c.ObjectID;
-            }
-            return 0;
-        }
+        //override protected int GetObjectId(DbConnection connection) {
+        //    OdbcConnection c = (connection as OdbcConnection);
+        //    if (null != c) {
+        //        return c.ObjectID;
+        //    }
+        //    return 0;
+        //}
 
         override internal void PermissionDemand(DbConnection outerConnection) {
             OdbcConnection c = (outerConnection as OdbcConnection);

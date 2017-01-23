@@ -1,3 +1,5 @@
+// TODO[tinchou]: check unsafe methods
+
 //------------------------------------------------------------------------------
 // <copyright file="DbBuffer.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -383,11 +385,11 @@ namespace System.Data.ProviderBase
             return value;
         }
 
-        internal unsafe Single ReadSingle(int offset)
-        {
-            Int32 value = ReadInt32(offset);
-            return *(Single*)&value;
-        }
+        //internal unsafe Single ReadSingle(int offset)
+        //{
+        //    Int32 value = ReadInt32(offset);
+        //    return *(Single*)&value;
+        //}
 
         override protected bool ReleaseHandle()
         {
@@ -655,10 +657,10 @@ namespace System.Data.ProviderBase
             }
         }
 
-        internal unsafe void WriteSingle(int offset, Single value)
-        {
-            WriteInt32(offset, *(Int32*)&value);
-        }
+        //internal unsafe void WriteSingle(int offset, Single value)
+        //{
+        //    WriteInt32(offset, *(Int32*)&value);
+        //}
 
         internal void ZeroMemory()
         {

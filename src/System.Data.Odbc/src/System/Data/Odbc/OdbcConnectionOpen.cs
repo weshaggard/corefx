@@ -1,3 +1,5 @@
+// TODO[tinchou]: check override methods and System.Transactions usage
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnectionOpen.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -11,7 +13,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.ProviderBase;
 using System.Threading;
-using SysTx = System.Transactions;
+//using SysTx = System.Transactions;
 
 namespace System.Data.Odbc {
     sealed internal class OdbcConnectionOpen : DbConnectionInternal {      
@@ -52,8 +54,14 @@ namespace System.Data.Odbc {
                 return OuterConnection.Open_GetServerVersion();
             }
         }
-        
-        override protected void Activate(SysTx.Transaction transaction) {
+
+        //override protected void Activate(SysTx.Transaction transaction)
+        //{
+        //    OdbcConnection.ExecutePermission.Demand();
+        //}
+
+        override protected void Activate()
+        {
             OdbcConnection.ExecutePermission.Demand();
         }
 
@@ -77,8 +85,8 @@ namespace System.Data.Odbc {
             NotifyWeakReference(OdbcReferenceCollection.Closing);
         }
           
-        override public void EnlistTransaction(SysTx.Transaction transaction) {
-            OuterConnection.Open_EnlistTransaction(transaction);
-        }
+        //override public void EnlistTransaction(SysTx.Transaction transaction) {
+        //    OuterConnection.Open_EnlistTransaction(transaction);
+        //}
     }
 }

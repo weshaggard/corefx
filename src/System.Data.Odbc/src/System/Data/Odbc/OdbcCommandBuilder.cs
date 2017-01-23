@@ -34,8 +34,6 @@ namespace System.Data.Odbc {
 
         [
         DefaultValue(null),
-        ResCategoryAttribute(Res.DataCategory_Update),
-        ResDescriptionAttribute(Res.OdbcCommandBuilder_DataAdapter), // MDAC 60524
         ]
         new public OdbcDataAdapter DataAdapter {
             get {

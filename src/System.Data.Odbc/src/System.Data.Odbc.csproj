@@ -15,8 +15,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Release|AnyCPU'" />
   <ItemGroup>
-    <Compile Include="Common\AssemblyRef.cs" />
-    <Compile Include="Common\Consts.cs" />
     <Compile Include="Common\System\Data\Bid.cs" />
     <Compile Include="Common\System\Data\bidPrivateBase.cs" />
     <Compile Include="Common\System\Data\Common\AdapterUtil.cs" />
@@ -57,10 +55,7 @@
     <Compile Include="Common\System\Data\ProviderBase\DbReferenceCollection.cs" />
     <Compile Include="Common\System\Data\Res.missing.cs" />
     <Compile Include="Common\System\Data\Res.cs" />
-    <Compile Include="Common\System\Data\ResDescriptionAttribute.cs" />
-    <Compile Include="Common\System\Data\ResCategoryAttribute.cs" />
     <Compile Include="Common\System\Data\SafeNativeMethods.cs" />
-    <Compile Include="Common\System\ExternDll.cs" />
     <Compile Include="Properties\SecurityTransparent.cs" />
     <Compile Include="System\Data\Odbc\DbDataRecord.cs" />
     <Compile Include="System\Data\Odbc\Odbc32.cs" />
@@ -131,7 +126,6 @@
     <Reference Include="System.Collections.Concurrent" />
     <Reference Include="System.Collections.Specialized" />
     <Reference Include="System.ComponentModel.Primitives" />
-    <Reference Include="System.ComponentModel.TypeConverter" />
     <Reference Include="System.Data.Common" />
     <Reference Include="System.Diagnostics.Contracts" />
     <Reference Include="System.Diagnostics.Debug" />
