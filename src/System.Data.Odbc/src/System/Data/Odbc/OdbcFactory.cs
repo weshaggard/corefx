@@ -1,3 +1,5 @@
+// TODO[tinchou]: check public override CodeAccessPermission CreatePermission(PermissionState state)
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcFactory.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -45,8 +47,8 @@ namespace System.Data.Odbc {
             return new OdbcParameter();
         }
 
-        public override CodeAccessPermission CreatePermission(PermissionState state) {
-            return new OdbcPermission(state);
-        }
+        //public override CodeAccessPermission CreatePermission(PermissionState state) {
+        //    return new OdbcPermission(state);
+        //}
     }
 }

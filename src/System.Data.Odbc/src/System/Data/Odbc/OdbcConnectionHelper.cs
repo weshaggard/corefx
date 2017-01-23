@@ -1,4 +1,6 @@
-﻿//------------------------------------------------------------------------------
+﻿// TODO[tinchou]: reference source as in https://github.com/dotnet/corefx/blob/bffef76f6af208e2042a2f27bc081ee908bb390b/src/System.Data.SqlClient/src/System/Data/SqlClient/SqlParameterCollectionHelper.cs
+
+//------------------------------------------------------------------------------
 // <copyright file="DbConnectionHelper.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>

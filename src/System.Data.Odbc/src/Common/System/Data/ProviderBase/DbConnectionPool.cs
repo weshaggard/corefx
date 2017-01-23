@@ -1,5 +1,3 @@
-// TODO[tinchou]: attribute https://github.com/dotnet/corefx/blob/master/src/System.Data.SqlClient/src/System/Data/ProviderBase/DbConnectionPool.cs
-
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
@@ -328,7 +326,7 @@ namespace System.Data.ProviderBase
             // new stack to old stack.
             if (_waitHandles.PoolSemaphore.WaitOne(0))
             {
-                for (;;)
+                for (; ;)
                 {
                     DbConnectionInternal obj;
 

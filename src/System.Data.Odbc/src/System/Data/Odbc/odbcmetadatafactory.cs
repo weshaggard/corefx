@@ -1,3 +1,5 @@
+// TODO[tinchou]: check protected override DataTable PrepareCollection(String collectionName, String[] restrictions, DbConnection connection)
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcMetaDataFactory.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.

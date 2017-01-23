@@ -1,132 +1,85 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="DbConnectionFactory.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+
+
 //------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.Data.ProviderBase
 {
-
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Data.Common;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     internal abstract class DbConnectionFactory
     {
         private Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> _connectionPoolGroups;
         private readonly List<DbConnectionPool> _poolsToRelease;
         private readonly List<DbConnectionPoolGroup> _poolGroupsToRelease;
-        private readonly DbConnectionPoolCounters _performanceCounters;
         private readonly Timer _pruningTimer;
 
         private const int PruningDueTime = 4 * 60 * 1000;           // 4 minutes
         private const int PruningPeriod = 30 * 1000;           // thirty seconds
 
-        private static int _objectTypeCount; // Bid counter
-        internal readonly int _objectID = System.Threading.Interlocked.Increment(ref _objectTypeCount);
 
         // s_pendingOpenNonPooled is an array of tasks used to throttle creation of non-pooled connections to 
         // a maximum of Environment.ProcessorCount at a time.
-        static int s_pendingOpenNonPooledNext = 0;
-        static Task<DbConnectionInternal>[] s_pendingOpenNonPooled = new Task<DbConnectionInternal>[Environment.ProcessorCount];
-        static Task<DbConnectionInternal> s_completedTask;
+        private static uint s_pendingOpenNonPooledNext = 0;
+        private static Task<DbConnectionInternal>[] s_pendingOpenNonPooled = new Task<DbConnectionInternal>[Environment.ProcessorCount];
+        private static Task<DbConnectionInternal> s_completedTask;
 
-        protected DbConnectionFactory() : this(DbConnectionPoolCountersNoCounters.SingletonInstance) { }
-
-        protected DbConnectionFactory(DbConnectionPoolCounters performanceCounters)
+        protected DbConnectionFactory()
         {
-            _performanceCounters = performanceCounters;
             _connectionPoolGroups = new Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup>();
             _poolsToRelease = new List<DbConnectionPool>();
             _poolGroupsToRelease = new List<DbConnectionPoolGroup>();
             _pruningTimer = CreatePruningTimer();
         }
 
-        internal DbConnectionPoolCounters PerformanceCounters
-        {
-            get { return _performanceCounters; }
-        }
 
         abstract public DbProviderFactory ProviderFactory
         {
             get;
         }
 
-        internal int ObjectID
-        {
-            get
-            {
-                return _objectID;
-            }
-        }
 
         public void ClearAllPools()
         {
-            IntPtr hscp;
-            Bid.ScopeEnter(out hscp, "<prov.DbConnectionFactory.ClearAllPools|API> ");
-            try
+            Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> connectionPoolGroups = _connectionPoolGroups;
+            foreach (KeyValuePair<DbConnectionPoolKey, DbConnectionPoolGroup> entry in connectionPoolGroups)
             {
-                Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> connectionPoolGroups = _connectionPoolGroups;
-                foreach (KeyValuePair<DbConnectionPoolKey, DbConnectionPoolGroup> entry in connectionPoolGroups)
-                {
-                    DbConnectionPoolGroup poolGroup = entry.Value;
-                    if (null != poolGroup)
-                    {
-                        poolGroup.Clear();
-                    }
-                }
-            }
-            finally
-            {
-                Bid.ScopeLeave(ref hscp);
-            }
-        }
-
-        public void ClearPool(DbConnection connection)
-        {
-            ADP.CheckArgumentNull(connection, "connection");
-
-            IntPtr hscp;
-            Bid.ScopeEnter(out hscp, "<prov.DbConnectionFactory.ClearPool|API> %d#", GetObjectId(connection));
-            try
-            {
-                DbConnectionPoolGroup poolGroup = GetConnectionPoolGroup(connection);
+                DbConnectionPoolGroup poolGroup = entry.Value;
                 if (null != poolGroup)
                 {
                     poolGroup.Clear();
                 }
             }
-            finally
+        }
+
+        public void ClearPool(DbConnection connection)
+        {
+            ADP.CheckArgumentNull(connection, nameof(connection));
+
+            DbConnectionPoolGroup poolGroup = GetConnectionPoolGroup(connection);
+            if (null != poolGroup)
             {
-                Bid.ScopeLeave(ref hscp);
+                poolGroup.Clear();
             }
         }
 
         public void ClearPool(DbConnectionPoolKey key)
         {
             Debug.Assert(key != null, "key cannot be null");
-            ADP.CheckArgumentNull(key.ConnectionString, "key.ConnectionString");
+            ADP.CheckArgumentNull(key.ConnectionString, nameof(key) + "." + nameof(key.ConnectionString));
 
-            IntPtr hscp;
-            Bid.ScopeEnter(out hscp, "<prov.DbConnectionFactory.ClearPool|API> connectionString");
-            try
+            DbConnectionPoolGroup poolGroup;
+            Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> connectionPoolGroups = _connectionPoolGroups;
+            if (connectionPoolGroups.TryGetValue(key, out poolGroup))
             {
-                DbConnectionPoolGroup poolGroup;
-                Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> connectionPoolGroups = _connectionPoolGroups;
-                if (connectionPoolGroups.TryGetValue(key, out poolGroup))
-                {
-                    poolGroup.Clear();
-                }
-            }
-            finally
-            {
-                Bid.ScopeLeave(ref hscp);
+                poolGroup.Clear();
             }
         }
 
@@ -135,13 +88,6 @@ namespace System.Data.ProviderBase
             return null;
         }
 
-        virtual protected DbMetaDataFactory CreateMetaDataFactory(DbConnectionInternal internalConnection, out bool cacheMetaDataFactory)
-        {
-            // providers that support GetSchema must override this with a method that creates a meta data
-            // factory appropriate for them.
-            cacheMetaDataFactory = false;
-            throw ADP.NotSupported();
-        }
 
         internal DbConnectionInternal CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup, DbConnectionOptions userOptions)
         {
@@ -155,10 +101,8 @@ namespace System.Data.ProviderBase
             DbConnectionInternal newConnection = CreateConnection(connectionOptions, poolKey, poolGroupProviderInfo, null, owningConnection, userOptions);
             if (null != newConnection)
             {
-                PerformanceCounters.HardConnectsPerSecond.Increment();
-                newConnection.MakeNonPooledObject(owningConnection, PerformanceCounters);
+                newConnection.MakeNonPooledObject(owningConnection);
             }
-            Bid.Trace("<prov.DbConnectionFactory.CreateNonPooledConnection|RES|CPOOL> %d#, Non-pooled database connection created.\n", ObjectID);
             return newConnection;
         }
 
@@ -170,10 +114,8 @@ namespace System.Data.ProviderBase
             DbConnectionInternal newConnection = CreateConnection(options, poolKey, poolGroupProviderInfo, pool, owningObject, userOptions);
             if (null != newConnection)
             {
-                PerformanceCounters.HardConnectsPerSecond.Increment();
                 newConnection.MakePooledConnection(pool);
             }
-            Bid.Trace("<prov.DbConnectionFactory.CreatePooledConnection|RES|CPOOL> %d#, Pooled database connection created.\n", ObjectID);
             return newConnection;
         }
 
@@ -191,7 +133,7 @@ namespace System.Data.ProviderBase
         protected DbConnectionOptions FindConnectionOptions(DbConnectionPoolKey key)
         {
             Debug.Assert(key != null, "key cannot be null");
-            if (!ADP.IsEmpty(key.ConnectionString))
+            if (!string.IsNullOrEmpty(key.ConnectionString))
             {
                 DbConnectionPoolGroup connectionPoolGroup;
                 Dictionary<DbConnectionPoolKey, DbConnectionPoolGroup> connectionPoolGroups = _connectionPoolGroups;
@@ -203,16 +145,10 @@ namespace System.Data.ProviderBase
             return null;
         }
 
-        // GetCompletedTask must be called from within s_pendingOpenPooled lock
-        static Task<DbConnectionInternal> GetCompletedTask()
+        private static Task<DbConnectionInternal> GetCompletedTask()
         {
-            if (s_completedTask == null)
-            {
-                TaskCompletionSource<DbConnectionInternal> source = new TaskCompletionSource<DbConnectionInternal>();
-                source.SetResult(null);
-                s_completedTask = source.Task;
-            }
-            return s_completedTask;
+            Debug.Assert(Monitor.IsEntered(s_pendingOpenNonPooled), $"Expected {nameof(s_pendingOpenNonPooled)} lock to be held.");
+            return s_completedTask ?? (s_completedTask = Task.FromResult<DbConnectionInternal>(null));
         }
 
         internal bool TryGetConnection(DbConnection owningConnection, TaskCompletionSource<DbConnectionInternal> retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, out DbConnectionInternal connection)
@@ -223,14 +159,13 @@ namespace System.Data.ProviderBase
             DbConnectionPool connectionPool;
             connection = null;
 
-            // SQLBU 431251: 
             //  Work around race condition with clearing the pool between GetConnectionPool obtaining pool 
             //  and GetConnection on the pool checking the pool state.  Clearing the pool in this window
             //  will switch the pool into the ShuttingDown state, and GetConnection will return null.
             //  There is probably a better solution involving locking the pool/group, but that entails a major
-            //  re-design of the connection pooling synchronization, so is post-poned for now.
+            //  re-design of the connection pooling synchronization, so is postponed for now.
 
-            // VSDD 674236: use retriesLeft to prevent CPU spikes with incremental sleep
+            // Use retriesLeft to prevent CPU spikes with incremental sleep
             // start with one msec, double the time every retry
             // max time is: 1 + 2 + 4 + ... + 2^(retries-1) == 2^retries -1 == 1023ms (for 10 retries)
             int retriesLeft = 10;
@@ -254,7 +189,6 @@ namespace System.Data.ProviderBase
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         lock (s_pendingOpenNonPooled)
                         {
-
                             // look for an available task slot (completed or empty)
                             int idx;
                             for (idx = 0; idx < s_pendingOpenNonPooled.Length; idx++)
@@ -271,34 +205,27 @@ namespace System.Data.ProviderBase
                                 }
                             }
 
-                            // if didn't find one, pick the next one in round-robbin fashion
+                            // if didn't find one, pick the next one in round-robin fashion
                             if (idx == s_pendingOpenNonPooled.Length)
                             {
-                                idx = s_pendingOpenNonPooledNext++ % s_pendingOpenNonPooled.Length;
+                                idx = (int)(s_pendingOpenNonPooledNext % s_pendingOpenNonPooled.Length);
+                                unchecked
+                                {
+                                    s_pendingOpenNonPooledNext++;
+                                }
                             }
 
                             // now that we have an antecedent task, schedule our work when it is completed.
-                            // If it is a new slot or a compelted task, this continuation will start right away.
-                            // 
-
-
-                            newTask = s_pendingOpenNonPooled[idx].ContinueWith((_) => {
-                                Transactions.Transaction originalTransaction = ADP.GetCurrentTransaction();
-                                try
+                            // If it is a new slot or a completed task, this continuation will start right away.
+                            newTask = s_pendingOpenNonPooled[idx].ContinueWith((_) =>
+                            {
+                                var newConnection = CreateNonPooledConnection(owningConnection, poolGroup, userOptions);
+                                if ((oldConnection != null) && (oldConnection.State == ConnectionState.Open))
                                 {
-                                    ADP.SetCurrentTransaction(retry.Task.AsyncState as Transactions.Transaction);
-                                    var newConnection = CreateNonPooledConnection(owningConnection, poolGroup, userOptions);
-                                    if ((oldConnection != null) && (oldConnection.State == ConnectionState.Open))
-                                    {
-                                        oldConnection.PrepareForReplaceConnection();
-                                        oldConnection.Dispose();
-                                    }
-                                    return newConnection;
+                                    oldConnection.PrepareForReplaceConnection();
+                                    oldConnection.Dispose();
                                 }
-                                finally
-                                {
-                                    ADP.SetCurrentTransaction(originalTransaction);
-                                }
+                                return newConnection;
                             }, cancellationTokenSource.Token, TaskContinuationOptions.LongRunning, TaskScheduler.Default);
 
                             // Place this new task in the slot so any future work will be queued behind it
@@ -313,7 +240,8 @@ namespace System.Data.ProviderBase
                         }
 
                         // once the task is done, propagate the final results to the original caller
-                        newTask.ContinueWith((task) => {
+                        newTask.ContinueWith((task) =>
+                        {
                             cancellationTokenSource.Dispose();
                             if (task.IsCanceled)
                             {
@@ -325,11 +253,7 @@ namespace System.Data.ProviderBase
                             }
                             else
                             {
-                                if (retry.TrySetResult(task.Result))
-                                {
-                                    PerformanceCounters.NumberOfNonPooledConnections.Increment();
-                                }
-                                else
+                                if (!retry.TrySetResult(task.Result))
                                 {
                                     // The outer TaskCompletionSource was already completed
                                     // Which means that we don't know if someone has messed with the outer connection in the middle of creation
@@ -344,11 +268,10 @@ namespace System.Data.ProviderBase
                     }
 
                     connection = CreateNonPooledConnection(owningConnection, poolGroup, userOptions);
-                    PerformanceCounters.NumberOfNonPooledConnections.Increment();
                 }
                 else
                 {
-                    if (owningConnection.ForceNewConnection)
+                    if (((SqlClient.SqlConnection)owningConnection).ForceNewConnection)
                     {
                         Debug.Assert(!(oldConnection is DbConnectionClosed), "Force new connection, but there is no old connection");
                         connection = connectionPool.ReplaceConnection(owningConnection, userOptions, oldConnection);
@@ -367,7 +290,6 @@ namespace System.Data.ProviderBase
                         if (connectionPool.IsRunning)
                         {
                             // If GetConnection failed while the pool is running, the pool timeout occurred.
-                            Bid.Trace("<prov.DbConnectionFactory.GetConnection|RES|CPOOL> %d#, GetConnection failed because a pool timeout occurred.\n", ObjectID);
                             throw ADP.PooledOpenTimeout();
                         }
                         else
@@ -385,7 +307,6 @@ namespace System.Data.ProviderBase
             if (connection == null)
             {
                 // exhausted all retries or timed out - give up
-                Bid.Trace("<prov.DbConnectionFactory.GetConnection|RES|CPOOL> %d#, GetConnection failed because a pool timeout occurred and all retries were exhausted.\n", ObjectID);
                 throw ADP.PooledOpenTimeout();
             }
 
@@ -410,8 +331,6 @@ namespace System.Data.ProviderBase
             // however, don't rebuild connectionOptions if no pooling is involved - let new connections do that work
             if (connectionPoolGroup.IsDisabled && (null != connectionPoolGroup.PoolGroupOptions))
             {
-                Bid.Trace("<prov.DbConnectionFactory.GetConnectionPool|RES|INFO|CPOOL> %d#, DisabledPoolGroup=%d#\n", ObjectID, connectionPoolGroup.ObjectID);
-
                 // reusing existing pool option in case user originally used SetConnectionPoolOptions
                 DbConnectionPoolGroupOptions poolOptions = connectionPoolGroup.PoolGroupOptions;
 
@@ -429,7 +348,7 @@ namespace System.Data.ProviderBase
 
         internal DbConnectionPoolGroup GetConnectionPoolGroup(DbConnectionPoolKey key, DbConnectionPoolGroupOptions poolOptions, ref DbConnectionOptions userConnectionOptions)
         {
-            if (ADP.IsEmpty(key.ConnectionString))
+            if (string.IsNullOrEmpty(key.ConnectionString))
             {
                 return (DbConnectionPoolGroup)null;
             }
@@ -448,25 +367,13 @@ namespace System.Data.ProviderBase
                     throw ADP.InternalConnectionError(ADP.ConnectionError.ConnectionOptionsMissing);
                 }
 
-                string expandedConnectionString = key.ConnectionString;
                 if (null == userConnectionOptions)
                 { // we only allow one expansion on the connection string
-
                     userConnectionOptions = connectionOptions;
-                    expandedConnectionString = connectionOptions.Expand();
-
-                    // if the expanded string is same instance (default implementation), the use the already created options
-                    if ((object)expandedConnectionString != (object)key.ConnectionString)
-                    {
-                        // 
-                        DbConnectionPoolKey newKey = (DbConnectionPoolKey)((ICloneable)key).Clone();
-                        newKey.ConnectionString = expandedConnectionString;
-                        return GetConnectionPoolGroup(newKey, null, ref userConnectionOptions);
-                    }
                 }
 
-                // We don't support connection pooling on Win9x; it lacks too many of the APIs we require.
-                if ((null == poolOptions) && ADP.IsWindowsNT)
+                // We don't support connection pooling on Win9x
+                if (null == poolOptions)
                 {
                     if (null != connectionPoolGroup)
                     {
@@ -498,7 +405,6 @@ namespace System.Data.ProviderBase
 
                         // lock prevents race condition with PruneConnectionPoolGroups
                         newConnectionPoolGroups.Add(key, newConnectionPoolGroup);
-                        PerformanceCounters.NumberOfActiveConnectionPoolGroups.Increment();
                         connectionPoolGroup = newConnectionPoolGroup;
                         _connectionPoolGroups = newConnectionPoolGroups;
                     }
@@ -517,36 +423,9 @@ namespace System.Data.ProviderBase
             return connectionPoolGroup;
         }
 
-        internal DbMetaDataFactory GetMetaDataFactory(DbConnectionPoolGroup connectionPoolGroup, DbConnectionInternal internalConnection)
-        {
-            Debug.Assert(connectionPoolGroup != null, "connectionPoolGroup may not be null.");
-
-            // get the matadatafactory from the pool entry. If it does not already have one
-            // create one and save it on the pool entry
-            DbMetaDataFactory metaDataFactory = connectionPoolGroup.MetaDataFactory;
-
-            // consider serializing this so we don't construct multiple metadata factories
-            // if two threads happen to hit this at the same time.  One will be GC'd
-            if (metaDataFactory == null)
-            {
-                bool allowCache = false;
-                metaDataFactory = CreateMetaDataFactory(internalConnection, out allowCache);
-                if (allowCache)
-                {
-                    connectionPoolGroup.MetaDataFactory = metaDataFactory;
-                }
-            }
-            return metaDataFactory;
-        }
 
         private void PruneConnectionPoolGroups(object state)
         {
-            // when debugging this method, expect multiple threads at the same time
-            if (Bid.AdvancedOn)
-            {
-                Bid.Trace("<prov.DbConnectionFactory.PruneConnectionPoolGroups|RES|INFO|CPOOL> %d#\n", ObjectID);
-            }
-
             // First, walk the pool release list and attempt to clear each
             // pool, when the pool is finally empty, we dispose of it.  If the
             // pool isn't empty, it's because there are active connections or
@@ -565,11 +444,6 @@ namespace System.Data.ProviderBase
                             if (0 == pool.Count)
                             {
                                 _poolsToRelease.Remove(pool);
-                                if (Bid.AdvancedOn)
-                                {
-                                    Bid.Trace("<prov.DbConnectionFactory.PruneConnectionPoolGroups|RES|INFO|CPOOL> %d#, ReleasePool=%d#\n", ObjectID, pool.ObjectID);
-                                }
-                                PerformanceCounters.NumberOfInactiveConnectionPools.Decrement();
                             }
                         }
                     }
@@ -593,11 +467,6 @@ namespace System.Data.ProviderBase
                             if (0 == poolsLeft)
                             {
                                 _poolGroupsToRelease.Remove(poolGroup);
-                                if (Bid.AdvancedOn)
-                                {
-                                    Bid.Trace("<prov.DbConnectionFactory.PruneConnectionPoolGroups|RES|INFO|CPOOL> %d#, ReleasePoolGroup=%d#\n", ObjectID, poolGroup.ObjectID);
-                                }
-                                PerformanceCounters.NumberOfInactiveConnectionPoolGroups.Decrement();
                             }
                         }
                     }
@@ -623,7 +492,6 @@ namespace System.Data.ProviderBase
                         // otherwise process entry which may move it from active to idle
                         if (entry.Value.Prune())
                         { // may add entries to _poolsToRelease
-                            PerformanceCounters.NumberOfActiveConnectionPoolGroups.Decrement();
                             QueuePoolGroupForRelease(entry.Value);
                         }
                         else
@@ -656,19 +524,16 @@ namespace System.Data.ProviderBase
                 }
                 _poolsToRelease.Add(pool);
             }
-            PerformanceCounters.NumberOfInactiveConnectionPools.Increment();
         }
 
         internal void QueuePoolGroupForRelease(DbConnectionPoolGroup poolGroup)
         {
             Debug.Assert(null != poolGroup, "null poolGroup?");
-            Bid.Trace("<prov.DbConnectionFactory.QueuePoolGroupForRelease|RES|INFO|CPOOL> %d#, poolGroup=%d#\n", ObjectID, poolGroup.ObjectID);
 
             lock (_poolGroupsToRelease)
             {
                 _poolGroupsToRelease.Add(poolGroup);
             }
-            PerformanceCounters.NumberOfInactiveConnectionPoolGroups.Increment();
         }
 
         virtual protected DbConnectionInternal CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
@@ -686,7 +551,6 @@ namespace System.Data.ProviderBase
 
         abstract internal DbConnectionInternal GetInnerConnection(DbConnection connection);
 
-        abstract protected int GetObjectId(DbConnection connection);
 
         abstract internal void PermissionDemand(DbConnection outerConnection);
 

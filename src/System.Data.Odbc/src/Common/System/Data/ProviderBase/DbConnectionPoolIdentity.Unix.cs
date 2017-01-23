@@ -3,26 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 
-
 //------------------------------------------------------------------------------
-
 
 namespace System.Data.ProviderBase
 {
-    internal class DbConnectionPoolGroupProviderInfo
+    partial class DbConnectionPoolIdentity
     {
-        private DbConnectionPoolGroup _poolGroup;
-
-        internal DbConnectionPoolGroup PoolGroup
+        internal static DbConnectionPoolIdentity GetCurrent()
         {
-            get
-            {
-                return _poolGroup;
-            }
-            set
-            {
-                _poolGroup = value;
-            }
+            throw new PlatformNotSupportedException();
         }
     }
 }
+

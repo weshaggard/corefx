@@ -1,5 +1,5 @@
 // TODO[tinchou]: find missing partial for OdbcConnection containing InnerConnection and others
-
+// TODO[tinchou]: Check System.EnterpriseServices
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnection.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -344,9 +344,9 @@ namespace System.Data.Odbc {
         private void DisposeMe(bool disposing) { // MDAC 65459
         }
 
-        public void EnlistDistributedTransaction(System.EnterpriseServices.ITransaction transaction) {
-            EnlistDistributedTransactionHelper(transaction);
-        }        
+        //public void EnlistDistributedTransaction(System.EnterpriseServices.ITransaction transaction) {
+        //    EnlistDistributedTransactionHelper(transaction);
+        //}        
         
         internal string GetConnectAttrString(ODBC32.SQL_ATTR attribute) {
             string value = "";
