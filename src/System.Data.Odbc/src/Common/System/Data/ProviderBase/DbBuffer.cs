@@ -1,4 +1,5 @@
 // TODO[tinchou]: check unsafe methods
+// TODO[tinchou]: check ReleaseHandle method
 
 //------------------------------------------------------------------------------
 // <copyright file="DbBuffer.cs" company="Microsoft">
