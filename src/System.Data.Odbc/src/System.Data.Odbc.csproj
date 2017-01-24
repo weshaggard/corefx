@@ -16,7 +16,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard1.0-Release|AnyCPU'" />
   <ItemGroup Condition="'$(IsPartialFacadeAssembly)' != 'true'">
-    <Compile Include="Common\System\Data\Bid.cs" />
     <Compile Include="Common\System\Data\Common\AdapterUtil.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionOptions.cs" />
     <Compile Include="Common\System\Data\Common\DbConnectionPoolKey.cs" />
@@ -157,7 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\System\Data\Common\MultipartIdentifier.cs" />
+    <Compile Include="Common\System\Data\Common\ReadOnlyCollection.cs" />
     <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.cs" />
+    <Compile Include="Common\System\HResults.cs" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
   <Import Project=".\GenerateThisAssemblyCs.targets" Condition="'$(IsPartialFacadeAssembly)' != 'true'" />

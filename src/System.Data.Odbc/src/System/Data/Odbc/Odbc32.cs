@@ -105,7 +105,6 @@ namespace System.Data.Odbc {
         internal const string Pwd = "pwd";
 
         static internal void TraceODBC(int level, string method, ODBC32.RetCode retcode) {
-            Bid.TraceSqlReturn("<odbc|API|ODBC|RET> %08X{SQLRETURN}, method=%ls\n", retcode, method);
         }
 
         internal static short ShortStringLength(string inputString) {

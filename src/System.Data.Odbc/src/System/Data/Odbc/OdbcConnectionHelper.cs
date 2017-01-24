@@ -62,6 +62,13 @@ namespace System.Data.Odbc
             return ((null != connectionOptions) ? connectionOptions.UsersConnectionString(hidePassword) : "");
         }
 
+        private void ConnectionString_Set(string value)
+        {
+            DbConnectionPoolKey key = new DbConnectionPoolKey(value);
+
+            ConnectionString_Set(key);
+        }
+
         private void ConnectionString_Set(DbConnectionPoolKey key)
         {
             DbConnectionOptions connectionOptions = null;

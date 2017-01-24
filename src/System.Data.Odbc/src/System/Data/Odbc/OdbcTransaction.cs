@@ -19,8 +19,6 @@ namespace System.Data.Odbc
         private OdbcConnectionHandle _handle;
 
         internal OdbcTransaction(OdbcConnection connection, IsolationLevel isolevel, OdbcConnectionHandle handle) {
-            OdbcConnection.VerifyExecutePermission();
-            
             _connection = connection;
             _isolevel   = isolevel;
             _handle = handle;
@@ -76,8 +74,6 @@ namespace System.Data.Odbc
         }
 
         override public void Commit() {
-            OdbcConnection.ExecutePermission.Demand(); // MDAC 81476
-
             OdbcConnection connection = _connection;
             if (null == connection) {
                 throw ADP.TransactionZombied(this);

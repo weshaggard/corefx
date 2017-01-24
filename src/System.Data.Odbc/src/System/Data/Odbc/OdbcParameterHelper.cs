@@ -177,7 +177,7 @@ namespace System.Data.Odbc
         {
             if (value is Decimal)
             {
-                return ((System.Data.OdbcTypes.OdbcDecimal)(Decimal)value).Precision;
+                return ((System.Data.SqlTypes.SqlDecimal)(Decimal)value).Precision;
             }
             return 0;
         }

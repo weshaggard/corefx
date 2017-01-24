@@ -1,3 +1,5 @@
+// TODO[tinchou]: reenable ADP.CheckVersionMDAC
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcEnvironment.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -22,7 +24,7 @@ namespace System.Data.Odbc {
         static internal OdbcEnvironmentHandle GetGlobalEnvironmentHandle() {
             OdbcEnvironmentHandle globalEnvironmentHandle = _globalEnvironmentHandle as OdbcEnvironmentHandle;
             if(null == globalEnvironmentHandle) {
-                ADP.CheckVersionMDAC(true);
+                //ADP.CheckVersionMDAC(true);
                 
                 lock(_globalEnvironmentHandleLock) {
                     globalEnvironmentHandle = _globalEnvironmentHandle as OdbcEnvironmentHandle;

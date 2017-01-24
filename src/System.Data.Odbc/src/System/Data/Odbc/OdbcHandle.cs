@@ -76,7 +76,6 @@ namespace System.Data.Odbc {
                     }
                 }
             }
-            Bid.TraceSqlReturn("<odbc.SQLAllocHandle|API|ODBC|RET> %08X{SQLRETURN}\n", retcode);
 
             if((ADP.PtrZero == base.handle) || (ODBC32.RetCode.SUCCESS != retcode)) {
                 // 
@@ -144,7 +143,6 @@ namespace System.Data.Odbc {
                 case ODBC32.SQL_HANDLE.ENV:
                 case ODBC32.SQL_HANDLE.STMT:
                     ODBC32.RetCode retcode = UnsafeNativeMethods.SQLFreeHandle(handleType, handle);
-                    Bid.TraceSqlReturn("<odbc.SQLFreeHandle|API|ODBC|RET> %08X{SQLRETURN}\n", retcode);
                     break;
 
                 case ODBC32.SQL_HANDLE.DESC:

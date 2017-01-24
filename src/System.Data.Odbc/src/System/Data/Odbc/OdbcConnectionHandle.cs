@@ -1,5 +1,4 @@
 // TODO[tinchou]: check whether we should remove tracing
-// TODO[tinchou]: check Bid.TraceSqlReturn
 
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnectionHandle.cs" company="Microsoft">
@@ -171,13 +170,11 @@ namespace System.Data.Odbc {
                     if((ODBC32.RetCode.SUCCESS == retcode) || (ODBC32.RetCode.SUCCESS_WITH_INFO == retcode)) {
                         _handleState = HandleState.Transacted;
                     }
-                    //Bid.TraceSqlReturn("<odbc.SQLEndTran|API|ODBC|RET> %08X{SQLRETURN}\n", retcode);
                 }
 
                 if (HandleState.Transacted == _handleState) { // AutoCommitOn
                     retcode = UnsafeNativeMethods.SQLSetConnectAttrW(handle, ODBC32.SQL_ATTR.AUTOCOMMIT, ODBC32.SQL_AUTOCOMMIT_ON, (Int32)ODBC32.SQL_IS.UINTEGER);
                     _handleState = HandleState.Connected;
-                    //Bid.TraceSqlReturn("<odbc.SQLSetConnectAttr|API|ODBC|RET> %08X{SQLRETURN}\n", retcode);
                 }
             }
             //Overactive assert which fires if handle was allocated - but failed to connect to the server
@@ -217,7 +214,6 @@ namespace System.Data.Odbc {
             if ((HandleState.Connected == _handleState) || (HandleState.TransactionInProgress == _handleState)) {
                 retcode = UnsafeNativeMethods.SQLDisconnect(handle);
                 _handleState = HandleState.Allocated;
-                //Bid.TraceSqlReturn("<odbc.SQLDisconnect|API|ODBC|RET> %08X{SQLRETURN}\n", retcode);
             }
             Debug.Assert(HandleState.Allocated == _handleState, "not expected HandleState.Allocated");
             return base.ReleaseHandle();

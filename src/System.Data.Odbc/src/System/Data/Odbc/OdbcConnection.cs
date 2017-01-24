@@ -1,6 +1,7 @@
 // TODO[tinchou]: find missing partial for OdbcConnection containing InnerConnection and others
 // TODO[tinchou]: Check System.EnterpriseServices
 // TODO[tinchou]: Check EnlistedTransaction
+// TODO[tinchou]: SqlConnection removed the ICloneable implementation, and so did we
 
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnection.cs" company="Microsoft">
@@ -28,7 +29,7 @@ using SysTx = System.Transactions;
 
 namespace System.Data.Odbc {
 
-    public sealed partial class OdbcConnection : DbConnection, ICloneable {
+    public sealed partial class OdbcConnection : DbConnection {
         private int connectionTimeout = ADP.DefaultConnectionTimeout;
 
         private OdbcInfoMessageEventHandler infoMessageEventHandler;
@@ -39,11 +40,6 @@ namespace System.Data.Odbc {
 
         public OdbcConnection(string connectionString) : this() {
             ConnectionString = connectionString;
-        }
-
-        private OdbcConnection(OdbcConnection connection) : this() { // Clone
-            CopyFrom(connection);
-            connectionTimeout = connection.connectionTimeout;
         }
 
         internal OdbcConnectionHandle ConnectionHandle {
@@ -267,12 +263,6 @@ namespace System.Data.Odbc {
             if (ConnectionState.Open != state) {
                 throw ADP.OpenConnectionRequired(method, state); // MDAC 68323
             }
-        }
-
-        object ICloneable.Clone() {
-            OdbcConnection clone = new OdbcConnection(this);
-            Bid.Trace("<odbc.OdbcConnection.Clone|API> %d#, clone=%d#\n", ObjectID, clone.ObjectID);
-            return clone;
         }
 
         internal bool ConnectionIsAlive(Exception innerException) {
@@ -746,25 +736,17 @@ namespace System.Data.Odbc {
 
         // suppress this message - we cannot use SafeHandle here. Also, see notes in the code (VSTFDEVDIV# 560355)
         [SuppressMessage("Microsoft.Reliability", "CA2004:RemoveCallsToGCKeepAlive")]
-        override protected DbTransaction BeginDbTransaction(IsolationLevel isolationLevel) {
-            IntPtr hscp;
+        override protected DbTransaction BeginDbTransaction(IsolationLevel isolationLevel)
+        {
+            DbTransaction transaction = InnerConnection.BeginTransaction(isolationLevel);
 
-            Bid.ScopeEnter(out hscp, "<prov.OdbcConnection.BeginDbTransaction|API> %d#, isolationLevel=%d{ds.IsolationLevel}", ObjectID, (int)isolationLevel);
-            try {
+            // VSTFDEVDIV# 560355 - InnerConnection doesn't maintain a ref on the outer connection (this) and 
+            //   subsequently leaves open the possibility that the outer connection could be GC'ed before the DbTransaction
+            //   is fully hooked up (leaving a DbTransaction with a null connection property). Ensure that this is reachable
+            //   until the completion of BeginTransaction with KeepAlive
+            GC.KeepAlive(this);
 
-                DbTransaction transaction = InnerConnection.BeginTransaction(isolationLevel);
-
-                // VSTFDEVDIV# 560355 - InnerConnection doesn't maintain a ref on the outer connection (this) and 
-                //   subsequently leaves open the possibility that the outer connection could be GC'ed before the DbTransaction
-                //   is fully hooked up (leaving a DbTransaction with a null connection property). Ensure that this is reachable
-                //   until the completion of BeginTransaction with KeepAlive
-                GC.KeepAlive(this);
-
-                return transaction;
-            }
-            finally {
-                Bid.ScopeLeave(ref hscp);
-            }
+            return transaction;
         }
 
         internal OdbcTransaction Open_BeginTransaction(IsolationLevel isolevel) {
@@ -825,31 +807,30 @@ namespace System.Data.Odbc {
             }
         }
 
-        internal void Open_EnlistTransaction(SysTx.Transaction transaction) {
-            OdbcConnection.VerifyExecutePermission();
+        //internal void Open_EnlistTransaction(SysTx.Transaction transaction) {
 
-            if ((null != this.weakTransaction) && this.weakTransaction.IsAlive) {
-                throw ADP.LocalTransactionPresent();
-            }
+        //    if ((null != this.weakTransaction) && this.weakTransaction.IsAlive) {
+        //        throw ADP.LocalTransactionPresent();
+        //    }
 
-            SysTx.IDtcTransaction oleTxTransaction = ADP.GetOletxTransaction(transaction);
+        //    SysTx.IDtcTransaction oleTxTransaction = ADP.GetOletxTransaction(transaction);
 
-            OdbcConnectionHandle connectionHandle = ConnectionHandle;
-            ODBC32.RetCode retcode;
-            if (null == oleTxTransaction) {
-                retcode = connectionHandle.SetConnectionAttribute2(ODBC32.SQL_ATTR.SQL_COPT_SS_ENLIST_IN_DTC, (IntPtr) ODBC32.SQL_DTC_DONE, ODBC32.SQL_IS_PTR);
-            }
-            else {
-                retcode = connectionHandle.SetConnectionAttribute4(ODBC32.SQL_ATTR.SQL_COPT_SS_ENLIST_IN_DTC,  oleTxTransaction, ODBC32.SQL_IS_PTR);
-            }
+        //    OdbcConnectionHandle connectionHandle = ConnectionHandle;
+        //    ODBC32.RetCode retcode;
+        //    if (null == oleTxTransaction) {
+        //        retcode = connectionHandle.SetConnectionAttribute2(ODBC32.SQL_ATTR.SQL_COPT_SS_ENLIST_IN_DTC, (IntPtr) ODBC32.SQL_DTC_DONE, ODBC32.SQL_IS_PTR);
+        //    }
+        //    else {
+        //        retcode = connectionHandle.SetConnectionAttribute4(ODBC32.SQL_ATTR.SQL_COPT_SS_ENLIST_IN_DTC,  oleTxTransaction, ODBC32.SQL_IS_PTR);
+        //    }
 
-            if (retcode != ODBC32.RetCode.SUCCESS) {
-                HandleError(connectionHandle, retcode);
-            }
+        //    if (retcode != ODBC32.RetCode.SUCCESS) {
+        //        HandleError(connectionHandle, retcode);
+        //    }
 
-            // Tell the base class about our enlistment
-            //((OdbcConnectionOpen)InnerConnection).EnlistedTransaction = transaction;
-        }
+        //    // Tell the base class about our enlistment
+        //    //((OdbcConnectionOpen)InnerConnection).EnlistedTransaction = transaction;
+        //}
 
         internal string Open_GetServerVersion() {
             //SQLGetInfo - SQL_DBMS_VER

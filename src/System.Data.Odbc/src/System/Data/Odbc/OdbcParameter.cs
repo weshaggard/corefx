@@ -1,4 +1,5 @@
 // TODO[tinchou]: check OdbcParameterConverter
+// TODO[tinchou]: SqlClient removed ICloneable and IDbDataParameter, an so did we
 
 //------------------------------------------------------------------------------
 // <copyright file="OdbcParameter.cs" company="Microsoft">
@@ -23,7 +24,7 @@ using System.Threading;
 
 namespace System.Data.Odbc {
 
-    public sealed partial class OdbcParameter : DbParameter, ICloneable, IDbDataParameter {
+    public sealed partial class OdbcParameter : DbParameter {
 
         private bool _hasChanged;
         private bool _userSpecifiedType;
@@ -221,7 +222,6 @@ namespace System.Data.Odbc {
             }
         }
 
-        [DefaultValue((Byte)0)] // MDAC 65862
         public new Byte Precision {
             get {
                 return PrecisionInternal;
@@ -249,7 +249,6 @@ namespace System.Data.Odbc {
             return (0 != _precision);
         }
 
-        [DefaultValue((Byte)0)] // MDAC 65862
         public new Byte Scale {
             get {
                 return ScaleInternal;
@@ -498,11 +497,6 @@ namespace System.Data.Odbc {
             return s;
         }
 
-        //This is required for OdbcCommand.Clone to deep copy the parameters collection
-        object ICloneable.Clone() {
-            return new OdbcParameter(this);
-        }
-
         private void CopyParameterInternal () {
             _internalValue = Value;
             // we should coerce the parameter value at this time.
@@ -513,16 +507,6 @@ namespace System.Data.Odbc {
             _internalScale = ShouldSerializeScale() ? ScaleInternal : ValueScale(_internalValue);
             _internalOffset = Offset;
             _internalUserSpecifiedType = UserSpecifiedType;
-        }
-
-        private void CloneHelper(OdbcParameter destination) {
-            CloneHelperCore(destination);
-            destination._userSpecifiedType = _userSpecifiedType;
-            destination._typemap = _typemap;
-            destination._parameterName = _parameterName;
-            destination._precision = _precision;
-            destination._scale = _scale;
-            destination._hasScale = _hasScale;
         }
 
         internal void ClearBinding() {
