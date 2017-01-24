@@ -1,3 +1,5 @@
+// TODO[tinchou]: check ForceNewConnection usage
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
@@ -271,18 +273,18 @@ namespace System.Data.ProviderBase
                 }
                 else
                 {
-                    if (((SqlClient.SqlConnection)owningConnection).ForceNewConnection)
-                    {
-                        Debug.Assert(!(oldConnection is DbConnectionClosed), "Force new connection, but there is no old connection");
-                        connection = connectionPool.ReplaceConnection(owningConnection, userOptions, oldConnection);
-                    }
-                    else
-                    {
+                    //if (((SqlClient.SqlConnection)owningConnection).ForceNewConnection)
+                    //{
+                    //    Debug.Assert(!(oldConnection is DbConnectionClosed), "Force new connection, but there is no old connection");
+                    //    connection = connectionPool.ReplaceConnection(owningConnection, userOptions, oldConnection);
+                    //}
+                    //else
+                    //{
                         if (!connectionPool.TryGetConnection(owningConnection, retry, userOptions, out connection))
                         {
                             return false;
                         }
-                    }
+                    //}
 
                     if (connection == null)
                     {

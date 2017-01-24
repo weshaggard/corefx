@@ -1,5 +1,7 @@
 // TODO[tinchou]: find missing partial for OdbcConnection containing InnerConnection and others
 // TODO[tinchou]: Check System.EnterpriseServices
+// TODO[tinchou]: Check EnlistedTransaction
+
 //------------------------------------------------------------------------------
 // <copyright file="OdbcConnection.cs" company="Microsoft">
 //      Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -33,7 +35,7 @@ namespace System.Data.Odbc {
         private WeakReference weakTransaction;
 
         private OdbcConnectionHandle _connectionHandle;
-        private ConnectionState _extraState;    // extras, like Executing and Fetching, that we add to the State.
+        private ConnectionState _extraState = default(ConnectionState);    // extras, like Executing and Fetching, that we add to the State.
 
         public OdbcConnection(string connectionString) : this() {
             ConnectionString = connectionString;
@@ -848,7 +850,7 @@ namespace System.Data.Odbc {
             }
 
             // Tell the base class about our enlistment
-            ((OdbcConnectionOpen)InnerConnection).EnlistedTransaction = transaction;
+            //((OdbcConnectionOpen)InnerConnection).EnlistedTransaction = transaction;
         }
 
         internal string Open_GetServerVersion() {

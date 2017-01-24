@@ -4,7 +4,7 @@ using System;
 
 internal static partial class Bid
 {
-    //static IntPtr NoData = (IntPtr)(-1);
+    static IntPtr NoData = (IntPtr)(-1);
 
     internal static void Trace(string fmtPrintfW, params object[] args)
     {
@@ -23,8 +23,8 @@ internal static partial class Bid
         hScp = NoData;
     }
 
-    //internal static void ScopeLeave(ref IntPtr hScp)
-    //{
-    //    hScp = NoData;
-    //}
+    internal static void ScopeLeave(ref IntPtr hScp)
+    {
+        hScp = NoData;
+    }
 }

@@ -70,7 +70,7 @@ internal static partial class Bid
 namespace System.Data.Common
 {
 
-    internal static class UnsafeNativeMethods
+    internal static partial class UnsafeNativeMethods
     {
 
         // note: likely unreachable code - as this never worked on mono

@@ -35,6 +35,7 @@ namespace System.Data.Common
     using System.Threading.Tasks;
     using SysTx = System.Transactions;
     using System.Runtime.Versioning;
+    using System.Runtime.CompilerServices;
 
     //using Microsoft.SqlServer.Server;
 
@@ -992,12 +993,17 @@ namespace System.Data.Common
             return InvalidOperation(Res.GetString(Res.ADP_NoConnectionString));
         }
 
-        static internal NotImplementedException MethodNotImplemented(string methodName)
+        //static internal NotImplementedException MethodNotImplemented(string methodName)
+        //{
+        //    NotImplementedException e = new NotImplementedException(methodName);
+        //    TraceExceptionAsReturnValue(e);
+        //    return e;
+        //}
+        internal static Exception MethodNotImplemented([CallerMemberName] string methodName = "")
         {
-            NotImplementedException e = new NotImplementedException(methodName);
-            TraceExceptionAsReturnValue(e);
-            return e;
+            return System.NotImplemented.ByDesignWithMessage(methodName);
         }
+
         static private string ConnectionStateMsg(ConnectionState state)
         { // MDAC 82165, if the ConnectionState enum to msg the localization looks weird
             switch (state)
@@ -2274,6 +2280,10 @@ namespace System.Data.Common
         //    }
         //    return false;
         //}
+        static internal bool NeedManualEnlistment()
+        {
+            return false;
+        }
 
         static internal void TimerCurrent(out long ticks)
         {
@@ -2444,12 +2454,12 @@ namespace System.Data.Common
         }
 
         //[FileIOPermission(SecurityAction.Assert, AllFiles = FileIOPermissionAccess.PathDiscovery)]
-        //[ResourceExposure(ResourceScope.Machine)]
-        //[ResourceConsumption(ResourceScope.Machine)]
-        //static internal string GetFullPath(string filename)
-        //{ // MDAC 77686
-        //    return Path.GetFullPath(filename);
-        //}
+        [ResourceExposure(ResourceScope.Machine)]
+        [ResourceConsumption(ResourceScope.Machine)]
+        static internal string GetFullPath(string filename)
+        { // MDAC 77686
+            return Path.GetFullPath(filename);
+        }
 
         // 
         //static internal string GetComputerNameDnsFullyQualified()

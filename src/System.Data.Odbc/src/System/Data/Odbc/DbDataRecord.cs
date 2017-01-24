@@ -22,16 +22,6 @@ namespace System.Data.Odbc {
         internal string _typename;
         internal Type _type;
         internal ODBC32.SQL_TYPE? _dbtype;
-        internal object _scale;
-        internal object _precision;
-
-        // extension to allow BindCol
-        //
-        internal int _columnlength;          //
-        internal int _valueOffset;           // offset to the data in the row buffer
-        internal int _lengthOffset;          // offset to the length in the row buffer
-        internal ODBC32.SQL_C _sqlctype;         // need this to bind the value
-        internal ODBC32.SQL_TYPE _sql_type;      // need that to properly marshal the value
     }
 
     /////////////////////////////////////////////////////////////////////////////

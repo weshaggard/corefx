@@ -478,10 +478,7 @@ namespace System.Data.Common
         private static string[] ParseRestrictions(string restrictions, Hashtable synonyms)
         {
 #if DEBUG
-            if (Bid.AdvancedOn)
-            {
-                Bid.Trace("<comm.DBConnectionString|INFO|ADV> Restrictions='%ls'\n", restrictions);
-            }
+            Bid.Trace("<comm.DBConnectionString|INFO|ADV> Restrictions='%ls'\n", restrictions);
 #endif
             List<string> restrictionValues = new List<string>();
             StringBuilder buffer = new StringBuilder(restrictions.Length);
@@ -497,10 +494,7 @@ namespace System.Data.Common
                 if (!ADP.IsEmpty(keyname))
                 {
 #if DEBUG
-                    if (Bid.AdvancedOn)
-                    {
-                        Bid.Trace("<comm.DBConnectionString|INFO|ADV> KeyName='%ls'\n", keyname);
-                    }
+                    Bid.Trace("<comm.DBConnectionString|INFO|ADV> KeyName='%ls'\n", keyname);
 #endif
                     string realkeyname = ((null != synonyms) ? (string)synonyms[keyname] : keyname); // MDAC 85144
                     if (ADP.IsEmpty(realkeyname))
