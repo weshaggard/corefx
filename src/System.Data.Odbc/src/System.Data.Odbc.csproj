@@ -103,18 +103,23 @@
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
     </Compile>
+    <Compile Include="Common\System\HResults.cs" />
+    <Compile Include="Common\System\Data\Common\MultipartIdentifier.cs" />
+    <Compile Include="Common\System\Data\Common\ReadOnlyCollection.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetsWindows)' == 'true' And '$(IsPartialFacadeAssembly)' != 'true' ">
+    <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.Windows.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Windows.cs" />
     <Compile Include="$(CommonPath)\System\Data\Locale\LocaleMapper.Windows.cs">
       <Link>Common\System\Data\Locale\LocaleMapper.Windows.cs</Link>
     </Compile>
-    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Windows.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetsWindows)' != 'true' And '$(IsPartialFacadeAssembly)' != 'true' ">
+    <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.Unix.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Unix.cs" />
     <Compile Include="$(CommonPath)\System\Data\Locale\LocaleMapper.Unix.cs">
       <Link>Common\System\Data\Locale\LocaleMapper.Unix.cs</Link>
     </Compile>
-    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Unix.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(IsPartialFacadeAssembly)' == 'true'">
     <TargetingPackReference Include="mscorlib" />
@@ -153,12 +158,6 @@
     <Reference Include="System.Threading.Timer" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.ReaderWriter" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\System\Data\Common\MultipartIdentifier.cs" />
-    <Compile Include="Common\System\Data\Common\ReadOnlyCollection.cs" />
-    <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.cs" />
-    <Compile Include="Common\System\HResults.cs" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
   <Import Project=".\GenerateThisAssemblyCs.targets" Condition="'$(IsPartialFacadeAssembly)' != 'true'" />
