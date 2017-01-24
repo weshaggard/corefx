@@ -1,5 +1,7 @@
 // TODO[tinchou]: check unsafe methods
 // TODO[tinchou]: check ReleaseHandle method
+// TODO[tinchou]: migrate to Marshal
+// TODO[tinchou]: validate zeroBuffer approach
 
 //------------------------------------------------------------------------------
 // <copyright file="DbBuffer.cs" company="Microsoft">
@@ -31,28 +33,26 @@ namespace System.Data.ProviderBase
 
         private readonly int _bufferLength;
 
-        private DbBuffer(int initialSize, bool zeroBuffer) : base(IntPtr.Zero, true)
+        protected DbBuffer(int initialSize) : base(IntPtr.Zero, true)
         {
             if (0 < initialSize)
             {
-                int flags = ((zeroBuffer) ? LMEM_ZEROINIT : LMEM_FIXED);
+                //int flags = ((zeroBuffer) ? LMEM_ZEROINIT : LMEM_FIXED);
 
                 _bufferLength = initialSize;
                 RuntimeHelpers.PrepareConstrainedRegions();
                 try { }
                 finally
                 {
-                    base.handle = SafeNativeMethods.LocalAlloc(flags, (IntPtr)initialSize);
+                    //base.handle = SafeNativeMethods.LocalAlloc(flags, (IntPtr)initialSize);
+                    base.handle = Marshal.AllocHGlobal((IntPtr)initialSize);
+                    ZeroMemory(base.handle, initialSize);
                 }
                 if (IntPtr.Zero == base.handle)
                 {
                     throw new OutOfMemoryException();
                 }
             }
-        }
-
-        protected DbBuffer(int initialSize) : this(initialSize, true)
-        {
         }
 
         protected DbBuffer(IntPtr invalidHandleValue, bool ownsHandle) : base(invalidHandleValue, ownsHandle)
@@ -386,11 +386,11 @@ namespace System.Data.ProviderBase
             return value;
         }
 
-        //internal unsafe Single ReadSingle(int offset)
-        //{
-        //    Int32 value = ReadInt32(offset);
-        //    return *(Single*)&value;
-        //}
+        internal unsafe Single ReadSingle(int offset)
+        {
+            Int32 value = ReadInt32(offset);
+            return *(Single*)&value;
+        }
 
         override protected bool ReleaseHandle()
         {
@@ -399,7 +399,8 @@ namespace System.Data.ProviderBase
             base.handle = IntPtr.Zero;
             if (IntPtr.Zero != ptr)
             {
-                SafeNativeMethods.LocalFree(ptr);
+                //SafeNativeMethods.LocalFree(ptr);
+                Marshal.FreeHGlobal(ptr);
             }
             return true;
         }
@@ -658,10 +659,10 @@ namespace System.Data.ProviderBase
             }
         }
 
-        //internal unsafe void WriteSingle(int offset, Single value)
-        //{
-        //    WriteInt32(offset, *(Int32*)&value);
-        //}
+        internal unsafe void WriteSingle(int offset, Single value)
+        {
+            WriteInt32(offset, *(Int32*)&value);
+        }
 
         internal void ZeroMemory()
         {
@@ -672,7 +673,7 @@ namespace System.Data.ProviderBase
                 DangerousAddRef(ref mustRelease);
 
                 IntPtr ptr = DangerousGetHandle();
-                SafeNativeMethods.ZeroMemory(ptr, (IntPtr)Length);
+                ZeroMemory(ptr, Length);
             }
             finally
             {
@@ -812,6 +813,13 @@ namespace System.Data.ProviderBase
             {
                 throw ADP.InternalError(ADP.InternalErrorCode.InvalidBuffer);
             }
+        }
+
+        // TODO[tinchou]: test
+        private unsafe void ZeroMemory(IntPtr ptr, int length)
+        {
+            var zeroes = new byte[length];
+            Marshal.Copy(zeroes, 0, ptr, length);
         }
     }
 }

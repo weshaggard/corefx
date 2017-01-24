@@ -467,7 +467,6 @@ namespace System.Data.Odbc {
         }
 
         override public int ExecuteNonQuery() {
-            OdbcConnection.ExecutePermission.Demand();
             using (OdbcDataReader reader = ExecuteReaderObject(0, ADP.ExecuteNonQuery, false)) {
                 reader.Close();
                 return reader.RecordsAffected;
@@ -480,7 +479,6 @@ namespace System.Data.Odbc {
 
 
         new public OdbcDataReader ExecuteReader(CommandBehavior behavior) {
-            OdbcConnection.ExecutePermission.Demand();
             return ExecuteReaderObject(behavior, ADP.ExecuteReader, true);
         }
 
@@ -735,7 +733,6 @@ namespace System.Data.Odbc {
         }
 
         override public object ExecuteScalar() {
-            OdbcConnection.ExecutePermission.Demand();
 
             object value = null;
             using(IDataReader reader = ExecuteReaderObject(0, ADP.ExecuteScalar, false)) {
@@ -766,7 +763,6 @@ namespace System.Data.Odbc {
         // if the connection is not open
         //
         override public void Prepare() {
-            OdbcConnection.ExecutePermission.Demand();
             ODBC32.RetCode retcode;
 
             ValidateOpenConnection(ADP.Prepare);

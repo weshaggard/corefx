@@ -99,7 +99,6 @@ namespace System.Data.Odbc {
 
         static public void DeriveParameters(OdbcCommand command) {
             // MDAC 65927
-            OdbcConnection.ExecutePermission.Demand();
 
             if (null == command) {
                 throw ADP.ArgumentNull("command");

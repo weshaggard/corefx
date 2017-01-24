@@ -273,6 +273,7 @@ namespace System.Data.ProviderBase
                 }
                 else
                 {
+                    // TODO[tinchou]: Maybe add ForceNewConnection to OdbcConnection
                     //if (((SqlClient.SqlConnection)owningConnection).ForceNewConnection)
                     //{
                     //    Debug.Assert(!(oldConnection is DbConnectionClosed), "Force new connection, but there is no old connection");

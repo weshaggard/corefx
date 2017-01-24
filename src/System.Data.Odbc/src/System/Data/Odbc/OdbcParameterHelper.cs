@@ -1,55 +1,35 @@
-﻿// TODO[tinchou]: reference source as in https://github.com/dotnet/corefx/blob/bffef76f6af208e2042a2f27bc081ee908bb390b/src/System.Data.SqlClient/src/System/Data/SqlClient/SqlParameterCollectionHelper.cs
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-//------------------------------------------------------------------------------
-// <copyright file="DbParameterHelper.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-//------------------------------------------------------------------------------
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// In the desktop version of the framework, this file is generated from ProviderBase\DbParameterHelper.cs
+//#line 1 "e:\\fxdata\\src\\ndp\\fx\\src\\data\\system\\data\\providerbase\\dbparameterhelper.cs"
+
+using System.Data.Common;
 
 namespace System.Data.Odbc
 {
-
-    using System;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Data.Common;
-    using System.Globalization;
-
     public sealed partial class OdbcParameter : DbParameter
-    { // V1.2.3300
+    {
         private object _value;
 
         private object _parent;
 
         private ParameterDirection _direction;
         private int _size;
-#if USEOFFSET   // USEOFFSET is set in makefile.inc for SqlParameter class only
+
         private int _offset;
-#endif
         private string _sourceColumn;
-        private DataRowVersion _sourceVersion;
         private bool _sourceColumnNullMapping;
 
         private bool _isNullable;
 
         private object _coercedValue;
 
-        private OdbcParameter(OdbcParameter source) : this()
-        { // V1.2.3300, Clone
-            ADP.CheckArgumentNull(source, "source");
-
-            source.CloneHelper(this);
-
-            ICloneable cloneable = (_value as ICloneable);
-            if (null != cloneable)
-            { // MDAC 49322
-                _value = cloneable.Clone();
-            }
-        }
 
         private object CoercedValue
-        { // V1.2.3300
+        {
             get
             {
                 return _coercedValue;
@@ -61,7 +41,7 @@ namespace System.Data.Odbc
         }
 
         override public ParameterDirection Direction
-        { // V1.2.3300, XXXParameter V1.0.3300
+        {
             get
             {
                 ParameterDirection direction = _direction;
@@ -72,7 +52,7 @@ namespace System.Data.Odbc
                 if (_direction != value)
                 {
                     switch (value)
-                    { // @perfnote: Enum.IsDefined
+                    {
                         case ParameterDirection.Input:
                         case ParameterDirection.Output:
                         case ParameterDirection.InputOutput:
@@ -88,7 +68,7 @@ namespace System.Data.Odbc
         }
 
         override public bool IsNullable
-        { // V1.2.3300, XXXParameter V1.0.3300
+        {
             get
             {
                 return _isNullable;
@@ -99,36 +79,25 @@ namespace System.Data.Odbc
             }
         }
 
-#if USEOFFSET
-        [
-        Browsable(false),
-        EditorBrowsableAttribute(EditorBrowsableState.Advanced), // MDAC 69508
-        System.Data.ResCategoryAttribute(Res.DataCategory_Data),
-        System.Data.ResDescriptionAttribute(Res.DbParameter_Offset),
-        ]
-        public int Offset {
-            get {
+
+        public int Offset
+        {
+            get
+            {
                 return _offset;
             }
-            set {
-                if (value < 0) {
+            set
+            {
+                if (value < 0)
+                {
                     throw ADP.InvalidOffsetValue(value);
                 }
                 _offset = value;
             }
         }
-#else
-        internal int Offset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-#endif
 
         override public int Size
-        { // V1.2.3300, XXXParameter V1.0.3300
+        {
             get
             {
                 int size = _size;
@@ -152,22 +121,14 @@ namespace System.Data.Odbc
             }
         }
 
-        private void ResetSize()
-        {
-            if (0 != _size)
-            {
-                PropertyChanging();
-                _size = 0;
-            }
-        }
 
         private bool ShouldSerializeSize()
-        { // V1.2.3300
+        {
             return (0 != _size);
         }
 
         override public string SourceColumn
-        { // V1.2.3300, XXXParameter V1.0.3300
+        {
             get
             {
                 string sourceColumn = _sourceColumn;
@@ -191,56 +152,9 @@ namespace System.Data.Odbc
             }
         }
 
-        override public DataRowVersion SourceVersion
-        { // V1.2.3300, XXXParameter V1.0.3300
-            get
-            {
-                DataRowVersion sourceVersion = _sourceVersion;
-                return ((0 != sourceVersion) ? sourceVersion : DataRowVersion.Current);
-            }
-            set
-            {
-                switch (value)
-                { // @perfnote: Enum.IsDefined
-                    case DataRowVersion.Original:
-                    case DataRowVersion.Current:
-                    case DataRowVersion.Proposed:
-                    case DataRowVersion.Default:
-                        _sourceVersion = value;
-                        break;
-                    default:
-                        throw ADP.InvalidDataRowVersion(value);
-                }
-            }
-        }
-
-        private void CloneHelperCore(OdbcParameter destination)
-        {
-            destination._value = _value;
-            // NOTE: _parent is not cloned
-            destination._direction = _direction;
-            destination._size = _size;
-#if USEOFFSET
-            destination._offset                    = _offset;
-#endif
-            destination._sourceColumn = _sourceColumn;
-            destination._sourceVersion = _sourceVersion;
-            destination._sourceColumnNullMapping = _sourceColumnNullMapping;
-            destination._isNullable = _isNullable;
-        }
-
-        internal void CopyTo(DbParameter destination)
-        {
-            ADP.CheckArgumentNull(destination, "destination");
-            CloneHelper((OdbcParameter)destination);
-        }
 
         internal object CompareExchangeParent(object value, object comparand)
         {
-            // the interlock guarantees same parameter won't belong to multiple collections
-            // at the same time, but to actually occur the user must really try
-            // since we never declared thread safety, we don't care at this time
-            //return System.Threading.Interlocked.CompareExchange(ref _parent, value, comparand);
             object parent = _parent;
             if (comparand == parent)
             {
@@ -255,21 +169,21 @@ namespace System.Data.Odbc
         }
 
         override public string ToString()
-        { // V1.2.3300, XXXParameter V1.0.3300
+        {
             return ParameterName;
         }
 
         private byte ValuePrecisionCore(object value)
-        { // V1.2.3300
+        {
             if (value is Decimal)
             {
-                return ((System.Data.SqlTypes.SqlDecimal)(Decimal)value).Precision; // WebData 102913
+                return ((System.Data.OdbcTypes.OdbcDecimal)(Decimal)value).Precision;
             }
             return 0;
         }
 
         private byte ValueScaleCore(object value)
-        { // V1.2.3300
+        {
             if (value is Decimal)
             {
                 return (byte)((Decimal.GetBits((Decimal)value)[3] & 0x00ff0000) >> 0x10);
@@ -278,7 +192,7 @@ namespace System.Data.Odbc
         }
 
         private int ValueSizeCore(object value)
-        { // V1.2.3300
+        {
             if (!ADP.IsNull(value))
             {
                 string svalue = (value as string);
@@ -305,4 +219,3 @@ namespace System.Data.Odbc
         }
     }
 }
-

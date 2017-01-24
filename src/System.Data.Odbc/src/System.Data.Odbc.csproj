@@ -7,6 +7,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.Data.Odbc</RootNamespace>
     <AssemblyName>System.Data.Odbc</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileAlignment>512</FileAlignment>
     <DocumentationFile>$(OutputPath)System.Data.Odbc.xml</DocumentationFile>
     <GenerateAppxPackageOnBuild>False</GenerateAppxPackageOnBuild>
@@ -29,7 +30,6 @@
       <Link>Common\System\Data\Locale\Locale.cs</Link>
     </Compile>
     <Compile Include="Common\System\Data\DataStorage.cs" />
-    <Compile Include="Common\System\Data\InOutOfProcHelper.cs" />
     <Compile Include="Common\System\Data\MobileStubs.cs" />
     <Compile Include="Common\System\Data\OleDb\OLEDB_Util.cs" />
     <Compile Include="Common\System\Data\ProviderBase\DbBuffer.cs" />
@@ -54,7 +54,6 @@
     <Compile Include="Common\System\Data\ProviderBase\DbReferenceCollection.cs" />
     <Compile Include="Common\System\Data\Res.missing.cs" />
     <Compile Include="Common\System\Data\Res.cs" />
-    <Compile Include="Common\System\Data\SafeNativeMethods.cs" />
     <Compile Include="Properties\SecurityTransparent.cs" />
     <Compile Include="System\Data\Odbc\DbDataRecord.cs" />
     <Compile Include="System\Data\Odbc\Odbc32.cs" />

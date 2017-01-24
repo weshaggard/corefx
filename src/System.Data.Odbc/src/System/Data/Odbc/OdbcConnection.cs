@@ -768,7 +768,6 @@ namespace System.Data.Odbc {
         }
 
         internal OdbcTransaction Open_BeginTransaction(IsolationLevel isolevel) {
-            OdbcConnection.ExecutePermission.Demand();
 
             CheckState(ADP.BeginTransaction); // MDAC 68323
 
@@ -805,7 +804,6 @@ namespace System.Data.Odbc {
         }
 
         internal void Open_ChangeDatabase(string value) {
-            OdbcConnection.ExecutePermission.Demand();
 
             CheckState(ADP.ChangeDatabase);
 

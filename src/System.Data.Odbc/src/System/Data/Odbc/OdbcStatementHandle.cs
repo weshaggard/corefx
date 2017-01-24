@@ -50,22 +50,22 @@ namespace System.Data.Odbc {
             return new SQLLEN(value);
         }
 
-//        public unsafe static implicit operator int (SQLLEN  value) { // 
-//#if WIN32
-//            return (int)value._value.ToInt32();
-//#else
-//            long l = (long)value._value.ToInt64();
-//            return checked((int)l);
-//#endif
-//        }
+        public unsafe static implicit operator int (SQLLEN  value) { // 
+#if WIN32
+            return (int)value._value.ToInt32();
+#else
+            long l = (long)value._value.ToInt64();
+            return checked((int)l);
+#endif
+        }
 
-//        public unsafe static explicit operator long (SQLLEN  value) {
-//            return value._value.ToInt64();
-//        }
+        public unsafe static explicit operator long (SQLLEN  value) {
+            return value._value.ToInt64();
+        }
 
-//        public unsafe long ToInt64() {
-//            return _value.ToInt64();
-//        }
+        public unsafe long ToInt64() {
+            return _value.ToInt64();
+        }
     }
 
     sealed internal class OdbcStatementHandle : OdbcHandle {

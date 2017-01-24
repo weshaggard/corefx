@@ -29,15 +29,12 @@ namespace System.Data.Common
     using System.Runtime.InteropServices;
     using System.Security;
     using System.Security.Permissions;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using SysTx = System.Transactions;
     using System.Runtime.Versioning;
     using System.Runtime.CompilerServices;
-
-    //using Microsoft.SqlServer.Server;
 
     internal static class ADP
     {

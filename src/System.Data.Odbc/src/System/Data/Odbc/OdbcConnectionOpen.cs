@@ -57,12 +57,10 @@ namespace System.Data.Odbc {
 
         //override protected void Activate(SysTx.Transaction transaction)
         //{
-        //    OdbcConnection.ExecutePermission.Demand();
         //}
 
         override protected void Activate()
         {
-            OdbcConnection.ExecutePermission.Demand();
         }
 
         override public DbTransaction BeginTransaction(IsolationLevel isolevel) {

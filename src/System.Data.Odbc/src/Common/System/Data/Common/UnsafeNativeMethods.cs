@@ -21,7 +21,7 @@ namespace System.Data.Common
 {
     static class ExternDll
     {
-        public const string Odbc32 = "TODO";
+        public const string Odbc32 = "odbc32.dll";
     }
 
 

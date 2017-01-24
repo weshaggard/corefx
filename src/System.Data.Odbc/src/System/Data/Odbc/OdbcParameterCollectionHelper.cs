@@ -1,33 +1,27 @@
-﻿// TODO[tinchou]: reference source as in https://github.com/dotnet/corefx/blob/bffef76f6af208e2042a2f27bc081ee908bb390b/src/System.Data.SqlClient/src/System/Data/SqlClient/SqlParameterCollectionHelper.cs
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-//------------------------------------------------------------------------------
-// <copyright file="DbParameterCollectionBase.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-//------------------------------------------------------------------------------
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// In the desktop version of the framework, this file is generated from ProviderBase\DbParameterCollectionHelper.cs
+//#line 1 "e:\\fxdata\\src\\ndp\\fx\\src\\data\\system\\data\\providerbase\\dbparametercollectionhelper.cs"
+
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
 
 namespace System.Data.Odbc
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Data.Common;
-    using System.Data.ProviderBase;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Runtime.InteropServices;
-
     public sealed partial class OdbcParameterCollection : DbParameterCollection
     {
-        private List<OdbcParameter> _items; // the collection of parameters
+        private List<OdbcParameter> _items;
 
         override public int Count
         {
             get
             {
-                // NOTE: we don't construct the list just to get the count.
                 return ((null != _items) ? _items.Count : 0);
             }
         }
@@ -47,29 +41,6 @@ namespace System.Data.Odbc
             }
         }
 
-        override public bool IsFixedSize
-        {
-            get
-            {
-                return ((System.Collections.IList)InnerList).IsFixedSize;
-            }
-        }
-
-        override public bool IsReadOnly
-        {
-            get
-            {
-                return ((System.Collections.IList)InnerList).IsReadOnly;
-            }
-        }
-
-        override public bool IsSynchronized
-        {
-            get
-            {
-                return ((System.Collections.ICollection)InnerList).IsSynchronized;
-            }
-        }
 
         override public object SyncRoot
         {
@@ -79,12 +50,9 @@ namespace System.Data.Odbc
             }
         }
 
-        [
-        EditorBrowsableAttribute(EditorBrowsableState.Never)
-        ]
         override public int Add(object value)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             ValidateType(value);
             Validate(-1, value);
             InnerList.Add((OdbcParameter)value);
@@ -93,10 +61,10 @@ namespace System.Data.Odbc
 
         override public void AddRange(System.Array values)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             if (null == values)
             {
-                throw ADP.ArgumentNull("values");
+                throw ADP.ArgumentNull(nameof(values));
             }
             foreach (object value in values)
             {
@@ -114,14 +82,14 @@ namespace System.Data.Odbc
             int index = IndexOf(parameterName);
             if (index < 0)
             {
-                throw ADP.ParametersSourceIndex(parameterName, this, ItemType);
+                throw ADP.ParametersSourceIndex(parameterName, this, s_itemType);
             }
             return index;
         }
 
         override public void Clear()
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             List<OdbcParameter> items = InnerList;
 
             if (null != items)
@@ -160,7 +128,7 @@ namespace System.Data.Odbc
             int index = IndexOf(parameterName);
             if (index < 0)
             {
-                throw ADP.ParametersSourceIndex(parameterName, this, ItemType);
+                throw ADP.ParametersSourceIndex(parameterName, this, s_itemType);
             }
             return InnerList[index];
         }
@@ -170,17 +138,17 @@ namespace System.Data.Odbc
             if (null != items)
             {
                 int i = 0;
-                // first case, kana, width sensitive search
+
                 foreach (OdbcParameter parameter in items)
                 {
-                    if (0 == ADP.SrcCompare(parameterName, parameter.ParameterName))
+                    if (parameterName == parameter.ParameterName)
                     {
                         return i;
                     }
                     ++i;
                 }
                 i = 0;
-                // then insensitive search
+
                 foreach (OdbcParameter parameter in items)
                 {
                     if (0 == ADP.DstCompare(parameterName, parameter.ParameterName))
@@ -224,7 +192,7 @@ namespace System.Data.Odbc
 
         override public void Insert(int index, object value)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             ValidateType(value);
             Validate(-1, (OdbcParameter)value);
             InnerList.Insert(index, (OdbcParameter)value);
@@ -240,7 +208,7 @@ namespace System.Data.Odbc
 
         override public void Remove(object value)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             ValidateType(value);
             int index = IndexOf(value);
             if (-1 != index)
@@ -249,20 +217,20 @@ namespace System.Data.Odbc
             }
             else if (this != ((OdbcParameter)value).CompareExchangeParent(null, this))
             {
-                throw ADP.CollectionRemoveInvalidObject(ItemType, this);
+                throw ADP.CollectionRemoveInvalidObject(s_itemType, this);
             }
         }
 
         override public void RemoveAt(int index)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             RangeCheck(index);
             RemoveIndex(index);
         }
 
         override public void RemoveAt(string parameterName)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             int index = CheckName(parameterName);
             RemoveIndex(index);
         }
@@ -289,18 +257,18 @@ namespace System.Data.Odbc
 
         override protected void SetParameter(int index, DbParameter value)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             RangeCheck(index);
             Replace(index, value);
         }
 
         override protected void SetParameter(string parameterName, DbParameter value)
         {
-            OnChange();  // fire event before value is validated
+            OnChange();
             int index = IndexOf(parameterName);
             if (index < 0)
             {
-                throw ADP.ParametersSourceIndex(parameterName, this, ItemType);
+                throw ADP.ParametersSourceIndex(parameterName, this, s_itemType);
             }
             Replace(index, value);
         }
@@ -309,22 +277,22 @@ namespace System.Data.Odbc
         {
             if (null == value)
             {
-                throw ADP.ParameterNull("value", this, ItemType);
+                throw ADP.ParameterNull(nameof(value), this, s_itemType);
             }
-            // Validate assigns the parent - remove clears the parent
+
             object parent = ((OdbcParameter)value).CompareExchangeParent(this, null);
             if (null != parent)
             {
                 if (this != parent)
                 {
-                    throw ADP.ParametersIsNotParent(ItemType, this);
+                    throw ADP.ParametersIsNotParent(s_itemType, this);
                 }
                 if (index != IndexOf(value))
                 {
-                    throw ADP.ParametersIsParent(ItemType, this);
+                    throw ADP.ParametersIsParent(s_itemType, this);
                 }
             }
-            // generate a ParameterName
+
             String name = ((OdbcParameter)value).ParameterName;
             if (0 == name.Length)
             {
@@ -342,14 +310,12 @@ namespace System.Data.Odbc
         {
             if (null == value)
             {
-                throw ADP.ParameterNull("value", this, ItemType);
+                throw ADP.ParameterNull(nameof(value), this, s_itemType);
             }
-            else if (!ItemType.IsInstanceOfType(value))
+            else if (!s_itemType.IsInstanceOfType(value))
             {
-                throw ADP.InvalidParameterType(this, ItemType, value);
+                throw ADP.InvalidParameterType(this, s_itemType, value);
             }
         }
-
     };
 }
-
