@@ -1,8 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.Odbc", "src\System.Data.Odbc.csproj", "{1DD0FF15-6234-4BD6-850A-6A7F05479554}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ECE6CCAC-CAFE-4054-B737-E6DB4A4FA79A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.Odbc.Tests", "tests\FunctionalTests\System.Data.Odbc.Tests.csproj", "{F3E72F35-0351-4D67-2209-725BCAD807BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +14,19 @@ Global
 		ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU = ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = netstandard1.0-Debug|Any CPU
-		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = netstandard1.0-Debug|Any CPU
-		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = netstandard1.0-Release|Any CPU
-		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = netstandard1.0-Release|Any CPU
+		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = net463-Windows_NT-Release|Any CPU
+		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = net463-Windows_NT-Release|Any CPU
+		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = net463-Windows_NT-Release|Any CPU
+		{1DD0FF15-6234-4BD6-850A-6A7F05479554}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = net463-Windows_NT-Release|Any CPU
+		{F3E72F35-0351-4D67-2209-725BCAD807BA}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = Windows_Release|Any CPU
+		{F3E72F35-0351-4D67-2209-725BCAD807BA}.DebugNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = Windows_Release|Any CPU
+		{F3E72F35-0351-4D67-2209-725BCAD807BA}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.ActiveCfg = Windows_Release|Any CPU
+		{F3E72F35-0351-4D67-2209-725BCAD807BA}.ReleaseNETCoreAppnetstandard1.0netstandard1.3|AnyCPU.Build.0 = Windows_Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1DD0FF15-6234-4BD6-850A-6A7F05479554} = {1DD0FF15-6234-4BD6-850A-6A7F05479554}
+		{F3E72F35-0351-4D67-2209-725BCAD807BA} = {ECE6CCAC-CAFE-4054-B737-E6DB4A4FA79A}
 	EndGlobalSection
 EndGlobal
