@@ -1,11 +1,7 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="UnsafeNativeMethods.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Data.Odbc;
 using System.Runtime.ConstrainedExecution;
@@ -16,7 +12,7 @@ using System.Text;
 
 namespace System.Data.Common
 {
-    static class ExternDll
+    internal static class ExternDll
     {
         public const string Odbc32 = "odbc32.dll";
     }
@@ -25,7 +21,6 @@ namespace System.Data.Common
     [SuppressUnmanagedCodeSecurityAttribute()]
     internal static partial class UnsafeNativeMethods
     {
-
         //
         // ODBC32
         //
@@ -34,7 +29,8 @@ namespace System.Data.Common
         static internal /*SQLRETURN*/ODBC32.RetCode SQLAllocHandle(
             /*SQLSMALLINT*/ODBC32.SQL_HANDLE HandleType,
             /*SQLHANDLE*/IntPtr InputHandle,
-            /*SQLHANDLE* */out IntPtr OutputHandle) {
+            /*SQLHANDLE* */out IntPtr OutputHandle)
+        {
             OutputHandle = IntPtr.Zero;
             return ODBC32.RetCode.ERROR;
         }
@@ -466,7 +462,7 @@ namespace System.Data.Common
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         [ResourceExposure(ResourceScope.None)]
         static internal /*SQLRETURN*/ODBC32.RetCode SQLSetConnectAttrW( // used only for AutoCommitOn
-                                                                               /*SQLHBDC*/IntPtr ConnectionHandle,
+                                                                        /*SQLHBDC*/IntPtr ConnectionHandle,
             /*SQLINTEGER*/ODBC32.SQL_ATTR Attribute,
             /*SQLPOINTER*/IntPtr Value,
             /*SQLINTEGER*/Int32 StringLength)

@@ -1,10 +1,6 @@
-//------------------------------------------------------------------------------
-// <copyright file="DbDataRecord.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System;
 using System.ComponentModel;            //Component
@@ -12,10 +8,12 @@ using System.Data;
 using System.Runtime.InteropServices;   //Marshal
 using System.Reflection;                //Missing
 
-namespace System.Data.Odbc {
-    sealed internal class DbSchemaInfo {
-
-        internal DbSchemaInfo() {
+namespace System.Data.Odbc
+{
+    sealed internal class DbSchemaInfo
+    {
+        internal DbSchemaInfo()
+        {
         }
 
         internal string _name;
@@ -43,7 +41,8 @@ namespace System.Data.Odbc {
     //  We do not cache all columns, so reading out of order is still not
     //
     /////////////////////////////////////////////////////////////////////////////
-    sealed internal class DbCache {
+    sealed internal class DbCache
+    {
         //Data
 
         private bool[] _isBadValue;
@@ -54,7 +53,8 @@ namespace System.Data.Odbc {
         internal bool _randomaccess = true;
 
         //Constructor
-        internal DbCache(OdbcDataReader record, int count) {
+        internal DbCache(OdbcDataReader record, int count)
+        {
             _count = count;
             _record = record;
             _randomaccess = (!record.IsBehavior(CommandBehavior.SequentialAccess));
@@ -63,37 +63,47 @@ namespace System.Data.Odbc {
         }
 
         //Accessor
-        internal object this[int i] {
-            get {
-                if(_isBadValue[i]) {
+        internal object this[int i]
+        {
+            get
+            {
+                if (_isBadValue[i])
+                {
                     OverflowException innerException = (OverflowException)Values[i];
                     throw new OverflowException(innerException.Message, innerException);
                 }
                 return Values[i];
             }
-            set {
+            set
+            {
                 Values[i] = value;
                 _isBadValue[i] = false;
             }
         }
 
-        internal int Count {
-            get {
+        internal int Count
+        {
+            get
+            {
                 return _count;
             }
         }
 
-        internal void InvalidateValue(int i) {
+        internal void InvalidateValue(int i)
+        {
             _isBadValue[i] = true;
         }
 
-        internal object[] Values {
-            get {
+        internal object[] Values
+        {
+            get
+            {
                 return _values;
             }
         }
 
-        internal object AccessIndex(int i) {
+        internal object AccessIndex(int i)
+        {
             //Note: We could put this directly in this[i], instead of having an explicit overload.
             //However that means that EVERY access into the cache takes the hit of checking, so
             //something as simple as the following code would take two hits.  It's nice not to
@@ -104,13 +114,16 @@ namespace System.Data.Odbc {
             //  return cache[i];
 
             object[] values = this.Values;
-            if(_randomaccess) {
+            if (_randomaccess)
+            {
                 //Random
                 //Means that the user can ask for the values int any order (ie: out of order).
                 //  In order to acheive this on a forward only stream, we need to actually
                 //  retreive all the value in between so they can go back to values they've skipped
-                for(int c = 0; c < i; c++) {
-                    if(values[c] == null) {
+                for (int c = 0; c < i; c++)
+                {
+                    if (values[c] == null)
+                    {
                         values[c] = _record.GetValue(c);
                     }
                 }
@@ -118,21 +131,26 @@ namespace System.Data.Odbc {
             return values[i];
         }
 
-        internal DbSchemaInfo GetSchema(int i) {
-            if(_schema == null) {
+        internal DbSchemaInfo GetSchema(int i)
+        {
+            if (_schema == null)
+            {
                 _schema = new DbSchemaInfo[Count];
             }
-            if(_schema[i] == null) {
+            if (_schema[i] == null)
+            {
                 _schema[i] = new DbSchemaInfo();
             }
             return _schema[i];
         }
 
-        internal void FlushValues() {
+        internal void FlushValues()
+        {
             //Set all objects to null (to explcitly release them)
             //Note: SchemaInfo remains the same for all rows - no need to reget those...
             int count = _values.Length;
-            for(int i = 0; i < count; ++i) {
+            for (int i = 0; i < count; ++i)
+            {
                 _values[i] = null;
             }
         }

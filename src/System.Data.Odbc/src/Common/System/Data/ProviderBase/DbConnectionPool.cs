@@ -1,3 +1,7 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 // TODO[tinchou]: check TryCloneCachedException
 
 // Licensed to the .NET Foundation under one or more agreements.
@@ -6,7 +10,6 @@
 
 
 
-//------------------------------------------------------------------------------
 
 using System.Collections.Generic;
 using System.Data.Common;
@@ -328,7 +331,7 @@ namespace System.Data.ProviderBase
             // new stack to old stack.
             if (_waitHandles.PoolSemaphore.WaitOne(0))
             {
-                for (; ;)
+                for (;;)
                 {
                     DbConnectionInternal obj;
 

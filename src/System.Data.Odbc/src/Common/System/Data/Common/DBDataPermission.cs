@@ -1,14 +1,9 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="DBDataPermission.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 namespace System.Data.Common
 {
-
     using System.Collections;
     using System.Data.Common;
     using System.Diagnostics;
@@ -22,7 +17,6 @@ namespace System.Data.Common
     [Serializable]
     public abstract class DBDataPermission : CodeAccessPermission, IUnrestrictedPermission
     {
-
         private bool _isUnrestricted;// = false;
         private bool _allowBlankPassword;// = false;
         private NameValuePermission _keyvaluetree = NameValuePermission.Default;
@@ -240,7 +234,6 @@ namespace System.Data.Common
                     (!AllowBlankPassword || superset.AllowBlankPassword) &&
                     ((null == _keyvalues) || (null != superset._keyvaluetree)))
                 {
-
                     subset = true;
                     if (null != _keyvalues)
                     {

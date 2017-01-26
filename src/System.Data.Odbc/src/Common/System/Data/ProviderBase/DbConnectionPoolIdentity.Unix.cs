@@ -3,11 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 
-//------------------------------------------------------------------------------
 
 namespace System.Data.ProviderBase
 {
-    partial class DbConnectionPoolIdentity
+    internal partial class DbConnectionPoolIdentity
     {
         internal static DbConnectionPoolIdentity GetCurrent()
         {

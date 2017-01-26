@@ -1,16 +1,11 @@
-﻿// TODO[tinchou]: fix PermissionSet
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-//------------------------------------------------------------------------------
-// <copyright file="DBConnectionOptions.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+// TODO[tinchou]: fix PermissionSet
 
 namespace System.Data.Common
 {
-
     using System;
     using System.Collections;
     using System.Data;
@@ -80,8 +75,8 @@ namespace System.Data.Common
             + "[\\s;]*[\u0000\\s]*"                                     // traling whitespace/semicolons (DataSourceLocator), embedded nulls are allowed only in the end
         ;
 
-        private static readonly Regex ConnectionStringRegex = new Regex(ConnectionStringPattern, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
-        private static readonly Regex ConnectionStringRegexOdbc = new Regex(ConnectionStringPatternOdbc, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringRegex = new Regex(ConnectionStringPattern, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringRegexOdbc = new Regex(ConnectionStringPatternOdbc, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 #endif
         private const string ConnectionStringValidKeyPattern = "^(?![;\\s])[^\\p{Cc}]+(?<!\\s)$"; // key not allowed to start with semi-colon or space or contain non-visible characters or end with space
         private const string ConnectionStringValidValuePattern = "^[^\u0000]*$";                    // value not allowed to contain embedded null
@@ -89,11 +84,11 @@ namespace System.Data.Common
         private const string ConnectionStringQuoteOdbcValuePattern = "^\\{([^\\}\u0000]|\\}\\})*\\}$"; // do not quote odbc value if it matches this pattern
         internal const string DataDirectory = "|datadirectory|";
 
-        private static readonly Regex ConnectionStringValidKeyRegex = new Regex(ConnectionStringValidKeyPattern, RegexOptions.Compiled);
-        private static readonly Regex ConnectionStringValidValueRegex = new Regex(ConnectionStringValidValuePattern, RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringValidKeyRegex = new Regex(ConnectionStringValidKeyPattern, RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringValidValueRegex = new Regex(ConnectionStringValidValuePattern, RegexOptions.Compiled);
 
-        private static readonly Regex ConnectionStringQuoteValueRegex = new Regex(ConnectionStringQuoteValuePattern, RegexOptions.Compiled);
-        private static readonly Regex ConnectionStringQuoteOdbcValueRegex = new Regex(ConnectionStringQuoteOdbcValuePattern, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringQuoteValueRegex = new Regex(ConnectionStringQuoteValuePattern, RegexOptions.Compiled);
+        private static readonly Regex s_connectionStringQuoteOdbcValueRegex = new Regex(ConnectionStringQuoteOdbcValuePattern, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
         // connection string common keywords
         private static class KEY
@@ -250,7 +245,7 @@ namespace System.Data.Common
             ADP.CheckArgumentNull(builder, "builder");
             ADP.CheckArgumentLength(keyName, "keyName");
 
-            if ((null == keyName) || !ConnectionStringValidKeyRegex.IsMatch(keyName))
+            if ((null == keyName) || !s_connectionStringValidKeyRegex.IsMatch(keyName))
             {
                 throw ADP.InvalidKeyname(keyName);
             }
@@ -280,7 +275,7 @@ namespace System.Data.Common
                 {
                     if ((0 < keyValue.Length) &&
                         (('{' == keyValue[0]) || (0 <= keyValue.IndexOf(';')) || (0 == String.Compare(DbConnectionStringKeywords.Driver, keyName, StringComparison.OrdinalIgnoreCase))) &&
-                        !ConnectionStringQuoteOdbcValueRegex.IsMatch(keyValue))
+                        !s_connectionStringQuoteOdbcValueRegex.IsMatch(keyValue))
                     {
                         // always quote Driver value (required for ODBC Version 2.65 and earlier)
                         // always quote values that contain a ';'
@@ -291,7 +286,7 @@ namespace System.Data.Common
                         builder.Append(keyValue);
                     }
                 }
-                else if (ConnectionStringQuoteValueRegex.IsMatch(keyValue))
+                else if (s_connectionStringQuoteValueRegex.IsMatch(keyValue))
                 {
                     // <value> -> <value>
                     builder.Append(keyValue);
@@ -451,7 +446,6 @@ namespace System.Data.Common
             string fullPath = null;
             if ((null != value) && value.StartsWith(DataDirectory, StringComparison.OrdinalIgnoreCase))
             {
-
                 string rootFolderPath = datadir;
                 if (null == rootFolderPath)
                 {
@@ -806,7 +800,7 @@ namespace System.Data.Common
                 }
                 buffer.Append(currentChar);
             }
-            ParserExit:
+        ParserExit:
             switch (parserState)
             {
                 case ParserState.Key:
@@ -862,7 +856,7 @@ namespace System.Data.Common
             if (null != keyvalue)
             {
 #if DEBUG
-                bool compValue = ConnectionStringValidValueRegex.IsMatch(keyvalue);
+                bool compValue = s_connectionStringValidValueRegex.IsMatch(keyvalue);
                 Debug.Assert((-1 == keyvalue.IndexOf('\u0000')) == compValue, "IsValueValid mismatch with regex");
 #endif
                 return (-1 == keyvalue.IndexOf('\u0000'));
@@ -875,7 +869,7 @@ namespace System.Data.Common
             if (null != keyname)
             {
 #if DEBUG
-                bool compValue = ConnectionStringValidKeyRegex.IsMatch(keyname);
+                bool compValue = s_connectionStringValidKeyRegex.IsMatch(keyname);
                 Debug.Assert(((0 < keyname.Length) && (';' != keyname[0]) && !Char.IsWhiteSpace(keyname[0]) && (-1 == keyname.IndexOf('\u0000'))) == compValue, "IsValueValid mismatch with regex");
 #endif
                 return ((0 < keyname.Length) && (';' != keyname[0]) && !Char.IsWhiteSpace(keyname[0]) && (-1 == keyname.IndexOf('\u0000')));
@@ -887,7 +881,7 @@ namespace System.Data.Common
         private static Hashtable SplitConnectionString(string connectionString, Hashtable synonyms, bool firstKey)
         {
             Hashtable parsetable = new Hashtable();
-            Regex parser = (firstKey ? ConnectionStringRegexOdbc : ConnectionStringRegex);
+            Regex parser = (firstKey ? s_connectionStringRegexOdbc : s_connectionStringRegex);
 
             const int KeyIndex = 1, ValueIndex = 2;
             Debug.Assert(KeyIndex == parser.GroupNumberFromName("key"), "wrong key index");
@@ -956,7 +950,6 @@ namespace System.Data.Common
                     Debug.Assert(parsetable.Contains(keyname), "ParseInternal code vs. regex mismatch keyname <" + keyname + ">");
                     Debug.Assert(value1 == value2, "ParseInternal code vs. regex mismatch keyvalue <" + value1 + "> <" + value2 + ">");
                 }
-
             }
             catch (ArgumentException f)
             {
@@ -1101,11 +1094,11 @@ namespace System.Data.Common
 
         internal static void ValidateKeyValuePair(string keyword, string value)
         {
-            if ((null == keyword) || !ConnectionStringValidKeyRegex.IsMatch(keyword))
+            if ((null == keyword) || !s_connectionStringValidKeyRegex.IsMatch(keyword))
             {
                 throw ADP.InvalidKeyname(keyword);
             }
-            if ((null != value) && !ConnectionStringValidValueRegex.IsMatch(value))
+            if ((null != value) && !s_connectionStringValidValueRegex.IsMatch(value))
             {
                 throw ADP.InvalidValue(keyword);
             }

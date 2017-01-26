@@ -1,12 +1,8 @@
-// TODO[tinchou]: check override methods
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-//------------------------------------------------------------------------------
-// <copyright file="OdbcConnectionFactory.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+// TODO[tinchou]: check override methods
 
 namespace System.Data.Odbc
 {
@@ -19,41 +15,48 @@ namespace System.Data.Odbc
     using System.IO;
     using System.Runtime.Versioning;
 
-    sealed internal class OdbcConnectionFactory : DbConnectionFactory {
-        private OdbcConnectionFactory() : base() {}
+    sealed internal class OdbcConnectionFactory : DbConnectionFactory
+    {
+        private OdbcConnectionFactory() : base() { }
         // At this time, the ODBC Provider doesn't have any connection pool counters
         // because we'd only confuse people with "non-pooled" connections that are
         // actually being pooled by the native pooler.
 
-        private const string _MetaData           = ":MetaDataXml";
+        private const string _MetaData = ":MetaDataXml";
         private const string _defaultMetaDataXml = "defaultMetaDataXml";
 
         public static readonly OdbcConnectionFactory SingletonInstance = new OdbcConnectionFactory();
 
-        override public DbProviderFactory ProviderFactory {
-            get {
+        override public DbProviderFactory ProviderFactory
+        {
+            get
+            {
                 return OdbcFactory.Instance;
             }
         }
 
-        override protected DbConnectionInternal CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningObject) {
+        override protected DbConnectionInternal CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningObject)
+        {
             DbConnectionInternal result = new OdbcConnectionOpen(owningObject as OdbcConnection, options as OdbcConnectionString);
             return result;
         }
 
-        override protected DbConnectionOptions CreateConnectionOptions(string connectionString, DbConnectionOptions previous) {
+        override protected DbConnectionOptions CreateConnectionOptions(string connectionString, DbConnectionOptions previous)
+        {
             Debug.Assert(!ADP.IsEmpty(connectionString), "empty connectionString");
             OdbcConnectionString result = new OdbcConnectionString(connectionString, (null != previous));
             return result;
         }
 
-        override protected DbConnectionPoolGroupOptions CreateConnectionPoolGroupOptions( DbConnectionOptions connectionOptions ) {
+        override protected DbConnectionPoolGroupOptions CreateConnectionPoolGroupOptions(DbConnectionOptions connectionOptions)
+        {
             // At this time, the ODBC provider only supports native pooling so we
             // simply return NULL to indicate that.
             return null;
         }
 
-        override internal DbConnectionPoolGroupProviderInfo CreateConnectionPoolGroupProviderInfo (DbConnectionOptions connectionOptions) {
+        override internal DbConnectionPoolGroupProviderInfo CreateConnectionPoolGroupProviderInfo(DbConnectionOptions connectionOptions)
+        {
             return new OdbcConnectionPoolGroupProviderInfo();
         }
 
@@ -110,7 +113,7 @@ namespace System.Data.Odbc
         //        XMLStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("System.Data.Odbc.OdbcMetaData.xml");
         //        cacheMetaDataFactory = true;
         //    }
-           
+
         //    Debug.Assert (XMLStream != null,"XMLstream may not be null.");
 
         //    String versionString = odbcOuterConnection.GetInfoStringUnhandled(ODBC32.SQL_INFO.DBMS_VER);
@@ -121,17 +124,21 @@ namespace System.Data.Odbc
         //                                    odbcOuterConnection);
         //}
 
-        override internal DbConnectionPoolGroup GetConnectionPoolGroup(DbConnection connection) {
+        override internal DbConnectionPoolGroup GetConnectionPoolGroup(DbConnection connection)
+        {
             OdbcConnection c = (connection as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 return c.PoolGroup;
             }
             return null;
         }
 
-        override internal DbConnectionInternal GetInnerConnection(DbConnection connection) {
+        override internal DbConnectionInternal GetInnerConnection(DbConnection connection)
+        {
             OdbcConnection c = (connection as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 return c.InnerConnection;
             }
             return null;
@@ -145,44 +152,51 @@ namespace System.Data.Odbc
         //    return 0;
         //}
 
-        override internal void PermissionDemand(DbConnection outerConnection) {
+        override internal void PermissionDemand(DbConnection outerConnection)
+        {
             OdbcConnection c = (outerConnection as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 c.PermissionDemand();
             }
         }
 
-        override internal void SetConnectionPoolGroup(DbConnection outerConnection, DbConnectionPoolGroup poolGroup) {
+        override internal void SetConnectionPoolGroup(DbConnection outerConnection, DbConnectionPoolGroup poolGroup)
+        {
             OdbcConnection c = (outerConnection as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 c.PoolGroup = poolGroup;
             }
         }
 
-        override internal void SetInnerConnectionEvent(DbConnection owningObject, DbConnectionInternal to) {
+        override internal void SetInnerConnectionEvent(DbConnection owningObject, DbConnectionInternal to)
+        {
             OdbcConnection c = (owningObject as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 c.SetInnerConnectionEvent(to);
             }
         }
 
-        override internal bool SetInnerConnectionFrom(DbConnection owningObject, DbConnectionInternal to, DbConnectionInternal from) {
+        override internal bool SetInnerConnectionFrom(DbConnection owningObject, DbConnectionInternal to, DbConnectionInternal from)
+        {
             OdbcConnection c = (owningObject as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 return c.SetInnerConnectionFrom(to, from);
             }
             return false;
         }
 
-        override internal void SetInnerConnectionTo(DbConnection owningObject, DbConnectionInternal to) {
+        override internal void SetInnerConnectionTo(DbConnection owningObject, DbConnectionInternal to)
+        {
             OdbcConnection c = (owningObject as OdbcConnection);
-            if (null != c) {
+            if (null != c)
+            {
                 c.SetInnerConnectionTo(to);
             }
         }
-
-
-
     }
 }
 

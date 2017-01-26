@@ -1,14 +1,9 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="DBConnectionString.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 namespace System.Data.Common
 {
-
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -97,7 +92,6 @@ namespace System.Data.Common
             // otherwise all instances of user's password will be replaced with "*"
             if (_hasPassword && !connectionOptions.HasPersistablePassword)
             {
-
                 if (mustCloneDictionary)
                 {
                     // clone the hashtable to replace user's password/pwd value with "*"
@@ -217,7 +211,7 @@ namespace System.Data.Common
                 //Debug.WriteLine("0 entry AllowNothing");
                 behavior = KeyRestrictionBehavior.AllowOnly;
             }
-            else if (this._behavior != entry._behavior)
+            else if (_behavior != entry._behavior)
             { // subset of the AllowOnly array
                 behavior = KeyRestrictionBehavior.AllowOnly;
 
@@ -259,7 +253,7 @@ namespace System.Data.Common
                     //Debug.WriteLine("7/8 this AllowOnly with no restrictions and entry PreventUsage");
                 }
             }
-            else if (KeyRestrictionBehavior.PreventUsage == this._behavior)
+            else if (KeyRestrictionBehavior.PreventUsage == _behavior)
             { // both PreventUsage
                 if (ADP.IsEmptyArray(_restrictionValues))
                 {
@@ -279,7 +273,7 @@ namespace System.Data.Common
             }
             else if (!ADP.IsEmptyArray(_restrictionValues) && !ADP.IsEmptyArray(entry._restrictionValues))
             { // both AllowOnly with restrictions
-                if (this._restrictionValues.Length <= entry._restrictionValues.Length)
+                if (_restrictionValues.Length <= entry._restrictionValues.Length)
                 {
                     //Debug.WriteLine("13a this AllowOnly with restrictions and entry AllowOnly with restrictions");
                     restrictionValues = NewRestrictionIntersect(_restrictionValues, entry._restrictionValues);
@@ -505,7 +499,6 @@ namespace System.Data.Common
                 }
             }
             return RemoveDuplicates(restrictionValues.ToArray());
-
         }
 
         static internal string[] RemoveDuplicates(string[] restrictions)

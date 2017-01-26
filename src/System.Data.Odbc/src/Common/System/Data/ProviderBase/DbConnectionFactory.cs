@@ -1,3 +1,7 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 // TODO[tinchou]: check ForceNewConnection usage
 
 // Licensed to the .NET Foundation under one or more agreements.
@@ -6,7 +10,6 @@
 
 
 
-//------------------------------------------------------------------------------
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -281,10 +284,10 @@ namespace System.Data.ProviderBase
                     //}
                     //else
                     //{
-                        if (!connectionPool.TryGetConnection(owningConnection, retry, userOptions, out connection))
-                        {
-                            return false;
-                        }
+                    if (!connectionPool.TryGetConnection(owningConnection, retry, userOptions, out connection))
+                    {
+                        return false;
+                    }
                     //}
 
                     if (connection == null)

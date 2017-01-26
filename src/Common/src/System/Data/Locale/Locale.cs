@@ -16,7 +16,7 @@ namespace System.Data
 
         static Locale()
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);            
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         private static Tuple<string, int, Encoding> GetDetailsInternal(int lcid)

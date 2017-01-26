@@ -1,4 +1,7 @@
-﻿// TODO[tinchou]: Attribute https://raw.githubusercontent.com/mono/mono/0bcbe39b148bb498742fc68416f8293ccd350fb6/mcs/class/System.Data/MobileStubs.cs
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 // TODO[tinchou]: Check commented methods and attributes
 
 // help building System.Data without win32-specific p/invokes
@@ -69,10 +72,8 @@ internal static partial class Bid
 
 namespace System.Data.Common
 {
-
     internal static partial class UnsafeNativeMethods
     {
-
         // note: likely unreachable code - as this never worked on mono
         internal static int lstrlenW(IntPtr p)
         {

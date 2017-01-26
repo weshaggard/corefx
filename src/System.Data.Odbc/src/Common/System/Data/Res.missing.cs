@@ -1,8 +1,11 @@
-﻿// TODO[tinchou]: Attribute https://raw.githubusercontent.com/mono/mono/0bcbe39b148bb498742fc68416f8293ccd350fb6/mcs/class/System.Data/ReferenceSources/Res.missing.cs
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 namespace System.Data
 {
-    static partial class Res
+    internal static partial class Res
     {
         public const string ADP_InvalidMixedUsageOfAccessTokenAndAuthentication = "ADP_InvalidMixedUsageOfAccessTokenAndAuthentication";
         public const string ADP_InvalidMixedUsageOfAccessTokenAndContextConnection = "ADP_InvalidMixedUsageOfAccessTokenAndContextConnection";

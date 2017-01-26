@@ -1,21 +1,16 @@
-﻿// TODO[tinchou]: fix usages of System.Configuration
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+// TODO[tinchou]: fix usages of System.Configuration
 // TODO[tinchou]: check Microsoft.SqlServer usages
 // TODO[tinchou]: check GetComputerNameDnsFullyQualified method and SafeNativeMethods.cs
 // TODO[tinchou]: check RevertAssert usages
 // TODO[tinchou]: FileIOPermission usages
 // TODO[tinchou]: check using SysES = System.EnterpriseServices;
 
-//------------------------------------------------------------------------------
-// <copyright file="AdapterUtil.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-// <owner current="true" primary="false">[....]</owner>
-//------------------------------------------------------------------------------
-
 namespace System.Data.Common
 {
-
     using Microsoft.Win32;
     using System;
     using System.Collections;
@@ -38,7 +33,6 @@ namespace System.Data.Common
 
     internal static class ADP
     {
-
         // The class ADP defines the exceptions that are specific to the Adapters.f
         // The class contains functions that take the proper informational variables and then construct
         // the appropriate exception with an error string obtained from the resource Framework.txt.
@@ -76,29 +70,29 @@ namespace System.Data.Common
 
         // NOTE: Initializing a Task in SQL CLR requires the "UNSAFE" permission set (http://msdn.microsoft.com/en-us/library/ms172338.aspx)
         // Therefore we are lazily initializing these Tasks to avoid forcing customers to use the "UNSAFE" set when they are actually using no Async features (See Dev11 Bug #193253)
-        static private Task<bool> _trueTask = null;
+        static private Task<bool> s_trueTask = null;
         static internal Task<bool> TrueTask
         {
             get
             {
-                if (_trueTask == null)
+                if (s_trueTask == null)
                 {
-                    _trueTask = Task.FromResult<bool>(true);
+                    s_trueTask = Task.FromResult<bool>(true);
                 }
-                return _trueTask;
+                return s_trueTask;
             }
         }
 
-        static private Task<bool> _falseTask = null;
+        static private Task<bool> s_falseTask = null;
         static internal Task<bool> FalseTask
         {
             get
             {
-                if (_falseTask == null)
+                if (s_falseTask == null)
                 {
-                    _falseTask = Task.FromResult<bool>(false);
+                    s_falseTask = Task.FromResult<bool>(false);
                 }
-                return _falseTask;
+                return s_falseTask;
             }
         }
 
@@ -424,12 +418,12 @@ namespace System.Data.Common
 
 
         // only StackOverflowException & ThreadAbortException are sealed classes
-        static private readonly Type StackOverflowType = typeof(StackOverflowException);
-        static private readonly Type OutOfMemoryType = typeof(OutOfMemoryException);
-        static private readonly Type ThreadAbortType = typeof(ThreadAbortException);
-        static private readonly Type NullReferenceType = typeof(NullReferenceException);
-        static private readonly Type AccessViolationType = typeof(AccessViolationException);
-        static private readonly Type SecurityType = typeof(SecurityException);
+        static private readonly Type s_stackOverflowType = typeof(StackOverflowException);
+        static private readonly Type s_outOfMemoryType = typeof(OutOfMemoryException);
+        static private readonly Type s_threadAbortType = typeof(ThreadAbortException);
+        static private readonly Type s_nullReferenceType = typeof(NullReferenceException);
+        static private readonly Type s_accessViolationType = typeof(AccessViolationException);
+        static private readonly Type s_securityType = typeof(SecurityException);
 
         static internal bool IsCatchableExceptionType(Exception e)
         {
@@ -437,12 +431,12 @@ namespace System.Data.Common
             Debug.Assert(e != null, "Unexpected null exception!");
             Type type = e.GetType();
 
-            return ((type != StackOverflowType) &&
-                     (type != OutOfMemoryType) &&
-                     (type != ThreadAbortType) &&
-                     (type != NullReferenceType) &&
-                     (type != AccessViolationType) &&
-                     !SecurityType.IsAssignableFrom(type));
+            return ((type != s_stackOverflowType) &&
+                     (type != s_outOfMemoryType) &&
+                     (type != s_threadAbortType) &&
+                     (type != s_nullReferenceType) &&
+                     (type != s_accessViolationType) &&
+                     !s_securityType.IsAssignableFrom(type));
         }
 
         static internal bool IsCatchableOrSecurityExceptionType(Exception e)
@@ -457,11 +451,11 @@ namespace System.Data.Common
             Debug.Assert(e != null, "Unexpected null exception!");
             Type type = e.GetType();
 
-            return ((type != StackOverflowType) &&
-                     (type != OutOfMemoryType) &&
-                     (type != ThreadAbortType) &&
-                     (type != NullReferenceType) &&
-                     (type != AccessViolationType));
+            return ((type != s_stackOverflowType) &&
+                     (type != s_outOfMemoryType) &&
+                     (type != s_threadAbortType) &&
+                     (type != s_nullReferenceType) &&
+                     (type != s_accessViolationType));
         }
 
         // Invalid Enumeration
@@ -805,25 +799,25 @@ namespace System.Data.Common
             return NotSupportedEnumerationValue(typeof(StatementType), value.ToString(), method);
         }
 
-//        static internal ArgumentOutOfRangeException InvalidUserDefinedTypeSerializationFormat(Microsoft.SqlServer.Server.Format value)
-//        {
-//#if DEBUG
-//            switch (value)
-//            {
-//                case Microsoft.SqlServer.Server.Format.Unknown:
-//                case Microsoft.SqlServer.Server.Format.Native:
-//                case Microsoft.SqlServer.Server.Format.UserDefined:
-//                    Debug.Assert(false, "valid UserDefinedTypeSerializationFormat " + value.ToString());
-//                    break;
-//            }
-//#endif
-//            return InvalidEnumerationValue(typeof(Microsoft.SqlServer.Server.Format), (int)value);
-//        }
+        //        static internal ArgumentOutOfRangeException InvalidUserDefinedTypeSerializationFormat(Microsoft.SqlServer.Server.Format value)
+        //        {
+        //#if DEBUG
+        //            switch (value)
+        //            {
+        //                case Microsoft.SqlServer.Server.Format.Unknown:
+        //                case Microsoft.SqlServer.Server.Format.Native:
+        //                case Microsoft.SqlServer.Server.Format.UserDefined:
+        //                    Debug.Assert(false, "valid UserDefinedTypeSerializationFormat " + value.ToString());
+        //                    break;
+        //            }
+        //#endif
+        //            return InvalidEnumerationValue(typeof(Microsoft.SqlServer.Server.Format), (int)value);
+        //        }
 
-//        static internal ArgumentOutOfRangeException NotSupportedUserDefinedTypeSerializationFormat(Microsoft.SqlServer.Server.Format value, string method)
-//        {
-//            return ADP.NotSupportedEnumerationValue(typeof(Microsoft.SqlServer.Server.Format), value.ToString(), method);
-//        }
+        //        static internal ArgumentOutOfRangeException NotSupportedUserDefinedTypeSerializationFormat(Microsoft.SqlServer.Server.Format value, string method)
+        //        {
+        //            return ADP.NotSupportedEnumerationValue(typeof(Microsoft.SqlServer.Server.Format), value.ToString(), method);
+        //        }
 
         //
         // DbProviderFactories
@@ -2371,7 +2365,7 @@ namespace System.Data.Common
             return resultString.ToString();
         }
 
-        private static readonly string hexDigits = "0123456789abcdef";
+        private static readonly string s_hexDigits = "0123456789abcdef";
 
         static internal byte[] ByteArrayFromString(string hexString, string dataTypeName)
         {
@@ -2385,8 +2379,8 @@ namespace System.Data.Common
             CultureInfo invariant = CultureInfo.InvariantCulture;
             for (int i = 0; i < hexString.Length; i += 2)
             {
-                int h = hexDigits.IndexOf(Char.ToLower(c[i], invariant));
-                int l = hexDigits.IndexOf(Char.ToLower(c[i + 1], invariant));
+                int h = s_hexDigits.IndexOf(Char.ToLower(c[i], invariant));
+                int l = s_hexDigits.IndexOf(Char.ToLower(c[i + 1], invariant));
 
                 if (h < 0 || l < 0)
                 {
@@ -2399,7 +2393,6 @@ namespace System.Data.Common
 
         static internal void EscapeSpecialCharacters(string unescapedString, StringBuilder escapedString)
         {
-
             // note special characters list is from character escapes
             // in the MSDN regular expression language elements documentation
             // added ] since escaping it seems necessary
@@ -2428,7 +2421,6 @@ namespace System.Data.Common
             // don't replace the decimal separator if the string is in exponent format
             if (numericString.IndexOfAny(exponentSymbols) == -1)
             {
-
                 // if the user has set a decimal separator use it, if not use the current culture's value
                 if (ADP.IsEmpty(decimalSeparator) == true)
                 {
@@ -2696,7 +2688,6 @@ namespace System.Data.Common
         // this allows the caller to determine if it is an error or not for the quotedString to not be quoted
         static internal Boolean RemoveStringQuotes(string quotePrefix, string quoteSuffix, string quotedString, out string unquotedString)
         {
-
             int prefixLength;
             if (quotePrefix == null)
             {
@@ -2895,7 +2886,6 @@ namespace System.Data.Common
                 string lowerName = uniqueName.ToLower(CultureInfo.InvariantCulture); // MDAC 66978
                 if (!hash.ContainsKey(lowerName))
                 {
-
                     columnName = uniqueName;
                     hash.Add(lowerName, index);
                     break;
@@ -3007,16 +2997,16 @@ namespace System.Data.Common
             }
         }
 
-        private static Version _systemDataVersion;
+        private static Version s_systemDataVersion;
         static internal Version GetAssemblyVersion()
         {
             // NOTE: Using lazy thread-safety since we don't care if two threads both happen to update the value at the same time
-            if (_systemDataVersion == null)
+            if (s_systemDataVersion == null)
             {
-                _systemDataVersion = new Version(ThisAssembly.InformationalVersion);
+                s_systemDataVersion = new Version(ThisAssembly.InformationalVersion);
             }
 
-            return _systemDataVersion;
+            return s_systemDataVersion;
         }
     }
 }

@@ -1,14 +1,11 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 // TODO[tinchou]: check unsafe methods
 // TODO[tinchou]: check ReleaseHandle method
 // TODO[tinchou]: migrate to Marshal
 // TODO[tinchou]: validate zeroBuffer approach
-
-//------------------------------------------------------------------------------
-// <copyright file="DbBuffer.cs" company="Microsoft">
-//      Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">[....]</owner>
-//------------------------------------------------------------------------------
 
 namespace System.Data.ProviderBase
 {
@@ -26,7 +23,6 @@ namespace System.Data.ProviderBase
     // so that when debugging, we can tell the difference between one DbBuffer and another
     internal abstract class DbBuffer : SafeHandle
     {
-
         internal const int LMEM_FIXED = 0x0000;
         internal const int LMEM_MOVEABLE = 0x0002;
         internal const int LMEM_ZEROINIT = 0x0040;
