@@ -102,8 +102,9 @@
     <Compile Include="Common\System\Data\Common\ReadOnlyCollection.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetsWindows)' == 'true' And '$(IsPartialFacadeAssembly)' != 'true' ">
-    <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.Windows.cs" />
-    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Windows.cs" />
+    <!--TODO s/Unix/Windows/-->
+    <Compile Include="Common\System\Data\Common\UnsafeNativeMethods.Unix.cs" />
+    <Compile Include="Common\System\Data\ProviderBase\DbConnectionPoolIdentity.Unix.cs" />
     <Compile Include="$(CommonPath)\System\Data\Locale\LocaleMapper.Windows.cs">
       <Link>Common\System\Data\Locale\LocaleMapper.Windows.cs</Link>
     </Compile>

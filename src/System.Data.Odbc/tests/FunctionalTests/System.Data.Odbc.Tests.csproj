@@ -9,9 +9,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Release|AnyCPU'" />
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\System.Data.Odbc.csproj">
       <Name>System.Data.Odbc</Name>
     </ProjectReference>
