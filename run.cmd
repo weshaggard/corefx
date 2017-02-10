@@ -1,5 +1,5 @@
 @if not defined _echo @echo off
-setlocal
+setlocal ENABLEEXTENSIONS
 
 if not defined VisualStudioVersion (
   if defined VS140COMNTOOLS (
