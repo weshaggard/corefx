@@ -14,7 +14,7 @@
     <!-- For things not .NETFramework we need the net461 targeting pack to generate facades -->
     <NuGetTargetMoniker>.NETFramework,Version=v4.6.1</NuGetTargetMoniker>
     <TargetingPackNugetPackageId>Microsoft.TargetingPack.NETFramework.v4.6.1</TargetingPackNugetPackageId>
-    <ForShims>true</ForShims>
+    <ForShims Condition="'$(TargetGroup)' != 'mono'">true</ForShims>
   </PropertyGroup>
   <ItemGroup>
     <BinPlaceConfiguration Include="$(Configuration)">

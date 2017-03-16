@@ -184,5 +184,9 @@
       <!-- this targetgroup is not considered compatible with any other targetgroup so it should only
            build when specified directly or BuildAllConfigurations is set to True.  -->
     </TargetGroups>
+    <TargetGroups Include="mono">
+      <TargetingPackNugetPackageId>Microsoft.TargetingPack.NETFramework.v4.6.3</TargetingPackNugetPackageId>
+      <NuGetTargetMoniker>.NETFramework,Version=v4.6.3</NuGetTargetMoniker>
+    </TargetGroups>
   </ItemGroup>
 </Project>

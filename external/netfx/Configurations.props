@@ -12,6 +12,7 @@
       netfx;
       netcoreapp;
       uap;
+      mono;
     </BuildConfigurations>
   </PropertyGroup>
 </Project>

@@ -53,7 +53,7 @@
       <_NonPkgProjProjectReferenceBuildConfigurations>
         <AdditionalProperties>Configuration=%(Identity);%(_NonPkgProjProjectReferenceBuildConfigurations.AdditionalProperties)</AdditionalProperties>
       </_NonPkgProjProjectReferenceBuildConfigurations>
-      
+
       <!-- transform back to project -->
       <_NonPkgProjProjectReferenceWitnConfiguration Include="@(_NonPkgProjProjectReferenceBuildConfigurations->'%(OriginalItemSpec)')" />
     </ItemGroup>
@@ -113,6 +113,7 @@
      <ItemGroup Condition="'$(PackageConfigurations)' == ''">
        <_buildConfigurations Include="$(BuildConfigurations)" />
        <_excludeBuildConfigurations Include="@(_buildConfigurations)" Condition="'$(IsReferenceAssembly)' == 'true' AND ('%(Identity)' == 'netfx' OR $([System.String]::new('%(Identity)').StartsWith('net4')))"/>
+       <_excludeBuildConfigurations Include="mono" />
        <_packageConfigurations Include="@(_buildConfigurations)" Exclude="@(_excludeBuildConfigurations)" />
      </ItemGroup>
 
