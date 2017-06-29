@@ -12,7 +12,6 @@
   <PropertyGroup>
     <ApiCompatResponseFile>$(IntermediateOutputPath)/apicompat.rsp</ApiCompatResponseFile>
     <ApiCompatBaselineFile>$(MSBuildThisFileDirectory)ApiCompatBaseline.$(TargetGroup).netfx461.txt</ApiCompatBaselineFile>
-    <ApiCompatBaselineIgnoreFile>$(MSBuildThisFileDirectory)ApiCompatBaseline.$(TargetGroup).netfx461.ignore.txt</ApiCompatBaselineIgnoreFile>
     <ApiCompatNSBaselineFile>$(MSBuildThisFileDirectory)ApiCompatBaseline.$(TargetGroup).netstandard20.txt</ApiCompatNSBaselineFile>
     <ApiCompatNSOnlyBaselineFile>$(MSBuildThisFileDirectory)ApiCompatBaseline.$(TargetGroup).netstandard20Only.txt</ApiCompatNSOnlyBaselineFile>
     <ApiCompatImplementationDirs>$(RefPath),$(GenFacadesOutputPath)</ApiCompatImplementationDirs>
@@ -34,8 +33,6 @@
   >
     <PropertyGroup>
       <ApiCompatArgs>$(ApiCompatArgs) -implDirs:"$(ApiCompatImplementationDirs)"</ApiCompatArgs>
-      <BaselineApiCompatArgs Condition="Exists($(ApiCompatBaselineIgnoreFile))">-baseline:"$(ApiCompatBaselineIgnoreFile)"</BaselineApiCompatArgs>
-      <ApiCompatExitCode>0</ApiCompatExitCode>
 
       <ApiCompatCmd>$(ToolHostCmd) "$(ToolsDir)ApiCompat.exe"</ApiCompatCmd>
     </PropertyGroup>
@@ -43,14 +40,11 @@
     <MakeDir Directories="$(IntermediateOutputPath)" />
     <WriteLinesToFile File="$(ApiCompatResponseFile)" Lines="$(ApiCompatArgs)" Overwrite="true" />
 
-    <Exec Command="$(ApiCompatCmd) &quot;@(NetFxReference->'$(NetFxRefPath)%(Identity).dll')&quot; $(BaselineApiCompatArgs) @&quot;$(ApiCompatResponseFile)&quot; &gt; $(ApiCompatBaselineFile)"
-          Condition="'$(TargetGroup)'=='netcoreapp' and '$(BaselineApiCompat)' == 'true'"
+    <Exec Command="$(ApiCompatCmd) &quot;@(NetFxReference->'$(NetFxRefPath)%(Identity).dll')&quot; @&quot;$(ApiCompatResponseFile)&quot; -baseline:$(ApiCompatBaselineFile)"
+          Condition="'$(TargetGroup)'=='netcoreapp'"
           CustomErrorRegularExpression="^[a-zA-Z]+ :"
           StandardOutputImportance="Low"
-          IgnoreExitCode="true"
-    >
-      <Output TaskParameter="ExitCode" PropertyName="ApiCompatExitCode" />
-    </Exec>
+          />
 
     <PropertyGroup>
       <NETStandard20OnlyRef>$(NetStandardRefPath)/netstandard.dll</NETStandard20OnlyRef>
@@ -61,18 +55,12 @@
     <Exec Command="$(ApiCompatCmd) &quot;$(NETStandard20OnlyRef)&quot; @&quot;$(ApiCompatResponseFile)&quot; -baseline:$(ApiCompatNSOnlyBaselineFile)"
           CustomErrorRegularExpression="^[a-zA-Z]+ :"
           StandardOutputImportance="Low"
-          IgnoreExitCode="true"
-    >
-      <Output TaskParameter="ExitCode" PropertyName="ApiCompatExitCode" />
-    </Exec>
+          />
 
     <Exec Command="$(ApiCompatCmd) &quot;$(NetStandardRefPath)&quot; @&quot;$(ApiCompatResponseFile)&quot; -baseline:$(ApiCompatNSBaselineFile)"
           CustomErrorRegularExpression="^[a-zA-Z]+ :"
           StandardOutputImportance="Low"
-          IgnoreExitCode="true"
-    >
-      <Output TaskParameter="ExitCode" PropertyName="ApiCompatExitCode" />
-    </Exec>
+          />
 
   </Target>
 
