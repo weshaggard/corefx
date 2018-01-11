@@ -922,7 +922,7 @@ namespace System
         public static System.Decimal operator -(System.Decimal d1, System.Decimal d2) { throw null; }
         public static System.Decimal operator -(System.Decimal d) { throw null; }
         public static System.Decimal operator +(System.Decimal d) { throw null; }
-        public static System.Decimal Parse(System.ReadOnlySpan<char> s, System.Globalization.NumberStyles style=(System.Globalization.NumberStyles)(7), System.IFormatProvider provider=null) { throw null; }
+        public static System.Decimal Parse(System.ReadOnlySpan<char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { throw null; }
         public static System.Decimal Parse(string s) { throw null; }
         public static System.Decimal Parse(string s, System.Globalization.NumberStyles style) { throw null; }
         public static System.Decimal Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { throw null; }
@@ -984,7 +984,7 @@ namespace System
         public virtual object Clone() { throw null; }
         public static System.Delegate Combine(System.Delegate a, System.Delegate b) { throw null; }
         public static System.Delegate Combine(params System.Delegate[] delegates) { throw null; }
-        protected virtual System.Delegate CombineImpl(System.Delegate d) { throw null; }
+        protected virtual System.Delegate CombineImpl(System.Delegate follow) { throw null; }
         public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method) { throw null; }
         public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method, bool throwOnBindFailure) { throw null; }
         public static System.Delegate CreateDelegate(System.Type type, object target, string method) { throw null; }
@@ -1006,7 +1006,7 @@ namespace System
         public static bool operator !=(System.Delegate d1, System.Delegate d2) { throw null; }
         public static System.Delegate Remove(System.Delegate source, System.Delegate value) { throw null; }
         public static System.Delegate RemoveAll(System.Delegate source, System.Delegate value) { throw null; }
-        protected virtual System.Delegate RemoveImpl(System.Delegate d) { throw null; }
+        protected virtual System.Delegate RemoveImpl(System.Delegate value) { throw null; }
     }
     public partial class DivideByZeroException : System.ArithmeticException
     {
@@ -1139,7 +1139,6 @@ namespace System
         [System.ObsoleteAttribute("The provider argument is not used. Please use ToString().")]
         public string ToString(System.IFormatProvider provider) { throw null; }
         public string ToString(string format) { throw null; }
-        [System.ObsoleteAttribute("The provider argument is not used. Please use ToString(String).")]
         public string ToString(string format, System.IFormatProvider provider) { throw null; }
         public static bool TryParse(System.Type enumType, string value, bool ignoreCase, out object result) { throw null; }
         public static bool TryParse(System.Type enumType, string value, out object result) { throw null; }
@@ -1250,7 +1249,7 @@ namespace System
         public static void EndNoGCRegion() { }
         public static long GetAllocatedBytesForCurrentThread() { throw null; }
         public static int GetGeneration(object obj) { throw null; }
-        public static int GetGeneration(System.WeakReference wo) { throw null; }
+        public static int GetGeneration(System.WeakReference wr) { throw null; }
         public static long GetTotalMemory(bool forceFullCollection) { throw null; }
         public static void KeepAlive(object obj) { }
         public static void RegisterForFullGCNotification(int maxGenerationThreshold, int largeObjectHeapThreshold) { }
@@ -1719,16 +1718,16 @@ namespace System
         AwayFromZero = 1,
         ToEven = 0,
     }
-    public partial class MissingFieldException : System.MissingMemberException, System.Runtime.Serialization.ISerializable
+    public partial class MissingFieldException : System.MissingMemberException
     {
         public MissingFieldException() { }
         protected MissingFieldException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public MissingFieldException(string message) { }
         public MissingFieldException(string message, System.Exception inner) { }
-        public MissingFieldException(string className, string fieldName) { }
+        public MissingFieldException(string className, string methodName) { }
         public override string Message { get { throw null; } }
     }
-    public partial class MissingMemberException : System.MemberAccessException, System.Runtime.Serialization.ISerializable
+    public partial class MissingMemberException : System.MemberAccessException
     {
         protected string ClassName;
         protected string MemberName;
@@ -1775,7 +1774,7 @@ namespace System
     {
         public MTAThreadAttribute() { }
     }
-    public abstract partial class MulticastDelegate : System.Delegate
+    public abstract partial class MulticastDelegate : System.Delegate, System.Runtime.Serialization.ISerializable
     {
         protected MulticastDelegate(object target, string method) : base (default(object), default(string)) { }
         protected MulticastDelegate(System.Type target, string method) : base (default(object), default(string)) { }
@@ -1998,11 +1997,10 @@ namespace System
     }
     public partial struct RuntimeArgumentHandle
     {
-        private int _dummy;
     }
     public partial struct RuntimeFieldHandle : System.Runtime.Serialization.ISerializable
     {
-        private object _dummy;
+        private int _dummy;
         public System.IntPtr Value { get { throw null; } }
         public override bool Equals(object obj) { throw null; }
         public bool Equals(System.RuntimeFieldHandle handle) { throw null; }
@@ -2013,7 +2011,7 @@ namespace System
     }
     public partial struct RuntimeMethodHandle : System.Runtime.Serialization.ISerializable
     {
-        private object _dummy;
+        private int _dummy;
         public System.IntPtr Value { get { throw null; } }
         public override bool Equals(object obj) { throw null; }
         public bool Equals(System.RuntimeMethodHandle handle) { throw null; }
@@ -2023,14 +2021,13 @@ namespace System
         public static bool operator ==(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) { throw null; }
         public static bool operator !=(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) { throw null; }
     }
-    public partial struct RuntimeTypeHandle : System.Runtime.Serialization.ISerializable
+    public partial struct RuntimeTypeHandle : System.IEquatable<System.RuntimeTypeHandle>, System.Runtime.Serialization.ISerializable
     {
-        private object _dummy;
+        private int _dummy;
         public System.IntPtr Value { get { throw null; } }
         public override bool Equals(object obj) { throw null; }
         public bool Equals(System.RuntimeTypeHandle handle) { throw null; }
         public override int GetHashCode() { throw null; }
-        [System.CLSCompliantAttribute(false)]
         public System.ModuleHandle GetModuleHandle() { throw null; }
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(object left, System.RuntimeTypeHandle right) { throw null; }
@@ -3064,15 +3061,13 @@ namespace System
         UInt64 = 12,
     }
     [System.CLSCompliantAttribute(false)]
-    public partial struct TypedReference
+    public ref partial struct TypedReference
     {
         private int _dummy;
         public override bool Equals(object o) { throw null; }
         public override int GetHashCode() { throw null; }
         public static System.Type GetTargetType(System.TypedReference value) { throw null; }
-        [System.CLSCompliantAttribute(false)]
         public static System.TypedReference MakeTypedReference(object target, System.Reflection.FieldInfo[] flds) { throw null; }
-        [System.CLSCompliantAttribute(false)]
         public static void SetTypedReference(System.TypedReference target, object value) { }
         public static System.RuntimeTypeHandle TargetTypeToken(System.TypedReference value) { throw null; }
         public static object ToObject(System.TypedReference value) { throw null; }
@@ -3083,7 +3078,7 @@ namespace System
         public string TypeName { get { throw null; } }
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
-    public partial class TypeLoadException : System.SystemException, System.Runtime.Serialization.ISerializable
+    public partial class TypeLoadException : System.SystemException
     {
         public TypeLoadException() { }
         protected TypeLoadException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
@@ -6619,7 +6614,7 @@ namespace System.Runtime.CompilerServices
     {
         public static int OffsetToStringData { get { throw null; } }
         public static void EnsureSufficientExecutionStack() { }
-        public static new bool Equals(object o1, object o2) { throw null; }
+        public static new bool Equals(object obj1, object obj2) { throw null; }
         public static void ExecuteCodeWithGuaranteedCleanup(System.Runtime.CompilerServices.RuntimeHelpers.TryCode code, System.Runtime.CompilerServices.RuntimeHelpers.CleanupCode backoutCode, object userData) { }
         public static int GetHashCode(object o) { throw null; }
         public static object GetObjectValue(object obj) { throw null; }
