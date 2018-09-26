@@ -18,43 +18,35 @@ simpleNode('windows.10.amd64.clientrs4.devex.open') {
     def logFolder = getLogFolder()
     def framework = ''
     if (params.TGroup == 'all') {
-        framework = '-allConfigurations'
+        framework = '/p:BuildAllConfigurations=true'
     }
     else {
-        framework = "-framework:${params.TGroup}"
+        framework = "/p:TargetGroup=${params.TGroup}"
     }
 
-    stage ('Initialize tools') {
-        // Init tools
-        bat '.\\init-tools.cmd'
-    }
-    stage ('Sync') {
-        bat ".\\sync.cmd -p -- /p:ArchGroup=${params.AGroup} /p:RuntimeOS=win10"
-    }
-    stage ('Generate Version Assets') {
-        bat '.\\build-managed.cmd -GenerateVersion'
-    }
+    def commonprops = "${framework} /p:ArchGroup=${params.AGroup} /p:ConfigurationGroup=${params.CGroup}"
+
     stage ('Build Product') {
-        bat ".\\build.cmd ${framework} -buildArch=${params.AGroup} -${params.CGroup} -- /p:RuntimeOS=win10"
+        bat ".\\build.cmd ${commonprops} /p:RuntimeOS=win10"
     }
     stage ('Build Tests') {
         def additionalArgs = ''
         def archiveTests = 'false'
         if (params.TestOuter) {
-            additionalArgs += ' -Outerloop'
+            additionalArgs += ' /p:Outerloop=true'
         }
         if (submitToHelix) {
             archiveTests = 'true'
         }
         if (submitToHelix || params.TGroup == 'uapaot') {
-            additionalArgs += ' -SkipTests'
+            additionalArgs += ' /p:SkipTests=true'
         }
         if (params.TGroup != 'all') {
-            bat ".\\build-tests.cmd ${framework} -buildArch=${params.AGroup} -${params.CGroup}${additionalArgs} -- /p:RuntimeOS=win10 /p:ArchiveTests=${archiveTests} /p:EnableDumpling=true"
+            bat ".\\eng\\build-tests.cmd ${commonprops} /p:RuntimeOS=win10 /p:ArchiveTests=${archiveTests} /p:EnableDumpling=true${additionalArgs}"
         }
         else {
-            bat ".\\build-tests.cmd -framework:netstandard -buildArch=${params.AGroup} -${params.CGroup} -SkipTests"
-            bat ".\\build-tests.cmd ${framework} -${params.CGroup}${additionalArgs}"
+            bat ".\\eng\\build-tests.cmd /p:TargetGroup=netstandard /p:ArchGroup=${params.AGroup} /p:ConfigurationGroup=${params.CGroup} /p:SkipTests=true"
+            bat ".\\eng\\build-tests.cmd ${commonprops}${additionalArgs}"
         }
     }
     if (submitToHelix) {

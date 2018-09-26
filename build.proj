@@ -8,12 +8,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <BuildNative Condition="'$(BuildNative)'==''">true</BuildNative>
+    <BuildTests Condition="'$(BuildTests)'==''">false</BuildTests>
     <BuildPackages Condition="'$(BuildPackages)'==''">true</BuildPackages>
   </PropertyGroup>
 
   <Import Project="$(ToolsDir)VersionTools.targets" Condition="Exists('$(ToolsDir)VersionTools.targets')" />
 
   <ItemGroup>
+    <Project Include="src\Native\build-native.proj" Condition="'$(BuildNative)'=='true'"/>
     <Project Include="external\dir.proj" />
     <Project Include="src\dirs.proj" />
     <Project Include="src\tests.builds" Condition="'$(BuildTests)'=='true'" />
@@ -81,5 +84,7 @@
 
   <!-- Hook that can be used to insert custom build tasks to the build process such as setup and/or cleanup tasks -->
   <Import Project="build.override.targets" Condition="Exists('build.override.targets')" />
+
+  <Target Name="Restore" />
 
 </Project>

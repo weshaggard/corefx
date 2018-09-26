@@ -13,5 +13,4 @@ while [[ -h $source ]]; do
 done
 
 scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
-"$scriptroot/eng/build.sh" --build --restore --warnaserror false --nodereuse false $@
-exit $?
+"$scriptroot/common/msbuild.sh" "$scriptroot/../src/tests.builds" /p:Performance=false --warnaserror 0 --nodereuse 0 $@

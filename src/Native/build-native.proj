@@ -1,0 +1,67 @@
+<Project>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Directory.Build.props))\Directory.Build.props" />
+
+  <!-- Target that builds all the native binaries in the Native folder -->
+  <Target Name="Build" DependsOnTargets="BuildNativeUnix;BuildNativeWindows" />
+
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <GenerateVersionSourceFile>true</GenerateVersionSourceFile>
+  </PropertyGroup>
+
+  <PropertyGroup  Condition="'$(OS)' == 'Windows_NT'">
+    <GenerateNativeVersionInfo>true</GenerateNativeVersionInfo>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      TODO: Need to add support for forwarding all parameters config.json supported.
+    -->
+
+    <_BuildNativeArgs>$(ArchGroup) $(ConfigurationGroup) $(OSGroup)</_BuildNativeArgs>
+  </PropertyGroup>
+<!--
+build-native.sh  -OfficialBuildId=20180727-04  arm64  Release  Linux  -numproc 4  -portable  stripSymbols  toolSetDir=c:\tools\clr /p:StabilizePackageVersion=false /p:PackageVersionStamp=
+  -->
+
+  <Target Name="BuildNativeUnix"
+          Condition="'$(OS)' != 'Windows_NT'"
+          DependsOnTargets="GenerateVersionSourceFile">
+
+    <PropertyGroup>
+      <!--
+        MSBuildNodeCount should a good approximation for how many procs to use for native build, if we find that doesn't work
+        then we should consider calling Environment.ProcessorCount
+      -->
+      <_ProcessorCountArg> --numproc $(MSBuildNodeCount)</_ProcessorCountArg>
+      <_StripSymbolsArg> stripsymbols</_StripSymbolsArg>
+      <_PortableBuildArg Condition="'$(PortableBuild)' == 'true'"> -portable</_PortableBuildArg>
+
+      <_BuildNativeUnixArgs>$(_BuildNativeArgs)$(_ProcessCountArg)$(_StripSymbolsArg)$(_PortableBuildArg)</_BuildNativeUnixArgs>
+    </PropertyGroup>
+
+    <Message Text="$(MSBuildProjectDirectory)/build-native.sh $(_BuildNativeUnixArgs)" Importance="High"/>
+    <Exec Command="&quot;$(MSBuildProjectDirectory)/build-native.sh&quot; $(_BuildNativeUnixArgs)" />
+
+  </Target>
+
+<!--
+build-native.cmd  -OfficialBuildId=20180727-04  x86  Release  Windows_NT  -numproc 4  -portable  toolSetDir=c:\tools\clr /p:SignType=real /p:RuntimeOS=win10 /p:StabilizePackageVersion=false /p:PackageVersionStamp= /p:EnableProfileGuidedOptimization=true
+-->
+  <Target Name="BuildNativeWindows"
+          Condition="'$(OS)' == 'Windows_NT'"
+          DependsOnTargets="GenerateVersionHeader">
+
+    <PropertyGroup>
+      <_ToolSetDirArg Condition="'$(ToolSetDir)' != ''"> toolSetDir=$(ToolSetDir)</_ToolSetDirArg>
+
+      <_BuildNativeWindowsArgs>$(_BuildNativeArgs)$(ToolSetDirArg)</_BuildNativeWindowsArgs>
+    </PropertyGroup>
+
+    <!-- Run script that invokes Cmake to create VS files, and then calls msbuild to compile them -->
+    <Message Text="$(MSBuildProjectDirectory)\build-native.cmd $(_BuildNativeArgs)" Importance="High"/>
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\build-native.cmd&quot; $(_BuildNativeArgs)" />
+
+  </Target>
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Directory.Build.targets))\Directory.Build.targets" />
+</Project>
